@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎮 Retro Game Boy-Styled Portfolio — README</title>
+  <meta name="description" content="A beautifully formatted HTML rendering of the Retro Game Boy-Styled Portfolio README." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --primary:#7bff00;
+      --primary-2:#9fff00;
+      --bg-1:#081820;
+      --bg-2:#0f1b2d;
+      --text:#cde7cf;
+      --muted:#8fb58f;
+      --card:#0b1420;
+      --border: #143243;
+      --code-bg:#0a1a14;
+      --code-border:#163b2b;
+      --shadow: 0 10px 30px rgba(0,0,0,.45), inset 0 0 0 1px rgba(123,255,0,.05);
+      --radius: 18px;
+      --ring: 0 0 0 2px rgba(123,255,0,.2), 0 0 40px rgba(123,255,0,.15);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      color:var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, #102a2e 0%, transparent 60%),
+                  radial-gradient(1200px 800px at 110% 10%, #192a3c 0%, transparent 60%),
+                  linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      line-height:1.65;
+      letter-spacing: .2px;
+      overflow-x:hidden;
+    }
+
+    /* Starfield */
+    .stars, .stars:before, .stars:after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-repeat:repeat;
+      pointer-events:none;
+      z-index:0;
+    }
+    .stars{
+      background-image: radial-gradient(1px 1px at 20px 30px, rgba(255,255,255,.25) 50%, transparent 51%),
+                        radial-gradient(1px 1px at 180px 120px, rgba(255,255,255,.2) 50%, transparent 51%),
+                        radial-gradient(1px 1px at 320px 200px, rgba(255,255,255,.15) 50%, transparent 51%);
+      animation: drift 120s linear infinite;
+      opacity:.55;
+    }
+    .stars:before{
+      background-image: radial-gradient(1px 1px at 90px 60px, rgba(255,255,255,.25) 50%, transparent 51%),
+                        radial-gradient(1px 1px at 260px 180px, rgba(255,255,255,.2) 50%, transparent 51%),
+                        radial-gradient(1px 1px at 420px 260px, rgba(255,255,255,.15) 50%, transparent 51%);
+      animation: drift 200s linear infinite reverse;
+      opacity:.35;
+    }
+    .stars:after{
+      background-image: radial-gradient(2px 2px at 140px 90px, rgba(123,255,0,.18) 50%, transparent 51%),
+                        radial-gradient(2px 2px at 360px 240px, rgba(123,255,0,.12) 50%, transparent 51%);
+      animation: drift 160s linear infinite;
+      opacity:.25;
+    }
+    @keyframes drift{from{transform:translateY(0)}to{transform:translateY(-600px)}}
+
+    header{
+      position:relative;
+      z-index:1;
+      padding: 42px 20px 28px;
+      text-align:center;
+    }
+    .badge{
+      font-family:"Press Start 2P", monospace;
+      display:inline-flex; align-items:center; gap:10px;
+      color:var(--primary);
+      background:linear-gradient(180deg, rgba(123,255,0,.1), rgba(123,255,0,.02));
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:10px 14px;
+      box-shadow:var(--shadow);
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-size:12px;
+    }
+    .title{
+      margin:18px auto 8px;
+      font-family:"Press Start 2P", monospace;
+      font-size: clamp(22px, 4.2vw, 40px);
+      line-height:1.2;
+      color:var(--primary);
+      text-shadow: 0 0 16px rgba(123,255,0,.35), 0 0 2px rgba(123,255,0,.4);
+    }
+    .subtitle{
+      margin:0 auto;
+      max-width:900px;
+      color:var(--muted);
+      font-size: clamp(14px, 2.2vw, 18px);
+    }
+
+    .container{
+      position:relative;
+      z-index:1;
+      max-width: 1080px;
+      margin: 26px auto 120px;
+      padding: 0 20px 40px;
+    }
+
+    nav.toc{
+      position: sticky;
+      top:10px;
+      z-index:2;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(8,24,32,.8), rgba(15,27,45,.65));
+      border:1px solid var(--border);
+      box-shadow: var(--ring);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin: 24px 0 36px;
+    }
+    nav.toc h2{
+      margin:0 0 8px;
+      font-size:14px;
+      letter-spacing:.4px;
+      color:var(--primary);
+      font-family:"Press Start 2P", monospace;
+    }
+    nav.toc a{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      margin:6px 6px 0 0;
+      border:1px dashed var(--border);
+      border-radius:12px;
+      color:var(--text);
+      text-decoration:none;
+      font-size:14px;
+      transition: .2s;
+    }
+    nav.toc a:hover{
+      border-style:solid;
+      transform: translateY(-1px);
+      box-shadow: var(--ring);
+      color:var(--primary);
+    }
+
+    section.card{
+      background: linear-gradient(180deg, rgba(9,18,26,.7), rgba(7,12,18,.8)), radial-gradient(1200px 600px at 10% -10%, rgba(123,255,0,.06), transparent 60%);
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px 24px;
+      margin: 18px 0;
+    }
+    section.card h2{
+      margin-top:0;
+      font-family:"Press Start 2P", monospace;
+      font-size: 20px;
+      color: var(--primary);
+      letter-spacing:.4px;
+    }
+    h3{ font-size:18px; margin-top:26px; color:#d7f9d9}
+    h4{ font-size:16px; margin-top:22px; color:#e5ffe2}
+
+    p{margin:12px 0}
+    ul, ol{padding-left:22px; margin:12px 0}
+    li{margin:6px 0}
+    strong{color:#e6ffe6}
+
+    /* code */
+    code, pre{
+      font-family: "JetBrains Mono", Consolas, "Courier New", monospace;
+    }
+    code{
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      padding: .15em .4em;
+      border-radius: 8px;
+      color:#b6ffd1;
+    }
+    pre{
+      background: linear-gradient(180deg, rgba(5,18,12,.9), rgba(9,24,17,.9));
+      border:1px solid var(--code-border);
+      box-shadow: inset 0 0 24px rgba(0,0,0,.35);
+      padding: 16px;
+      border-radius: 14px;
+      overflow:auto;
+    }
+    pre code{
+      background:transparent; border:0; padding:0; color:#dfffe9;
+    }
+
+    /* table */
+    .table-wrap{
+      overflow:auto;
+      border:1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      margin: 12px 0;
+    }
+    table{ width:100%; border-collapse: collapse; min-width:620px; background: rgba(6,12,10,.6)}
+    th, td{
+      border-bottom:1px solid rgba(20,50,67,.6);
+      padding:12px 14px;
+      text-align:left;
+    }
+    th{
+      background: rgba(123,255,0,.06);
+      color: var(--primary);
+      font-weight:700;
+    }
+    tr:hover td{ background: rgba(123,255,0,.035)}
+
+    /* callouts */
+    .callout{
+      display:flex; gap:14px; align-items:flex-start;
+      background: linear-gradient(180deg, rgba(123,255,0,.08), rgba(123,255,0,.03));
+      border:1px solid var(--border);
+      border-left: 4px solid var(--primary);
+      padding:14px 16px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      margin: 14px 0;
+    }
+    .callout .k{font-family:"Press Start 2P", monospace; color:var(--primary)}
+
+    /* footer ribbon */
+    .ribbon{
+      text-align:center;
+      padding: 20px;
+      margin-top: 26px;
+      color: var(--muted);
+      font-size:14px;
+    }
+
+    /* small utilities */
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+    }
+    @media (max-width: 900px){ .grid-2{ grid-template-columns: 1fr } }
+    .tiny{font-size:12px; color:var(--muted)}
+    .center{ text-align:center }
+
+    /* anchor offsets */
+    :target{ scroll-margin-top: 100px }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <header>
+    <span class="badge">README • Retro/Game Boy • Sci‑Fi</span>
+    <h1 class="title">Retro Game Boy‑Styled Portfolio Website</h1>
+    <p class="subtitle">A unique, interactive portfolio with a retro‑futuristic aesthetic: starfield skies, UFO fleets, holographic glow, and pixel‑perfect vibes — wrapped in modern HTML/CSS/JS.</p>
+  </header>
+
+  <main class="container">
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Quick Jump</h2>
+      <div class="links">
+        <a href="#live-demo">🌟 Live Demo</a>
+        <a href="#features">✨ Features</a>
+        <a href="#technologies">🛠️ Technologies</a>
+        <a href="#installation">📦 Installation</a>
+        <a href="#structure">📁 Structure</a>
+        <a href="#technical">🔧 Technical</a>
+        <a href="#customization">🎨 Customize</a>
+        <a href="#support">🌐 Support</a>
+        <a href="#license">📄 License</a>
+      </div>
+    </nav>
+
+    <section id="live-demo" class="card">
+      <h2>🌟 Live Demo</h2>
+      <p>View the live portfolio here: <strong><a href="#" style="color:var(--primary)">Add your live URL</a></strong></p>
+    </section>
+
+    <section id="features" class="card">
+      <h2>✨ Features</h2>
+
+      <h3>🎨 Visual Design</h3>
+      <ul>
+        <li><strong>Retro‑Futuristic Aesthetic</strong>: Pixelated fonts, neon green color scheme, and Game Boy‑inspired design</li>
+        <li><strong>Animated Starfield</strong>: Dynamic background with twinkling stars and celestial objects</li>
+        <li><strong>Interactive UFO Invasion</strong>: Animated UFO fleet with scanning beams and formations</li>
+        <li><strong>Solar System</strong>: Rotating planets with rings and orbital animations</li>
+        <li><strong>Holographic Effects</strong>: Glowing borders, shimmer effects, and neon highlights</li>
+        <li><strong>Responsive Design</strong>: Optimized for desktop, tablet, and mobile devices</li>
+      </ul>
+
+      <h3>🔊 Audio System</h3>
+      <ul>
+        <li><strong>Custom Sound Effects</strong>: Programmatically generated audio using Web Audio API</li>
+        <li><strong>UFO Sound Suite</strong>: Engine rumble, scanning beams, Doppler effects, and formation sounds</li>
+        <li><strong>Interactive Audio</strong>: Sounds triggered by user interactions and animations</li>
+        <li><strong>Smart Mute Control</strong>: UFO‑specific mute button with persistent state</li>
+        <li><strong>Volume Management</strong>: Optimized audio levels for comfortable listening</li>
+      </ul>
+
+      <h3>🎯 Interactive Elements</h3>
+      <ul>
+        <li><strong>Smooth Navigation</strong>: Animated section transitions with sound effects</li>
+        <li><strong>Skill Animations</strong>: Dynamic skill bars with progress animations</li>
+        <li><strong>Project Showcase</strong>: Filterable project gallery with hover effects</li>
+        <li><strong>Contact Form</strong>: Functional contact form with EmailJS integration</li>
+        <li><strong>Timeline Animations</strong>: Animated experience timeline with hover effects</li>
+      </ul>
+
+      <h3>🚀 Performance Features</h3>
+      <ul>
+        <li><strong>Hidden Scrollbars</strong>: Clean interface with invisible scrolling</li>
+        <li><strong>Optimized Animations</strong>: Smooth 60fps animations using <code>requestAnimationFrame</code></li>
+        <li><strong>Efficient Audio</strong>: Web Audio API with proper resource management</li>
+        <li><strong>Responsive Images</strong>: Optimized image loading and display</li>
+      </ul>
+    </section>
+
+    <section id="technologies" class="card">
+      <h2>🛠️ Technologies Used</h2>
+      <div class="grid-2">
+        <div>
+          <h3>Frontend</h3>
+          <ul>
+            <li><strong>HTML5</strong>: Semantic markup with modern HTML features</li>
+            <li><strong>CSS3</strong>: Custom properties, Flexbox, Grid &amp; animations</li>
+            <li><strong>Vanilla JavaScript (ES6+)</strong>: Classes, modules &amp; async/await</li>
+            <li><strong>Web Audio API</strong>: Programmatic sound generation</li>
+            <li><strong>EmailJS</strong>: Client‑side email functionality</li>
+          </ul>
+
+          <h3>CSS Features</h3>
+          <ul>
+            <li><strong>Custom Properties</strong>: <code>--primary-green</code>, <code>--dark-bg</code>, etc.</li>
+            <li><strong>Flexbox &amp; Grid</strong></li>
+            <li><strong>CSS Animations</strong>: <code>@keyframes</code>, <code>transform</code>, <code>transition</code>, <code>animation</code></li>
+            <li><strong>Advanced Selectors</strong></li>
+            <li><strong>Gradients</strong>: linear, radial &amp; conic</li>
+            <li><strong>Filters</strong>: <code>backdrop-filter</code>, <code>drop-shadow</code></li>
+            <li><strong>3D Transforms</strong>: <code>perspective</code>, <code>rotateX/Y/Z</code></li>
+          </ul>
+        </div>
+        <div>
+          <h3>JavaScript Features</h3>
+          <ul>
+            <li><strong>ES6+ Classes</strong></li>
+            <li><strong>DOM Manipulation</strong></li>
+            <li><strong>Event Handling</strong></li>
+            <li><strong>Animation API</strong>: <code>requestAnimationFrame</code></li>
+            <li><strong>Intersection Observer</strong></li>
+            <li><strong>Local Storage</strong></li>
+            <li><strong>Audio Context</strong></li>
+          </ul>
+
+          <h3>External Libraries</h3>
+          <ul>
+            <li><strong>EmailJS</strong>: Contact form</li>
+            <li><strong>Google Fonts</strong>: <em>Press Start 2P</em></li>
+            <li><strong>Font Awesome</strong>: Icons (optional)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="installation" class="card">
+      <h2>📦 Installation</h2>
+      <h3>Prerequisites</h3>
+      <ul>
+        <li>Modern web browser with ES6+ support</li>
+        <li>Local web server (for development)</li>
+        <li>EmailJS account (for contact form)</li>
+      </ul>
+
+      <h3>Setup Instructions</h3>
+      <ol>
+        <li><strong>Clone the repository</strong>
+          <pre><code class="language-bash">git clone https://github.com/yourusername/retro-portfolio.git
+cd retro-portfolio</code></pre>
+        </li>
+        <li><strong>Set up EmailJS</strong> (for contact form)
+          <ul>
+            <li>Create an account at EmailJS</li>
+            <li>Configure your email service</li>
+            <li>Update the EmailJS configuration in <code>script.js</code></li>
+          </ul>
+        </li>
+        <li><strong>Customize content</strong>
+          <ul>
+            <li>Edit <code>index.html</code> with your personal info</li>
+            <li>Update images in the <code>images/</code> directory</li>
+            <li>Modify colors in CSS custom properties</li>
+          </ul>
+        </li>
+        <li><strong>Deploy</strong>
+          <ul>
+            <li>Upload files to your hosting</li>
+            <li>Enable HTTPS (required for Web Audio API)</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <section id="structure" class="card">
+      <h2>📁 Project Structure</h2>
+      <pre><code>portfolio/
+├── index.html                 # Main HTML structure
+├── style.css                  # Complete CSS styling
+├── script.js                  # JavaScript functionality
+├── portfolio-template/        # Template version
+│   ├── index.html
+│   ├── style.css
+│   ├── script.js
+│   └── README.md
+├── images/                    # Image assets
+│   ├── avatar.jpg
+│   ├── project-screenshots/
+│   └── icons/
+└── README.md                  # This file</code></pre>
+    </section>
+
+    <section id="technical" class="card">
+      <h2>🔧 Technical Implementation</h2>
+
+      <h3>Audio System Architecture</h3>
+      <h4>Web Audio API Implementation</h4>
+      <pre><code class="language-js">// Audio Context Setup
+this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+// Sound Creation Function
+createTone(startFreq, endFreq, volume, duration) {
+    if (this.isMuted) return;
+    
+    const oscillator = this.audioContext.createOscillator();
+    const gainNode = this.audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+    
+    // Frequency modulation
+    oscillator.frequency.setValueAtTime(startFreq, this.audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(endFreq, this.audioContext.currentTime + duration);
+    
+    // Volume envelope
+    gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + duration);
+    
+    oscillator.start(this.audioContext.currentTime);
+    oscillator.stop(this.audioContext.currentTime + duration);
+}</code></pre>
+
+      <h4>UFO Sound Effects</h4>
+      <ul>
+        <li><strong>Engine Rumble</strong>: Low‑frequency oscillator with low‑pass filter and pulsing gain</li>
+        <li><strong>Scanning Beam</strong>: High‑frequency oscillator with band‑pass filter and modulation</li>
+        <li><strong>Doppler Effect</strong>: Frequency and volume changes to simulate movement</li>
+        <li><strong>Formation Sound</strong>: Multiple oscillators creating chord‑like effects</li>
+      </ul>
+
+      <h3>Animation System</h3>
+      <h4>CSS Animations</h4>
+      <pre><code class="language-css">/* Keyframe Animation */
+@keyframes twinkle {
+  0%, 100% { 
+    opacity: 0; 
+    transform: scale(0.5); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1); 
+  }
+}
+
+/* Applied Animation */
+.star {
+  animation: twinkle 2s infinite;
+  animation-delay: var(--delay);
+}</code></pre>
+
+      <h4>JavaScript Animations</h4>
+      <pre><code class="language-js">// Smooth Animation Loop
+animate() {
+  requestAnimationFrame(() => this.animate());
+  // Update object positions
+  this.updatePositions();
+  // Apply transforms
+  this.applyTransforms();
+}</code></pre>
+
+      <h3>Responsive Design System</h3>
+      <h4>CSS Grid Layout</h4>
+      <pre><code class="language-css">.about-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 40px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}</code></pre>
+
+      <h4>Flexbox Navigation</h4>
+      <pre><code class="language-css">.menu ul {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}</code></pre>
+
+      <h3>State Management</h3>
+      <h4>Local Storage Integration</h4>
+      <pre><code class="language-js">// Save user preferences
+localStorage.setItem('ufoSoundMuted', 'true');
+
+// Load user preferences
+const savedMuteState = localStorage.getItem('ufoSoundMuted');
+if (savedMuteState === 'true') {
+  this.isUFOMuted = true;
+}</code></pre>
+    </section>
+
+    <section id="customization" class="card">
+      <h2>🎨 Customization Guide</h2>
+      <h3>Color Scheme</h3>
+      <pre><code class="language-css">:root {
+  --primary-green: #7bff00;
+  --secondary-green: #9fff00;
+  --dark-bg: #081820;
+  --darker-bg: #0f1b2d;
+  --text-color: #7bff00;
+}</code></pre>
+
+      <h3>Typography</h3>
+      <pre><code class="language-css">body {
+  font-family: 'Press Start 2P', monospace;
+}</code></pre>
+
+      <h3>Animation Timing</h3>
+      <pre><code class="language-css">.star {
+  animation-duration: 2s; /* Change this value */
+}</code></pre>
+
+      <h3>Sound Effects</h3>
+      <pre><code class="language-js">// UFO Engine Sound
+createUFORumble(150, 100, 0.0045, 0.8);
+// Parameters: baseFreq, endFreq, volume, duration</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>🌐 Browser Support</h2>
+      <h3>Supported Browsers</h3>
+      <ul>
+        <li><strong>Chrome</strong>: 60+ (Full support)</li>
+        <li><strong>Firefox</strong>: 55+ (Full support)</li>
+        <li><strong>Safari</strong>: 12+ (Full support)</li>
+        <li><strong>Edge</strong>: 79+ (Full support)</li>
+      </ul>
+
+      <h3>Feature Support Matrix</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Feature</th><th>Chrome</th><th>Firefox</th><th>Safari</th><th>Edge</th></tr></thead>
+          <tbody>
+            <tr><td>Web Audio API</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>CSS Grid</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>CSS Custom Properties</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Intersection Observer</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Local Storage</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Fallbacks</h3>
+      <ul>
+        <li><strong>Web Audio API</strong>: Graceful degradation for older browsers</li>
+        <li><strong>CSS Grid</strong>: Flexbox fallbacks</li>
+        <li><strong>Custom Properties</strong>: Hardcoded values as fallbacks</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>⚡ Performance Optimizations</h2>
+      <h3>Animation Performance</h3>
+      <ul>
+        <li><strong>GPU Acceleration</strong>: Using <code>transform</code> and <code>opacity</code> for animations</li>
+        <li><strong>requestAnimationFrame</strong>: Smooth 60fps animations</li>
+        <li><strong>will-change</strong>: Rendering hints</li>
+      </ul>
+
+      <h3>Audio Performance</h3>
+      <ul>
+        <li><strong>Audio Context Management</strong></li>
+        <li><strong>Gain Control</strong></li>
+        <li><strong>Resource Cleanup</strong></li>
+      </ul>
+
+      <h3>Image Optimization</h3>
+      <ul>
+        <li><strong>Responsive Images</strong></li>
+        <li><strong>Lazy Loading</strong></li>
+        <li><strong>Compression</strong></li>
+      </ul>
+
+      <h3>Code Optimization</h3>
+      <ul>
+        <li><strong>Minification</strong></li>
+        <li><strong>Tree Shaking</strong></li>
+        <li><strong>Caching</strong></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>🔧 Troubleshooting</h2>
+      <h3>Common Issues</h3>
+
+      <div class="callout">
+        <div class="k">Audio Not Working</div>
+        <div>
+          <div><strong>Problem</strong>: No sound effects playing</div>
+          <ol>
+            <li>Check browser autoplay policies</li>
+            <li>Ensure HTTPS is enabled</li>
+            <li>Verify audio context state</li>
+            <li>Check mute button status</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="k">Animations Not Smooth</div>
+        <div>
+          <div><strong>Problem</strong>: Choppy or laggy animations</div>
+          <ol>
+            <li>Check device performance</li>
+            <li>Reduce animation complexity</li>
+            <li>Use <code>will-change</code></li>
+            <li>Optimize JavaScript loops</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="k">Layout Issues</div>
+        <ol>
+          <li>Check CSS Grid/Flexbox support</li>
+          <li>Verify viewport meta tag</li>
+          <li>Test responsive breakpoints</li>
+          <li>Check CSS custom properties</li>
+        </ol>
+      </div>
+
+      <div class="callout">
+        <div class="k">Contact Form</div>
+        <div>
+          <div><strong>Problem</strong>: Emails not sending</div>
+          <ol>
+            <li>Verify EmailJS configuration</li>
+            <li>Check service credentials</li>
+            <li>Test email template</li>
+            <li>Check browser console for errors</li>
+          </ol>
+        </div>
+      </div>
+
+      <h3>Debug Mode</h3>
+      <pre><code class="language-js">// Add to script.js
+const DEBUG = true;
+
+if (DEBUG) {
+  console.log('Audio Context State:', this.audioContext.state);
+  console.log('UFO Mute State:', this.isUFOMuted);
+}</code></pre>
+    </section>
+
+    <section class="card">
+      <h2>📝 Development Notes</h2>
+      <h3>Code Organization</h3>
+      <ul>
+        <li><strong>Modular Structure</strong></li>
+        <li><strong>Event‑Driven Architecture</strong></li>
+        <li><strong>Error Handling</strong></li>
+        <li><strong>Documentation</strong></li>
+      </ul>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li><strong>Accessibility</strong>: ARIA labels &amp; keyboard navigation</li>
+        <li><strong>SEO</strong>: Semantic HTML &amp; meta tags</li>
+        <li><strong>Performance</strong></li>
+        <li><strong>Maintainability</strong></li>
+      </ul>
+
+      <h3>Future Enhancements</h3>
+      <ul>
+        <li><strong>PWA Support</strong></li>
+        <li><strong>Offline Mode</strong></li>
+        <li><strong>Advanced Audio</strong></li>
+        <li><strong>Animation Library</strong></li>
+      </ul>
+    </section>
+
+    <section id="license" class="card">
+      <h2>📄 License</h2>
+      <p>This project is licensed under the MIT License — see the <code>LICENSE</code> file for details.</p>
+    </section>
+
+    <section id="support" class="card">
+      <h2>🤝 Contributing &amp; Support</h2>
+      <h3>Contributions</h3>
+      <ol>
+        <li>Fork the repository</li>
+        <li>Create a feature branch</li>
+        <li>Make your changes</li>
+        <li>Test thoroughly</li>
+        <li>Submit a pull request</li>
+      </ol>
+      <h3>Support</h3>
+      <ul>
+        <li>Create an issue on GitHub</li>
+        <li>Check the troubleshooting section</li>
+        <li>Review the documentation</li>
+      </ul>
+      <div class="ribbon"><em>Built with ❤️ and lots of retro gaming nostalgia.</em></div>
+    </section>
+  </main>
+</body>
+</html>

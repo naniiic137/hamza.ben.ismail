@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Portfolio - Developer & Creator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+        <button id="startButton" class="start-button pixel-text">START</button>
+    </div>
+
+    <!-- Solar System -->
+    <div class="solar-system">
+        <!-- Mercury -->
+        <div class="planet mercury">
+            <div class="planet-surface"></div>
+        </div>
+        
+        <!-- Venus -->
+        <div class="planet venus">
+            <div class="planet-surface"></div>
+        </div>
+        
+        <!-- Mars -->
+        <div class="planet mars">
+            <div class="planet-surface"></div>
+        </div>
+        
+        <!-- Jupiter -->
+        <div class="planet jupiter">
+            <div class="planet-surface"></div>
+        </div>
+        
+        <!-- Saturn -->
+        <div class="planet saturn">
+            <div class="planet-surface"></div>
+            <div class="saturn-rings"></div>
+        </div>
+        
+        <!-- Uranus -->
+        <div class="planet uranus">
+            <div class="planet-surface"></div>
+        </div>
+        
+        <!-- Neptune -->
+        <div class="planet neptune">
+            <div class="planet-surface"></div>
+        </div>
+        
+        <!-- New Planets -->
+        <!-- Pluto -->
+        <div class="planet pluto">
+            <div class="planet-surface"></div>
+        </div>
+        
+        <!-- Eris -->
+        <div class="planet eris">
+            <div class="planet-surface"></div>
+        </div>
+        
+        <!-- Ceres -->
+        <div class="planet ceres">
+            <div class="planet-surface"></div>
+        </div>
+        
+        <!-- Black Hole -->
+        <div class="black-hole">
+            <div class="black-hole-core"></div>
+            <div class="black-hole-accretion-disk"></div>
+            <div class="black-hole-glow"></div>
+        </div>
+    </div>
+    
+    <!-- Pixelated Earth -->
+    <div class="earth-container">
+        <div class="pixelated-earth">
+            <div class="earth-pixels"></div>
+        </div>
+    </div>
+    
+    <!-- UFO Fleet -->
+    <div class="ufo-fleet">
+        <!-- Formation 1 -->
+        <div class="ufo ufo-formation-1">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-1">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-1">
+            <div class="ufo-beam"></div>
+        </div>
+        
+        <!-- Formation 2 -->
+        <div class="ufo ufo-formation-2">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-2">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-2">
+            <div class="ufo-beam"></div>
+        </div>
+        
+        <!-- Formation 3 -->
+        <div class="ufo ufo-formation-3">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-3">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-3">
+            <div class="ufo-beam"></div>
+        </div>
+        
+        <!-- Formation 4 -->
+        <div class="ufo ufo-formation-4">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-4">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-4">
+            <div class="ufo-beam"></div>
+        </div>
+        
+        <!-- Formation 5 -->
+        <div class="ufo ufo-formation-5">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-5">
+            <div class="ufo-beam"></div>
+        </div>
+        <div class="ufo ufo-formation-5">
+            <div class="ufo-beam"></div>
+        </div>
+    </div>
+
+    <!-- Enhanced Star Field -->
+    <div class="star-field">
+        <div class="star-cluster star-cluster-1"></div>
+        <div class="star-cluster star-cluster-2"></div>
+    </div>
+    
+    <!-- Distant UFOs -->
+    <div class="distant-ufos-container"></div>
+
+    <div class="mute-button-container">
+        <button id="muteButton" class="mute-button pixel-text" data-muted="false">
+            <span class="mute-text">UFO SOUND ON</span>
+        </button>
+    </div>
+    
+    <div class="container">
+
+            
+            <nav class="menu">
+                <ul>
+                <li><a href="#about" class="menu-item" data-section="about">ABOUT</a></li>
+                <li><a href="#projects" class="menu-item" data-section="projects">PROJECTS</a></li>
+                <li><a href="#skills" class="menu-item" data-section="skills">SKILLS</a></li>
+                <li><a href="#experience" class="menu-item" data-section="experience">EXPERIENCE</a></li>
+                <li><a href="#contact" class="menu-item" data-section="contact">CONTACT</a></li>
+                </ul>
+            </nav>
+
+            <main class="content">
+            <section id="about" class="section active">
+                <h2 class="pixel-text">ABOUT ME</h2>
+                <div class="about-content">
+                    <div class="avatar-container">
+                        <div class="pixel-avatar">
+                            <img src="portfolio.jpg" alt="Hamza Ben Ismail" class="avatar-image">
+                        </div>
+                    </div>
+                    <div class="about-text">
+                        <p class="enhanced-typing-text">Hello! I'm Hamza Ben Ismail, a Computer Science Graduate from Faculty of Sciences of Sfax. I'm a passionate developer from Tunisia who loves creating awesome things with code. I specialize in building full-stack web applications and solving complex problems through innovative solutions. Currently working on Windows applications and expanding my web development expertise!</p>
+                        
+                        <!-- Stats under the paragraph -->
+                        <div class="stats-container">
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-number" data-target="8">0</span>
+                                    <span class="stat-label">Projects</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" data-target="5">0</span>
+                                    <span class="stat-label">Years Exp</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" data-target="1000">0</span>
+                                    <span class="stat-label">Cups Coffee</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </section>
+
+                <section id="projects" class="section">
+                <h2 class="pixel-text">PROJECTS</h2>
+                    <div class="project-grid">
+                    <div class="project-card fade-in" data-category="web">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <!-- <a href="#" class="project-link">Live Demo</a> -->
+                                    <span class="project-link private-tag">Private</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>LOGISERV - Fleet Management System</h3>
+                            <p>Full-stack web platform for fleet maintenance tracking and operational monitoring. Features React + TypeScript frontend, Spring Boot REST API, Keycloak authentication, Redis + Firebase notifications, Docker containerization, and Nginx deployment.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">React</span>
+                                <span class="tech-tag">TypeScript</span>
+                                <span class="tech-tag">Spring Boot</span>
+                                <span class="tech-tag">Docker</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card fade-in" data-category="python">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://github.com/naniiic137/File-Sorter" class="project-link" target="_blank">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>File Sorter</h3>
+                            <p>A Python script that organizes any folder automatically. Features customizable "don't touch" lists and extensive customization options to make it the best organizer ever. Simply place it in an unorganized folder and watch it work!</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">File Management</span>
+                                <span class="tech-tag">Automation</span>
+                                <span class="tech-tag">Customization</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card fade-in" data-category="windows">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://github.com/naniiic137/Calculateur-To-Hide-Files" class="project-link" target="_blank">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Calculateur To Hide Files</h3>
+                            <p>A Windows application with a secret vault to hide and encrypt files for maximum security. Features advanced encryption algorithms to keep your sensitive files completely protected.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Windows App</span>
+                                <span class="tech-tag">File Encryption</span>
+                                <span class="tech-tag">Security</span>
+                                <span class="tech-tag">Vault System</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card fade-in" data-category="python">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://github.com/naniiic137/Encrypte-And-Decryption" class="project-link" target="_blank">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Encrypte And Decryption</h3>
+                            <p>A text encryption and decryption tool that allows you to encrypt messages with a key and share them securely. Your friends can decrypt the messages using the same key for secure communication.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Encryption</span>
+                                <span class="tech-tag">Security</span>
+                                <span class="tech-tag">Key Sharing</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card fade-in" data-category="python">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://github.com/naniiic137/Minecraft-language" class="project-link" target="_blank">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Minecraft Language Converter</h3>
+                            <p>A Python script that converts any word to Minecraft enchanted language. Fun tool for creating custom Minecraft text and messages.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Text Processing</span>
+                                <span class="tech-tag">Minecraft</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card fade-in" data-category="python">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://github.com/naniiic137/Morse-Code-Converter" class="project-link" target="_blank">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Morse Code Converter</h3>
+                            <p>A simple Python script that translates words to Morse code. Perfect for secret communication with friends or learning Morse code.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Morse Code</span>
+                                <span class="tech-tag">Text Translation</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card fade-in" data-category="python">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://github.com/naniiic137/Password-Genetrater" class="project-link" target="_blank">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Password Generator</h3>
+                            <p>A secure password generator built with Python. Creates strong, random passwords with customizable length and character sets.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Security</span>
+                                <span class="tech-tag">Random Generation</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card fade-in" data-category="python">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://github.com/naniiic137/Zip-Bomb" class="project-link" target="_blank">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Zip Bomb Creator</h3>
+                            <p>A Python script that creates zip files that appear small but are actually very large. Customizable zip file creation with compression techniques.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">File Compression</span>
+                                <span class="tech-tag">Zip Files</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card fade-in" data-category="web">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <!-- <a href="#" class="project-link">Live Demo</a> -->
+                                    <span class="project-link private-tag">Private</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Retro Portfolio Website</h3>
+                            <p>This very portfolio! A retro Game Boy-styled website with interactive animations, sound effects, and a fully functional contact form.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">HTML5</span>
+                                <span class="tech-tag">CSS3</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">EmailJS</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card fade-in" data-category="windows">
+                        <div class="project-image">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <!-- <a href="#" class="project-link">Live Demo</a> -->
+                                    <span class="project-link private-tag">Private</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-content">
+                            <h3>Windows Applications</h3>
+                            <p>Currently working on various Windows applications using different programming languages. Creating desktop solutions and system tools.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">C++</span>
+                                <span class="tech-tag">C#</span>
+                                <span class="tech-tag">Windows API</span>
+                                <span class="tech-tag">Desktop Apps</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-filters">
+                    <button class="filter-btn active" data-filter="all">All Projects</button>
+                    <button class="filter-btn" data-filter="python">Python Scripts</button>
+                    <button class="filter-btn" data-filter="web">Web Development</button>
+                    <button class="filter-btn" data-filter="windows">Windows Apps</button>
+                    </div>
+                </section>
+
+                <section id="skills" class="section">
+                <h2 class="pixel-text">SKILLS</h2>
+                <div class="skills-container">
+                    <div class="skill-category fade-in">
+                        <h3>Programming Languages</h3>
+                        <div class="skill-bars">
+                            <div class="skill-bar" data-level="95">
+                                <span class="skill-name">Pascal</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="95"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="90">
+                                <span class="skill-name">Python</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="90"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="85">
+                                <span class="skill-name">C/C++</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="85"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="80">
+                                <span class="skill-name">Java</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="80"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category fade-in">
+                        <h3>Web Development</h3>
+                        <div class="skill-bars">
+                            <div class="skill-bar" data-level="85">
+                                <span class="skill-name">JavaScript</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="85"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="80">
+                                <span class="skill-name">PHP</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="80"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="75">
+                                <span class="skill-name">HTML/CSS</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="75"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="70">
+                                <span class="skill-name">MySQL</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="70"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category fade-in">
+                        <h3>Windows Development</h3>
+                        <div class="skill-bars">
+                            <div class="skill-bar" data-level="80">
+                                <span class="skill-name">Windows Apps</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="80"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="75">
+                                <span class="skill-name">Desktop Apps</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="75"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="70">
+                                <span class="skill-name">System Programming</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="70"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category fade-in">
+                        <h3>Tools & Technologies</h3>
+                        <div class="skill-bars">
+                            <div class="skill-bar" data-level="75">
+                                <span class="skill-name">Git</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="75"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="70">
+                                <span class="skill-name">VS Code</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="70"></div>
+                                </div>
+                            </div>
+                            <div class="skill-bar" data-level="65">
+                                <span class="skill-name">Command Line</span>
+                                <div class="skill-progress">
+                                    <div class="skill-fill" data-level="65"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="skill-grid">
+                    <div class="skill-item fade-in" data-skill="react">React.js</div>
+                    <div class="skill-item fade-in" data-skill="typescript">TypeScript</div>
+                    <div class="skill-item fade-in" data-skill="spring-boot">Spring Boot</div>
+                    <div class="skill-item fade-in" data-skill="docker">Docker</div>
+                    <div class="skill-item fade-in" data-skill="keycloak">Keycloak</div>
+                    <div class="skill-item fade-in" data-skill="postgresql">PostgreSQL</div>
+                    <div class="skill-item fade-in" data-skill="rest-apis">REST APIs</div>
+                    <div class="skill-item fade-in" data-skill="github">GitHub</div>
+                    <div class="skill-item fade-in" data-skill="debugging">Debugging Code</div>
+                    <div class="skill-item fade-in" data-skill="problem-solving">Problem Solving</div>
+                    <div class="skill-item fade-in" data-skill="adaptation">Adaptation</div>
+                    <div class="skill-item fade-in" data-skill="python">Python</div>
+                    <div class="skill-item fade-in" data-skill="java">Java</div>
+                    <div class="skill-item fade-in" data-skill="javascript">JavaScript</div>
+                    <div class="skill-item fade-in" data-skill="html5">HTML5</div>
+                    <div class="skill-item fade-in" data-skill="css3">CSS3</div>
+                    <div class="skill-item fade-in" data-skill="mysql">MySQL</div>
+                    <div class="skill-item fade-in" data-skill="git">Git</div>
+                    <div class="skill-item fade-in" data-skill="vscode">VS Code</div>
+                    <div class="skill-item fade-in" data-skill="linux">Linux</div>
+                </div>
+            </section>
+
+            <section id="experience" class="section">
+                <h2 class="pixel-text">EXPERIENCE</h2>
+                <div class="experience-container">
+                    <div class="experience-timeline">
+                        <div class="timeline-item fade-in" data-year="2025">
+                            <div class="timeline-marker">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-line"></div>
+                                <div class="timeline-glow"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <div class="timeline-icon">🎓</div>
+                                    <div class="timeline-title">
+                                        <h3>Computer Science Graduate</h3>
+                                        <p class="timeline-company">Faculty of Sciences of Sfax</p>
+                                        <p class="timeline-date">2022 - 2025</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-description">
+                                    <p>Completed my Computer Science degree with focus on software development, web technologies, and system architecture. Developed strong foundation in programming fundamentals and modern development practices.</p>
+                                    <div class="timeline-achievements">
+                                        <span class="achievement-tag">🎯 Computer Science</span>
+                                        <span class="achievement-tag">🚀 Software Development</span>
+                                        <span class="achievement-tag">🌐 Web Technologies</span>
+                                        <span class="achievement-tag">🏗️ System Architecture</span>
+                                        <span class="achievement-tag">📚 Academic Excellence</span>
+                                        <span class="achievement-tag">💡 Problem Solving</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in" data-year="2025">
+                            <div class="timeline-marker">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-line"></div>
+                                <div class="timeline-glow"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <div class="timeline-icon">🚀</div>
+                                    <div class="timeline-title">
+                                        <h3>LOGISERV - Final Year Project</h3>
+                                        <p class="timeline-company">Academic Project</p>
+                                        <p class="timeline-date">Apr 2025 - Jun 2025</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-description">
+                                    <p>Developed a full-stack web platform for fleet maintenance tracking and operational monitoring. Built with React + TypeScript frontend, Spring Boot REST API backend, Keycloak authentication, Redis + Firebase notifications, Docker containerization, and Nginx deployment.</p>
+                                    <div class="timeline-achievements">
+                                        <span class="achievement-tag">⚡ Full-Stack Master</span>
+                                        <span class="achievement-tag">⚛️ React + TypeScript</span>
+                                        <span class="achievement-tag">☕ Spring Boot Expert</span>
+                                        <span class="achievement-tag">🐳 Docker Containerization</span>
+                                        <span class="achievement-tag">🔐 Keycloak Security</span>
+                                        <span class="achievement-tag">🚀 Production Deployment</span>
+                                        <span class="achievement-tag">📱 Real-Time Notifications</span>
+                                        <span class="achievement-tag">🎯 Fleet Management System</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in" data-year="2024">
+                            <div class="timeline-marker">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-line"></div>
+                                <div class="timeline-glow"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <div class="timeline-icon">💼</div>
+                                    <div class="timeline-title">
+                                        <h3>Software Developer Intern</h3>
+                                        <p class="timeline-company">Tunisie Telecom</p>
+                                        <p class="timeline-date">2024</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-description">
+                                    <p>Designed and developed an employee management application to streamline HR operations. Implemented secure CRUD functionality for employee records using modern web technologies, enabling centralized access to staff data. Built a clean, intuitive user interface that improved efficiency by eliminating manual record-keeping processes.</p>
+                                    <div class="timeline-achievements">
+                                        <span class="achievement-tag">💼 Corporate Experience</span>
+                                        <span class="achievement-tag">🔧 HR System Development</span>
+                                        <span class="achievement-tag">🛡️ Secure CRUD Operations</span>
+                                        <span class="achievement-tag">🎨 UI/UX Design</span>
+                                        <span class="achievement-tag">⚡ Process Automation</span>
+                                        <span class="achievement-tag">📊 Data Management</span>
+                                        <span class="achievement-tag">🏢 Tunisie Telecom</span>
+                                        <span class="achievement-tag">🚀 Efficiency Improvement</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in" data-year="2019">
+                            <div class="timeline-marker">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-line"></div>
+                                <div class="timeline-glow"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <div class="timeline-icon">⚡</div>
+                                    <div class="timeline-title">
+                                        <h3>Pascal Programming</h3>
+                                        <p class="timeline-company">Education</p>
+                                        <p class="timeline-date">2019 - 2024</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-description">
+                                    <p>Studied Pascal programming for 5 years, building a strong foundation in programming logic and problem-solving skills.</p>
+                                    <div class="timeline-achievements">
+                                        <span class="achievement-tag">🐍 Pascal Master</span>
+                                        <span class="achievement-tag">🧠 Logic Programming</span>
+                                        <span class="achievement-tag">🔍 Problem Solving</span>
+                                        <span class="achievement-tag">⏰ 5 Years Experience</span>
+                                        <span class="achievement-tag">📚 Educational Foundation</span>
+                                        <span class="achievement-tag">💪 Algorithmic Thinking</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item fade-in" data-year="2019">
+                            <div class="timeline-marker">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-line"></div>
+                                <div class="timeline-glow"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <div class="timeline-icon">🌟</div>
+                                    <div class="timeline-title">
+                                        <h3>Programming Journey Begins</h3>
+                                        <p class="timeline-company">Self-Learning</p>
+                                        <p class="timeline-date">2019 - Present</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-description">
+                                    <p>Started my programming journey with Pascal, then expanded to C, C++, Java, JavaScript, PHP, Python, and MySQL. Always eager to learn new technologies!</p>
+                                    <div class="timeline-achievements">
+                                        <span class="achievement-tag">🌍 Multi-Language Expert</span>
+                                        <span class="achievement-tag">🚀 Self-Learning Champion</span>
+                                        <span class="achievement-tag">📈 Continuous Growth</span>
+                                        <span class="achievement-tag">⚡ C/C++ Developer</span>
+                                        <span class="achievement-tag">☕ Java Specialist</span>
+                                        <span class="achievement-tag">🐍 Python Programmer</span>
+                                        <span class="achievement-tag">🌐 Web Developer</span>
+                                        <span class="achievement-tag">💾 Database Expert</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="experience-stats">
+                        <div class="stat-card fade-in">
+                            <div class="stat-icon">🎓</div>
+                            <div class="stat-info">
+                                <h4>Computer Science</h4>
+                                <p>Graduate 2025</p>
+                                <span class="stat-badge">🎯 Academic Excellence</span>
+                            </div>
+                        </div>
+                        <div class="stat-card fade-in">
+                            <div class="stat-icon">💼</div>
+                            <div class="stat-info">
+                                <h4>Software Intern</h4>
+                                <p>Tunisie Telecom</p>
+                                <span class="stat-badge">🏢 Corporate Experience</span>
+                            </div>
+                        </div>
+                        <div class="stat-card fade-in">
+                            <div class="stat-icon">🚀</div>
+                            <div class="stat-info">
+                                <h4>Full-Stack</h4>
+                                <p>LOGISERV Project</p>
+                                <span class="stat-badge">⚡ Modern Tech Stack</span>
+                            </div>
+                        </div>
+                        <div class="stat-card fade-in">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-info">
+                                <h4>Modern Tech</h4>
+                                <p>React + Spring Boot</p>
+                                <span class="stat-badge">🌐 Cutting Edge</span>
+                            </div>
+                        </div>
+                        <div class="stat-card fade-in">
+                            <div class="stat-icon">🐍</div>
+                            <div class="stat-info">
+                                <h4>Programming</h4>
+                                <p>5+ Languages</p>
+                                <span class="stat-badge">🧠 Multi-Expert</span>
+                            </div>
+                        </div>
+                        <div class="stat-card fade-in">
+                            <div class="stat-icon">🌟</div>
+                            <div class="stat-info">
+                                <h4>Projects</h4>
+                                <p>10+ Completed</p>
+                                <span class="stat-badge">💡 Problem Solver</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Achievements Section - Commented out for future use -->
+                    <!--
+                    <div class="achievements-showcase fade-in">
+                        <h3 class="pixel-text">🏆 KEY ACHIEVEMENTS</h3>
+                        <div class="achievements-grid">
+                            <div class="achievement-item">
+                                <div class="achievement-icon">🚀</div>
+                                <div class="achievement-content">
+                                    <h4>Full-Stack Mastery</h4>
+                                    <p>Built complete web applications from frontend to backend with modern technologies</p>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon">🔐</div>
+                                <div class="achievement-content">
+                                    <h4>Security Expert</h4>
+                                    <p>Implemented authentication systems and secure data handling in production</p>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon">🐳</div>
+                                <div class="achievement-content">
+                                    <h4>DevOps Skills</h4>
+                                    <p>Containerized applications with Docker and deployed to production environments</p>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon">📱</div>
+                                <div class="achievement-content">
+                                    <h4>Real-Time Systems</h4>
+                                    <p>Built notification systems and real-time data updates for fleet management</p>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon">🎨</div>
+                                <div class="achievement-content">
+                                    <h4>UI/UX Designer</h4>
+                                    <p>Created intuitive user interfaces that improve operational efficiency</p>
+                                </div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon">⚡</div>
+                                <div class="achievement-content">
+                                    <h4>Performance Optimizer</h4>
+                                    <p>Optimized applications for speed and scalability in production use</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                    </div>
+                </section>
+
+                <section id="contact" class="section">
+                <h2 class="pixel-text">CONTACT</h2>
+                <div class="contact-container">
+                    <div class="contact-info fade-in">
+                        <div class="contact-item" data-contact="email">
+                            <div class="contact-icon-container">
+                                <span class="contact-icon">📧</span>
+                                <div class="icon-glow"></div>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Email</h4>
+                                <p>hamza.benismail.6@gmail.com</p>
+                                <span class="contact-status">Always Available</span>
+                            </div>
+                            <div class="contact-action">
+                                <button class="copy-btn" data-clipboard="hamza.benismail.6@gmail.com">📋</button>
+                            </div>
+                        </div>
+                        
+                        <a href="https://github.com/naniiic137" target="_blank" class="contact-link">
+                            <div class="contact-item" data-contact="github">
+                                <div class="contact-icon-container">
+                                    <span class="contact-icon">🐙</span>
+                                    <div class="icon-glow"></div>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>GitHub</h4>
+                                    <p>github.com/naniiic137</p>
+                                    <span class="contact-status">Active Developer</span>
+                                </div>
+                                <div class="contact-action">
+                                    <button class="copy-btn" data-clipboard="https://github.com/naniiic137">📋</button>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <a href="https://www.linkedin.com/in/hamzabenismail1" target="_blank" class="contact-link">
+                            <div class="contact-item" data-contact="linkedin">
+                                <div class="contact-icon-container">
+                                    <span class="contact-icon">💼</span>
+                                    <div class="icon-glow"></div>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>LinkedIn</h4>
+                                    <p>linkedin.com/in/hamzabenismail1</p>
+                                    <span class="contact-status">Professional Network</span>
+                                </div>
+                                <div class="contact-action">
+                                    <button class="copy-btn" data-clipboard="https://www.linkedin.com/in/hamzabenismail1">📋</button>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        <!-- Buy Me a Coffee Link (commented out - uncomment when ready to use) -->
+                        <!--
+                        <a href="https://www.buymeacoffee.com/hamzabenismail" target="_blank" class="contact-link">
+                            <div class="contact-item" data-contact="buymeacoffee">
+                                <div class="contact-icon-container">
+                                    <span class="contact-icon">☕</span>
+                                    <div class="icon-glow"></div>
+                                </div>
+                                <div class="contact-details">
+                                    <h4>Buy Me a Coffee</h4>
+                                    <p>buymeacoffee.com/hamzabenismail</p>
+                                    <span class="contact-status">Support My Work</span>
+                                </div>
+                                <div class="contact-action">
+                                    <button class="copy-btn" data-clipboard="https://www.buymeacoffee.com/hamzabenismail">📋</button>
+                                </div>
+                            </div>
+                        </a>
+                        -->
+                        
+                        <div class="contact-item" data-contact="phone">
+                            <div class="contact-icon-container">
+                                <span class="contact-icon">📱</span>
+                                <div class="icon-glow"></div>
+                            </div>
+                            <div class="contact-details">
+                                <h4>Phone</h4>
+                                <p>+1 (555) 123-4567</p>
+                                <span class="contact-status">Business Hours</span>
+                            </div>
+                            <div class="contact-action">
+                                <button class="copy-btn" data-clipboard="+1 (555) 123-4567">📋</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-form-container fade-in">
+                        <div class="form-header">
+                            <h3>Let's Connect! 🚀</h3>
+                            <p>Ready to bring your ideas to life? Drop me a message!</p>
+                        </div>
+                        
+                        <form class="contact-form">
+                            <div class="form-group">
+                                <div class="input-container">
+                                    <input type="text" id="name" name="name" placeholder="Your Name" required>
+                                    <div class="input-focus-border"></div>
+                                    <span class="input-icon">👤</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="input-container">
+                                    <input type="email" id="email" name="email" placeholder="Your Email" required>
+                                    <div class="input-focus-border"></div>
+                                    <span class="input-icon">📧</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="input-container">
+                                    <textarea id="message" name="message" placeholder="Your Message" rows="4" required></textarea>
+                                    <div class="input-focus-border"></div>
+                                    <span class="input-icon">💬</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn">
+                                    <span class="btn-text">Send Message</span>
+                                    <span class="btn-icon">🚀</span>
+                                    <div class="btn-glow"></div>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="contact-particles">
+                    <div class="particle" data-speed="2"></div>
+                    <div class="particle" data-speed="1.5"></div>
+                    <div class="particle" data-speed="3"></div>
+                    <div class="particle" data-speed="2.5"></div>
+                    <div class="particle" data-speed="1.8"></div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

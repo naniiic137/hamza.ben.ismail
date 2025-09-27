@@ -2867,6 +2867,96 @@ html, body {
     transform: translateY(-1px);
 }
 
+/* CV Download Button Styles */
+.cv-download-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cv-download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 25px;
+    background: transparent;
+    color: var(--primary-green);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid var(--primary-green);
+    box-shadow: 
+        0 4px 15px rgba(123, 255, 0, 0.2);
+}
+
+.cv-download-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+    transition: left 0.5s ease;
+}
+
+.cv-download-btn:hover::before {
+    left: 100%;
+}
+
+.cv-download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 0 30px rgba(123, 255, 0, 0.4),
+        0 5px 15px rgba(0, 0, 0, 0.2);
+    background: rgba(123, 255, 0, 0.1);
+    color: var(--secondary-green);
+}
+
+.cv-download-btn:active {
+    transform: translateY(-1px);
+}
+
+.cv-download-btn .btn-icon {
+    font-size: 16px;
+    z-index: 2;
+    position: relative;
+}
+
+.cv-download-btn .btn-text {
+    z-index: 2;
+    position: relative;
+}
+
+.cv-download-btn .btn-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        transparent, 
+        rgba(123, 255, 0, 0.1), 
+        transparent);
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cv-download-btn:hover .btn-glow {
+    opacity: 1;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {

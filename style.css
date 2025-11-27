@@ -1600,12 +1600,13 @@ html, body {
 
 .timeline-marker {
     position: absolute;
-    left: -22px;
+    left: -29.5px;
     top: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    width: 16px;
 }
 
 .timeline-dot {
@@ -1619,9 +1620,9 @@ html, body {
         inset 0 0 10px rgba(123, 255, 0, 0.3);
     animation: timelinePulse 3s ease-in-out infinite;
     z-index: 2;
-    /* Perfect centering on the main line - line is 3px wide at 17px, center is at 18.5px */
+    /* Perfect centering: line center is at 18.5px (17px + 1.5px), dot center should match */
     position: relative;
-    margin: 0 auto;
+    margin: 0;
 }
 
 .timeline-line {
@@ -1931,11 +1932,12 @@ html, body {
     }
     
     .timeline-marker {
-        left: -16px;
+        left: -24px;
+        width: 16px;
     }
     
     .timeline-dot {
-        margin: 0 auto;
+        margin: 0;
     }
     
     .timeline-content {

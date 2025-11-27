@@ -1600,7 +1600,7 @@ html, body {
 
 .timeline-marker {
     position: absolute;
-    left: -30px;
+    left: -22px;
     top: 15px;
     display: flex;
     flex-direction: column;
@@ -1619,10 +1619,9 @@ html, body {
         inset 0 0 10px rgba(123, 255, 0, 0.3);
     animation: timelinePulse 3s ease-in-out infinite;
     z-index: 2;
-    /* Perfect centering on the main line */
+    /* Perfect centering on the main line - line is 3px wide at 17px, center is at 18.5px */
     position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 0 auto;
 }
 
 .timeline-line {
@@ -1932,11 +1931,11 @@ html, body {
     }
     
     .timeline-marker {
-        left: -13px;
+        left: -16px;
     }
     
     .timeline-dot {
-        transform: translateX(-50%);
+        margin: 0 auto;
     }
     
     .timeline-content {
@@ -2368,7 +2367,7 @@ html, body {
 /* Responsive design */
 @media (max-width: 768px) {
     .mute-button-container {
-        top: 15px;
+        top: 60px;
         right: 15px;
     }
     
@@ -2389,7 +2388,7 @@ html, body {
 
 @media (max-width: 480px) {
     .mute-button-container {
-        top: 10px;
+        top: 55px;
         right: 10px;
     }
     

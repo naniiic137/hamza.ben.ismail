@@ -4,10 +4,9 @@ class PortfolioApp {
         this.currentSection = 'about';
         this.isAnimating = false;
         this.isMuted = false;
-        this.isUFOMuted = false;
-        this.soundsEnabled = false; // Prevent sounds until start button is pressed
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        this.sounds = this.createAllSounds();
+        this.soundsEnabled = false;
+        this.audioContext = null;
+        this.sounds = {};
         this.init();
     }
 
@@ -19,19 +18,13 @@ class PortfolioApp {
         this.setupProjectFilters();
         this.setupSkillAnimations();
         this.setupContactForm();
-        // Counter animations will be started after splash screen is dismissed
         this.setupScrollEffects();
         this.setupButtonEffects();
-        this.setupGlobalSoundEffects();
         this.setupExperienceInteractions();
         this.setupTimelineAnimations();
         this.setupPlanetInteractions();
         this.setupContactInteractions();
         this.setupMuteButton();
-        this.setupPerformanceMonitoring(); // Add performance monitoring
-        // NOTE: Shooting stars were removed due to animation issues - they were supposed to spawn from random edges and move across the screen
-        // Distant UFOs will be started after splash screen is dismissed
-        // Typing effect will be started after splash screen is dismissed
     }
 
     // Setup splash screen functionality
@@ -42,10 +35,14 @@ class PortfolioApp {
 
         if (startButton && splashScreen && container) {
             startButton.addEventListener('click', () => {
-                // Enable sounds when start button is pressed
+                // Lazy-init audio context and sounds on first user interaction
+                if (!this.audioContext) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    this.sounds = this.createAllSounds();
+                    this.setupGlobalSoundEffects();
+                }
                 this.soundsEnabled = true;
                 
-                // Play start sound
                 this.sounds.buttonClick();
                 
                 // Fade out splash screen
@@ -140,7 +137,7 @@ class PortfolioApp {
 
     // Create enhanced UFO sounds with different characteristics
     createUFOSound(type) {
-        if (this.isUFOMuted) return;
+        if (this.isMuted) return;
         
         switch(type) {
             case 'engine':
@@ -172,7 +169,7 @@ class PortfolioApp {
 
     // Create UFO engine rumble
     createUFORumble(baseFreq, endFreq, volume, duration) {
-        if (this.isUFOMuted) return;
+        if (this.isMuted) return;
         
         const oscillator = this.audioContext.createOscillator();
         const gainNode = this.audioContext.createGain();
@@ -327,11 +324,11 @@ class PortfolioApp {
         // Load mute state from localStorage
         const savedMuteState = localStorage.getItem('ufoSoundMuted');
         if (savedMuteState === 'true') {
-            this.isUFOMuted = true;
+            this.isMuted = true;
             muteButton.setAttribute('data-muted', 'true');
-            muteButton.querySelector('.mute-text').textContent = 'UFO SOUND OFF';
+            muteButton.querySelector('.mute-text').textContent = 'SOUND OFF';
         } else {
-            muteButton.querySelector('.mute-text').textContent = 'UFO SOUND ON';
+            muteButton.querySelector('.mute-text').textContent = 'SOUND ON';
         }
 
         muteButton.addEventListener('click', () => {
@@ -339,24 +336,23 @@ class PortfolioApp {
         });
     }
 
-    // Toggle UFO mute state
+    // Toggle mute state (global)
     toggleUFOMute() {
         const muteButton = document.getElementById('muteButton');
         if (!muteButton) return;
 
-        this.isUFOMuted = !this.isUFOMuted;
+        this.isMuted = !this.isMuted;
         
-        if (this.isUFOMuted) {
+        if (this.isMuted) {
             muteButton.setAttribute('data-muted', 'true');
-            muteButton.querySelector('.mute-text').textContent = 'UFO SOUND OFF';
+            muteButton.querySelector('.mute-text').textContent = 'SOUND OFF';
             localStorage.setItem('ufoSoundMuted', 'true');
         } else {
             muteButton.setAttribute('data-muted', 'false');
-            muteButton.querySelector('.mute-text').textContent = 'UFO SOUND ON';
+            muteButton.querySelector('.mute-text').textContent = 'SOUND ON';
             localStorage.setItem('ufoSoundMuted', 'false');
         }
 
-        // Add press animation
         muteButton.classList.add('pressed');
         setTimeout(() => {
             muteButton.classList.remove('pressed');
@@ -402,12 +398,11 @@ class PortfolioApp {
             }
         }, { once: true });
 
-        // Add sound to star twinkling
+        // Star twinkle sounds (skipped when muted)
         setInterval(() => {
-            if (Math.random() < 0.1) { // 10% chance every interval
-                this.sounds.starTwinkle();
-            }
-        }, 2000);
+            if (this.isMuted || Math.random() >= 0.1) return;
+            this.sounds.starTwinkle();
+        }, 4000);
         
         // Setup UFO invasion effects
         this.setupUFOInvasion();
@@ -419,53 +414,33 @@ class PortfolioApp {
         const earth = document.querySelector('.earth-pixels');
         const alert = document.querySelector('.invasion-alert');
         
-        // Enhanced UFO engine sounds with different patterns
-        ufos.forEach((ufo, index) => {
-            setInterval(() => {
-                this.sounds.ufoEngine();
-                // Add hover sound after engine
-                setTimeout(() => {
-                    this.sounds.ufoHover();
-                }, 200);
-            }, 4000 + (index * 800)); // Longer intervals for more dramatic effect
-        });
+        // Consolidated ambient sound loop
+        setInterval(() => {
+            if (this.isMuted) return;
+            this.sounds.ufoEngine();
+        }, 6000);
         
-        // Enhanced UFO beam sounds with scanning
-        ufos.forEach((ufo, index) => {
-            setInterval(() => {
-                this.sounds.ufoBeam();
-                // Add scan sound after beam
-                setTimeout(() => {
-                    this.sounds.ufoScan();
-                }, 300);
-            }, 6000 + (index * 1000)); // Longer intervals
-        });
+        setInterval(() => {
+            if (this.isMuted) return;
+            this.sounds.ufoBeam();
+        }, 8000);
         
-        // Enhanced UFO pass sounds with Doppler effect
-        ufos.forEach((ufo, index) => {
-            setInterval(() => {
-                this.sounds.ufoPass();
-                // Add formation sound after pass
-                setTimeout(() => {
-                    this.sounds.ufoFormation();
-                }, 500);
-            }, 12000 + (index * 1500)); // Much longer intervals for dramatic effect
-        });
+        setInterval(() => {
+            if (this.isMuted) return;
+            this.sounds.ufoPass();
+        }, 15000);
         
-        // Earth rotation sound
         if (earth) {
             setInterval(() => {
+                if (this.isMuted) return;
                 this.sounds.earthRotate();
-            }, 3000); // Slightly longer interval
+            }, 5000);
         }
         
-        // Planet rotation sounds
-        const planets = document.querySelectorAll('.planet');
-        planets.forEach((planet, index) => {
-            setInterval(() => {
-                this.sounds.planetRotate();
-            }, 10000 + (index * 1200)); // Longer intervals
-        });
+        setInterval(() => {
+            if (this.isMuted) return;
+            this.sounds.planetRotate();
+        }, 12000);
         
         // Create additional UFO effects
         this.createUFOEffects();
@@ -484,8 +459,9 @@ class PortfolioApp {
         
         // Create random UFO spawns
         setInterval(() => {
+            if (this.isMuted) return;
             this.spawnRandomUFO();
-        }, 15000); // Spawn new UFO every 15 seconds
+        }, 30000);
         
         // Create Earth atmosphere effects
         this.createEarthAtmosphere();
@@ -657,7 +633,7 @@ class PortfolioApp {
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 4; i++) {
             const particle = document.createElement('div');
             particle.style.cssText = `
                 position: fixed;
@@ -672,7 +648,7 @@ class PortfolioApp {
                 animation: planetParticle 1s ease-out forwards;
             `;
             
-            const angle = (i / 6) * Math.PI * 2;
+            const angle = (i / 4) * Math.PI * 2;
             const distance = 30 + Math.random() * 20;
             const endX = centerX + Math.cos(angle) * distance;
             const endY = centerY + Math.sin(angle) * distance;
@@ -682,9 +658,7 @@ class PortfolioApp {
             
             document.body.appendChild(particle);
             
-            setTimeout(() => {
-                particle.remove();
-            }, 1000);
+            setTimeout(() => { particle.remove(); }, 1000);
         }
     }
 
@@ -700,11 +674,12 @@ class PortfolioApp {
     createPlanetAtmospheres() {
         const planets = document.querySelectorAll('.planet');
         
-        planets.forEach(planet => {
-            setInterval(() => {
-                this.createAtmosphereParticle(planet);
-            }, 5000 + Math.random() * 5000); // Random intervals
-        });
+        let planetIdx = 0;
+        setInterval(() => {
+            const planet = planets[planetIdx % planets.length];
+            if (planet) this.createAtmosphereParticle(planet);
+            planetIdx++;
+        }, 4000);
     }
 
     // Create atmosphere particle for planets
@@ -878,7 +853,7 @@ class PortfolioApp {
     // Create animated starfield background
     createStars() {
     const body = document.body;
-    const numberOfStars = 100;
+    const numberOfStars = 50;
 
     for (let i = 0; i < numberOfStars; i++) {
         const star = document.createElement('div');
@@ -896,17 +871,18 @@ class PortfolioApp {
     }
 }
 
-    // Interactive star movement with mouse
+    // Interactive star movement with mouse (throttled via rAF)
     moveStars(e) {
-    const stars = document.querySelectorAll('.star');
-    const mouseX = e.clientX / window.innerWidth - 0.5;
-    const mouseY = e.clientY / window.innerHeight - 0.5;
-
-        stars.forEach((star, index) => {
-            const speed = (index % 3 + 1) * 0.3;
-            const x = mouseX * 20 * speed;
-            const y = mouseY * 20 * speed;
-            star.style.transform = `translate(${x}px, ${y}px)`;
+        if (this._starRAF) return;
+        this._starRAF = requestAnimationFrame(() => {
+            this._starRAF = null;
+            const stars = document.querySelectorAll('.star');
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+            stars.forEach((star, index) => {
+                const speed = (index % 3 + 1) * 0.3;
+                star.style.transform = `translate(${mouseX * 20 * speed}px, ${mouseY * 20 * speed}px)`;
+            });
         });
     }
 
@@ -1068,18 +1044,12 @@ class PortfolioApp {
         const statItem = counter.closest('.stat-item');
         if (!statItem) return;
         
-        // Create sparkle effect
-        for (let i = 0; i < 8; i++) {
-            setTimeout(() => {
-                this.createSparkle(statItem);
-            }, i * 100);
+        for (let i = 0; i < 4; i++) {
+            setTimeout(() => { this.createSparkle(statItem); }, i * 120);
         }
         
-        // Add pulse effect
         statItem.style.animation = 'statCompletion 0.5s ease-out';
-        setTimeout(() => {
-            statItem.style.animation = '';
-        }, 500);
+        setTimeout(() => { statItem.style.animation = ''; }, 500);
     }
 
     // Create sparkle effect
@@ -1139,7 +1109,7 @@ class PortfolioApp {
 
     // Create floating particles around stats
     createFloatingParticles(container) {
-        const particleCount = 6;
+        const particleCount = 3;
         
         for (let i = 0; i < particleCount; i++) {
             const particle = document.createElement('div');
@@ -1203,7 +1173,7 @@ class PortfolioApp {
 
     // Create particle burst
     createParticleBurst(element) {
-        const particleCount = 12;
+        const particleCount = 6;
         const rect = element.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
@@ -1292,19 +1262,27 @@ class PortfolioApp {
         });
     }
 
-    // Animate skill bars
+    // Animate skill bars (batched with rAF)
     animateSkillBars() {
         const skillFills = document.querySelectorAll('.skill-fill');
-        
-        skillFills.forEach((fill, index) => {
-            const level = fill.getAttribute('data-level');
+        skillFills.forEach((fill) => {
             fill.style.width = '0%';
-            
-            setTimeout(() => {
-                fill.style.width = level + '%';
-                this.sounds.skillFill();
-            }, index * 200);
         });
+        
+        let index = 0;
+        const batchSize = 3;
+        const animateBatch = () => {
+            const end = Math.min(index + batchSize, skillFills.length);
+            for (let i = index; i < end; i++) {
+                const fill = skillFills[i];
+                fill.style.width = fill.getAttribute('data-level') + '%';
+            }
+            index = end;
+            if (index < skillFills.length) {
+                requestAnimationFrame(animateBatch);
+            }
+        };
+        requestAnimationFrame(animateBatch);
     }
 
     // Setup contact form
@@ -1390,27 +1368,22 @@ class PortfolioApp {
         });
     }
 
-    // Setup scroll effects
+    // Setup scroll effects (throttled via rAF)
     setupScrollEffects() {
         let lastScrollTime = 0;
+        let scrollRAF = null;
         
         window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = (scrolled / maxScroll) * 100;
-            
-            // Update loading bar based on scroll
-            const loadingProgress = document.querySelector('.loading-progress');
-            if (loadingProgress) {
-                loadingProgress.style.width = scrollPercent + '%';
-                
-                // Play sound occasionally during scroll
-                const now = Date.now();
-                if (now - lastScrollTime > 100) { // Limit sound frequency
-                    this.sounds.loadingTick();
-                    lastScrollTime = now;
+            if (scrollRAF) return;
+            scrollRAF = requestAnimationFrame(() => {
+                scrollRAF = null;
+                const scrolled = window.scrollY;
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                const loadingProgress = document.querySelector('.loading-progress');
+                if (loadingProgress) {
+                    loadingProgress.style.width = ((scrolled / maxScroll) * 100) + '%';
                 }
-            }
+            });
         });
     }
 
@@ -1432,7 +1405,7 @@ class PortfolioApp {
         // Add mouse move effect
         document.addEventListener('mousemove', (e) => {
             this.moveStars(e);
-        });
+        }, { passive: true });
     }
 
     // Setup button effects
@@ -1480,7 +1453,7 @@ class PortfolioApp {
                     this.sounds.counterTick();
                 }
                 counter.textContent = Math.floor(current);
-            }, 16);
+            }, 20);
         });
     }
 
@@ -1598,32 +1571,21 @@ class PortfolioApp {
 
     // Create achievement unlock effect
     createAchievementUnlockEffect(item, index) {
-        // Create unlock animation
         const unlockEffect = document.createElement('div');
         unlockEffect.className = 'achievement-unlock-effect';
         unlockEffect.innerHTML = `
             <div class="unlock-icon">🎉</div>
             <div class="unlock-text">ACHIEVEMENT UNLOCKED!</div>
         `;
-        
         item.appendChild(unlockEffect);
-        
-        // Animate the unlock effect
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             unlockEffect.style.animation = 'achievementUnlock 1.5s ease-out forwards';
-        }, 100);
-        
-        // Remove the effect after animation
-        setTimeout(() => {
-            unlockEffect.remove();
-        }, 1500);
+        });
+        setTimeout(() => { unlockEffect.remove(); }, 1500);
 
-        // Add celebration particles
-        const celebrationParticles = this.createParticles(item, 15);
+        const celebrationParticles = this.createParticles(item, 8);
         celebrationParticles.forEach((particle, i) => {
-            setTimeout(() => {
-                particle.remove();
-            }, 1200 + i * 50);
+            setTimeout(() => { particle.remove(); }, 1200 + i * 50);
         });
     }
 
@@ -1895,8 +1857,10 @@ class PortfolioApp {
             }, 12000);
         };
 
-        // Create distant UFOs at random intervals
-        setInterval(createDistantUFO, Math.random() * 8000 + 5000); // 5-13 seconds
+        setInterval(() => {
+            if (this.isMuted) return;
+            createDistantUFO();
+        }, Math.random() * 15000 + 10000);
     }
 
     // Create dummy sounds for low-end devices
@@ -1932,54 +1896,6 @@ class PortfolioApp {
         };
     }
 
-    // Performance monitoring system
-    setupPerformanceMonitoring() {
-        let frameCount = 0;
-        let lastTime = performance.now();
-        let fps = 60;
-        
-        const measureFPS = () => {
-            frameCount++;
-            const currentTime = performance.now();
-            
-            if (currentTime - lastTime >= 1000) {
-                fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
-                frameCount = 0;
-                lastTime = currentTime;
-                
-                // Dynamically adjust effects based on FPS
-                this.adjustEffectsForPerformance(fps);
-            }
-            
-            requestAnimationFrame(measureFPS);
-        };
-        
-        requestAnimationFrame(measureFPS);
-    }
-
-    // Dynamically adjust effects based on performance
-    adjustEffectsForPerformance(fps) {
-        const ufoFleet = document.querySelector('.ufo-fleet');
-        const planets = document.querySelectorAll('.planet');
-        const starClusters = document.querySelectorAll('.star-cluster');
-        
-        if (fps < 30) {
-            // Low FPS - reduce heavy effects
-            if (ufoFleet) ufoFleet.style.opacity = '0.3';
-            planets.forEach(planet => planet.style.animationPlayState = 'paused');
-            starClusters.forEach(cluster => cluster.style.animationPlayState = 'paused');
-        } else if (fps < 45) {
-            // Medium FPS - moderate effects
-            if (ufoFleet) ufoFleet.style.opacity = '0.6';
-            planets.forEach(planet => planet.style.animationDuration = '10s');
-            starClusters.forEach(cluster => cluster.style.animationDuration = '8s');
-        } else {
-            // High FPS - full effects
-            if (ufoFleet) ufoFleet.style.opacity = '1';
-            planets.forEach(planet => planet.style.animationPlayState = 'running');
-            starClusters.forEach(cluster => cluster.style.animationPlayState = 'running');
-        }
-    }
 }
 
 // Initialize the portfolio app when DOM is loaded

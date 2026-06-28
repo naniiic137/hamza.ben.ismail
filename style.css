@@ -272,6 +272,8 @@ html, body {
 
 .section.active {
     display: block;
+    will-change: transform;
+    contain: content;
 }
 
 @keyframes fadeInUp {
@@ -308,8 +310,8 @@ html, body {
 }
 
 .pixel-avatar {
-    width: 180px;
-    height: 180px;
+    width: 260px;
+    height: 260px;
     background: var(--darker-bg);
     border: 2px solid var(--primary-green);
     border-radius: 8px;

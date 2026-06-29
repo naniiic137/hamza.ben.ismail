@@ -289,7 +289,7 @@ html, body {
 
 /* Section titles spacing */
 .section h2.pixel-text {
-    margin-bottom: 60px;
+    margin-bottom: 10px;
     font-size: 28px;
     color: var(--text-color);
     text-shadow: 1px 1px var(--darker-bg);
@@ -317,6 +317,8 @@ html, body {
     border-radius: 8px;
     position: relative;
     overflow: hidden;
+    margin-left: -15px;
+    margin-top: 15px;
 }
 
 .avatar-image {

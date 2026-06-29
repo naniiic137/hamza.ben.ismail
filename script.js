@@ -987,12 +987,32 @@ class PortfolioApp {
                 this.animateCounters();
                 break;
             case 'skills':
+                this.staggerSectionItems('#skills .skill-category', 0.15, 'skillCategoryFadeIn 0.8s ease-out forwards', 'translateY(30px)');
+                this.staggerSectionItems('#skills .skill-item', 0.04, 'skillItemFadeIn 0.5s ease-out forwards', 'translateY(20px) scale(0.8)');
                 this.animateSkillBars();
                 break;
             case 'projects':
                 this.animateProjectCards();
                 break;
+            case 'experience':
+                this.staggerSectionItems('#experience .timeline-item', 0.15, 'timelineSlideIn 0.8s ease forwards', 'translateX(-30px)');
+                this.staggerSectionItems('#experience .stat-card', 0.08, 'fadeInUp 0.5s ease-out forwards', 'translateY(20px)');
+                break;
         }
+    }
+
+    staggerSectionItems(selector, staggerDelay, animation, initialTransform) {
+        const items = document.querySelectorAll(selector);
+        if (!items.length) return;
+        items.forEach(el => {
+            el.style.animation = 'none';
+            el.style.opacity = '0';
+            el.style.transform = initialTransform || 'translateY(20px)';
+        });
+        void items[0].offsetHeight;
+        items.forEach((el, i) => {
+            el.style.animation = `${animation} ${i * staggerDelay}s`;
+        });
     }
 
     // Animate counters in stats
@@ -1244,6 +1264,72 @@ class PortfolioApp {
             card.style.animationDelay = `${index * 0.1}s`;
             card.classList.add('fade-in');
         });
+        this.injectProjectBadges();
+        this.injectProjectFeatureTags();
+    }
+
+    injectProjectBadges() {
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach(card => {
+            if (card.querySelector('.project-category-badge')) return;
+            const category = card.getAttribute('data-category');
+            if (!category) return;
+            const labels = { web: 'Web App', python: 'Python', windows: 'Desktop' };
+            const badge = document.createElement('span');
+            badge.className = `project-category-badge ${category}`;
+            badge.textContent = labels[category] || category;
+            card.querySelector('.project-image').appendChild(badge);
+        });
+    }
+
+    injectProjectFeatureTags() {
+        const tagColors = ['#00c8ff', '#c864ff', '#ff8800', '#ff4488', '#ffc800'];
+        const featureTags = {
+            'LOGISERV - Fleet Management System': ['Fleet Management', 'Monitoring', 'Dashboard'],
+            'File Sorter': ['File Management', 'Automation', 'Organization'],
+            'Calculateur To Hide Files': ['Security', 'Encryption', 'Steganography'],
+            'Encrypte And Decryption': ['Security', 'Cryptography', 'File Protection'],
+            'Minecraft Language Converter': ['Gaming', 'Text Processing', 'Translation'],
+            'Morse Code Converter': ['Encoding', 'Translation', 'Text Utility'],
+            'Password Generator': ['Security', 'Random Generator', 'Utility'],
+            'Zip Bomb Creator': ['File Compression', 'Utility', 'Zip'],
+            'Retro Portfolio Website': ['Web Development', 'Portfolio', 'Retro Design'],
+            'ValenLink': ['Dating', 'Social', 'Web App'],
+            'Dice Game': ['Gaming', 'Random', 'Multiplayer'],
+            'MicroSaving': ['Finance', 'Savings', 'Banking'],
+            'Simple Inventory': ['Inventory', 'Management', 'CRUD'],
+            'Clock Simulation': ['Simulation', 'Time', 'Visualization'],
+            'Custom WordleV2': ['Gaming', 'Word Puzzle', 'Clone'],
+            'Ball Simulation': ['Physics', 'Simulation', 'Visualization'],
+            'Hangman Game': ['Gaming', 'Word Game', 'Classic'],
+            'Discord Moderation Bot': ['Moderation', 'Discord Bot', 'Automation'],
+            'Fortnite Update Bot': ['Gaming', 'Notifications', 'Bot'],
+            'Chkoba (شكوبة)': ['Gaming', 'Multiplayer', 'Real-Time'],
+            'Custom Checkers': ['Gaming', 'Multiplayer', 'WebRTC'],
+            'Valorant Agent Selection': ['Gaming', 'Automation', 'Screen Detection'],
+            'Game Of Math': ['Educational', 'Math', 'Web App'],
+            'Love Calculateur Android': ['Mobile', 'Calculator', 'Android'],
+            'Windows Applications': ['Desktop', 'Utility', 'C++/C#'],
+        };
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach(card => {
+            if (card.querySelector('.project-feature-tags')) return;
+            const title = card.querySelector('h3')?.textContent.trim();
+            const tags = featureTags[title];
+            if (!tags) return;
+            const container = document.createElement('div');
+            container.className = 'project-feature-tags';
+            tags.forEach((tag, i) => {
+                const span = document.createElement('span');
+                span.className = 'project-feature-tag';
+                span.textContent = tag;
+                span.style.borderColor = tagColors[i % tagColors.length];
+                span.style.color = tagColors[i % tagColors.length];
+                span.style.background = `${tagColors[i % tagColors.length]}1A`;
+                container.appendChild(span);
+            });
+            card.querySelector('.project-content').appendChild(container);
+        });
     }
 
     // Setup skill animations
@@ -1266,23 +1352,25 @@ class PortfolioApp {
     animateSkillBars() {
         const skillFills = document.querySelectorAll('.skill-fill');
         skillFills.forEach((fill) => {
-            fill.style.width = '0%';
+            fill.style.transform = 'scaleX(0)';
         });
-        
+        void skillFills[0]?.offsetHeight;
         let index = 0;
         const batchSize = 3;
+        const staggerMs = 120;
         const animateBatch = () => {
             const end = Math.min(index + batchSize, skillFills.length);
             for (let i = index; i < end; i++) {
                 const fill = skillFills[i];
-                fill.style.width = fill.getAttribute('data-level') + '%';
+                const level = parseFloat(fill.getAttribute('data-level')) / 100;
+                fill.style.transform = `scaleX(${level})`;
             }
             index = end;
             if (index < skillFills.length) {
-                requestAnimationFrame(animateBatch);
+                setTimeout(animateBatch, staggerMs);
             }
         };
-        requestAnimationFrame(animateBatch);
+        setTimeout(animateBatch, 400);
     }
 
     // Setup contact form

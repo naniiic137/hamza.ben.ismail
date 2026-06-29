@@ -845,6 +845,8 @@ html, body {
     box-shadow: 
         0 8px 25px rgba(123, 255, 0, 0.2),
         inset 0 0 20px rgba(123, 255, 0, 0.05);
+    display: flex;
+    flex-direction: column;
 }
 
 .project-card::before {
@@ -901,6 +903,42 @@ html, body {
     font-size: 4em;
     opacity: 0.7;
     animation: projectIcon 3s ease-in-out infinite;
+}
+
+.project-category-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    pointer-events: none;
+    border: 1px solid;
+}
+
+.project-category-badge.web {
+    background: rgba(0, 200, 255, 0.2);
+    color: #00c8ff;
+    border-color: rgba(0, 200, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
+}
+
+.project-category-badge.python {
+    background: rgba(255, 200, 0, 0.2);
+    color: #ffc800;
+    border-color: rgba(255, 200, 0, 0.5);
+    box-shadow: 0 0 10px rgba(255, 200, 0, 0.2);
+}
+
+.project-category-badge.windows {
+    background: rgba(200, 100, 255, 0.2);
+    color: #c864ff;
+    border-color: rgba(200, 100, 255, 0.5);
+    box-shadow: 0 0 10px rgba(200, 100, 255, 0.2);
 }
 
 @keyframes projectGlow {
@@ -981,6 +1019,9 @@ html, body {
     padding: 25px;
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .project-content h3 {
@@ -993,7 +1034,7 @@ html, body {
 .project-content p {
     color: var(--text-color);
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     opacity: 0.9;
 }
 
@@ -1019,6 +1060,22 @@ html, body {
     color: var(--darker-bg);
     transform: scale(1.05);
     box-shadow: 0 0 10px rgba(123, 255, 0, 0.5);
+}
+
+.project-feature-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.project-feature-tag {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    border: 1px solid;
+    letter-spacing: 0.3px;
 }
 
 /* Enhanced Project Filters */
@@ -1304,8 +1361,10 @@ html, body {
         var(--primary-green) 100%);
     border-radius: 10px;
     position: relative;
-    width: 0%;
-    transition: width 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    width: 100%;
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 
         0 0 10px rgba(123, 255, 0, 0.5),
         inset 0 0 5px rgba(255, 255, 255, 0.2);
@@ -1499,11 +1558,13 @@ html, body {
     letter-spacing: 0.5px;
 }
 
-/* Skill Animations */
-.skill-category.fade-in {
-    animation: skillCategoryFadeIn 0.8s ease-out forwards;
+/* Staggered Animation Hidden Initial State */
+.skill-category,
+.skill-item,
+.stat-card,
+.timeline-item {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
 }
 
 @keyframes skillCategoryFadeIn {
@@ -1513,16 +1574,14 @@ html, body {
     }
 }
 
-.skill-item.fade-in {
-    animation: skillItemFadeIn 0.6s ease-out forwards;
-    opacity: 0;
-    transform: scale(0.8);
-}
-
 @keyframes skillItemFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -1588,14 +1647,7 @@ html, body {
 .timeline-item {
     position: relative;
     margin-bottom: 50px;
-    opacity: 0;
-    transform: translateX(-30px);
-    animation: timelineSlideIn 0.8s ease forwards;
 }
-
-.timeline-item:nth-child(1) { animation-delay: 0.1s; }
-.timeline-item:nth-child(2) { animation-delay: 0.3s; }
-.timeline-item:nth-child(3) { animation-delay: 0.5s; }
 
 @keyframes timelineSlideIn {
     to {
@@ -1768,6 +1820,35 @@ html, body {
     line-height: 1.6;
     color: var(--text-color);
     margin-bottom: 15px;
+}
+
+.timeline-project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.project-link-small {
+    background: linear-gradient(145deg, rgba(123, 255, 0, 0.1), rgba(123, 255, 0, 0.05));
+    color: var(--primary-green);
+    padding: 6px 14px;
+    border-radius: 25px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid var(--primary-green);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.project-link-small:hover {
+    background: var(--primary-green);
+    color: var(--darker-bg);
+    box-shadow: 0 0 15px rgba(123, 255, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 .timeline-achievements {
@@ -3163,10 +3244,7 @@ html, body {
     animation: fadeInUp 0.6s ease-out forwards;
 }
 
-.fade-in:nth-child(2) { animation-delay: 0.1s; }
-.fade-in:nth-child(3) { animation-delay: 0.2s; }
-.fade-in:nth-child(4) { animation-delay: 0.3s; }
-.fade-in:nth-child(5) { animation-delay: 0.4s; }
+
 
 /* Pixelated Earth and UFO Invasion Background */
 .earth-container {

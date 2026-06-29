@@ -345,6 +345,8 @@ html, body {
     position: relative;
     font-size: 14px;
     line-height: 1.8;
+    margin-top: 0;
+    padding-top: 0;
     margin-bottom: 30px;
     color: var(--text-color);
     overflow: hidden;

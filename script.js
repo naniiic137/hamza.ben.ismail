@@ -1303,13 +1303,14 @@ class PortfolioApp {
             'Ball Simulation': ['Physics', 'Simulation', 'Visualization'],
             'Hangman Game': ['Gaming', 'Word Game', 'Classic'],
             'Discord Moderation Bot': ['Moderation', 'Discord Bot', 'Automation'],
-            'Fortnite Update Bot': ['Gaming', 'Notifications', 'Bot'],
+            'Game Update Bot': ['Gaming', 'Notifications', 'Multi-Game'],
             'Chkoba (شكوبة)': ['Gaming', 'Multiplayer', 'Real-Time'],
             'Custom Checkers': ['Gaming', 'Multiplayer', 'WebRTC'],
             'Valorant Agent Selection': ['Gaming', 'Automation', 'Screen Detection'],
             'Game Of Math': ['Educational', 'Math', 'Web App'],
             'Love Calculateur Android': ['Mobile', 'Calculator', 'Android'],
-            'Windows Applications': ['Desktop', 'Utility', 'C++/C#'],
+            'Fog Chess': ['Fog of War', 'Multiplayer', 'Strategy'],
+            'ChessCipher': ['Steganography', 'Cryptography', 'Chess'],
         };
         const cards = document.querySelectorAll('.project-card');
         cards.forEach(card => {

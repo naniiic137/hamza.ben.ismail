@@ -25,6 +25,11 @@ class PortfolioApp {
         this.setupPlanetInteractions();
         this.setupContactInteractions();
         this.setupMuteButton();
+        this.setupCursorTrail();
+        this.setupCardTiltEffect();
+        this.setupMagneticButtons();
+        this.setupScrollProgressBar();
+        this.injectEnhancedStyles();
     }
 
     // Setup splash screen functionality
@@ -44,7 +49,9 @@ class PortfolioApp {
                 this.soundsEnabled = true;
                 
                 this.sounds.buttonClick();
-                
+
+                this.createStartBurst(startButton);
+
                 // Fade out splash screen
                 splashScreen.classList.add('fade-out');
                 
@@ -719,11 +726,12 @@ class PortfolioApp {
         };
     }
 
-    // Setup enhanced typing effect
     setupEnhancedTypingEffect() {
         const typingText = document.querySelector('.enhanced-typing-text');
         if (!typingText) return;
-        
+
+        this.startMatrixRain();
+
         const originalText = typingText.textContent;
         typingText.textContent = '';
         typingText.classList.add('cursor-active', 'typing-started');
@@ -752,7 +760,7 @@ class PortfolioApp {
         
         const typeNextCharacter = () => {
             if (currentIndex >= originalText.length) {
-                // Typing complete
+                this.stopMatrixRain();
                 setTimeout(() => {
                     typingText.classList.remove('cursor-active');
                     typingText.classList.add('typing-complete');
@@ -871,7 +879,6 @@ class PortfolioApp {
     }
 }
 
-    // Interactive star movement with mouse (throttled via rAF)
     moveStars(e) {
         if (this._starRAF) return;
         this._starRAF = requestAnimationFrame(() => {
@@ -879,9 +886,12 @@ class PortfolioApp {
             const stars = document.querySelectorAll('.star');
             const mouseX = e.clientX / window.innerWidth - 0.5;
             const mouseY = e.clientY / window.innerHeight - 0.5;
+            const layerSpeeds = [0.15, 0.4, 0.8];
             stars.forEach((star, index) => {
-                const speed = (index % 3 + 1) * 0.3;
-                star.style.transform = `translate(${mouseX * 20 * speed}px, ${mouseY * 20 * speed}px)`;
+                const layer = index % 3;
+                const speed = layerSpeeds[layer];
+                const scale = 0.6 + layer * 0.3;
+                star.style.transform = `translate(${mouseX * 30 * speed}px, ${mouseY * 30 * speed}px) scale(${scale})`;
             });
         });
     }
@@ -948,33 +958,40 @@ class PortfolioApp {
 
     navigateToSection(sectionName) {
         if (this.isAnimating || this.currentSection === sectionName) return;
-        
+
         this.isAnimating = true;
         this.sounds.sectionChange();
-        
+
         // Update active menu item
         document.querySelectorAll('.menu-item').forEach(item => {
             item.classList.remove('active');
         });
         document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
-        
+
+        const content = document.querySelector('.content');
+        if (content) content.classList.add('glitch-transition');
+
         // Hide current section
         const currentSection = document.querySelector(`#${this.currentSection}`);
         currentSection.style.animation = 'fadeOut 0.3s ease-out forwards';
-        
+
         setTimeout(() => {
             currentSection.classList.remove('active');
             currentSection.style.animation = '';
-            
+
             // Show new section
             const newSection = document.querySelector(`#${sectionName}`);
             newSection.classList.add('active');
-            
+
             this.currentSection = sectionName;
-            
+
             // Trigger section-specific animations
             this.triggerSectionAnimations(sectionName);
-            
+
+            if (content) {
+                setTimeout(() => content.classList.remove('glitch-transition'), 80);
+            }
+
             setTimeout(() => {
                 this.isAnimating = false;
             }, 300);
@@ -1015,16 +1032,15 @@ class PortfolioApp {
         });
     }
 
-    // Animate counters in stats
     setupCounterAnimations() {
         const counters = document.querySelectorAll('.stat-number');
-        
+
         const animateCounter = (counter) => {
             const target = parseInt(counter.getAttribute('data-target'));
             const duration = 2000;
             const step = target / (duration / 16);
             let current = 0;
-            
+
             const timer = setInterval(() => {
                 current += step;
                 if (current >= target) {
@@ -1032,9 +1048,16 @@ class PortfolioApp {
                     clearInterval(timer);
                     this.sounds.counterComplete();
                     counter.classList.remove('counting');
-                    
-                    // Add completion effect
-                    this.createCompletionEffect(counter);
+
+                    const overshoot = Math.max(2, Math.round(target * 0.08));
+                    counter.textContent = target + overshoot;
+                    setTimeout(() => {
+                        counter.textContent = target + Math.round(overshoot / 2);
+                    }, 80);
+                    setTimeout(() => {
+                        counter.textContent = target;
+                        this.createCompletionEffect(counter);
+                    }, 180);
                 } else {
                     this.sounds.counterTick();
                     counter.classList.add('counting');
@@ -1349,7 +1372,6 @@ class PortfolioApp {
         });
     }
 
-    // Animate skill bars (batched with rAF)
     animateSkillBars() {
         const skillFills = document.querySelectorAll('.skill-fill');
         skillFills.forEach((fill) => {
@@ -1365,6 +1387,7 @@ class PortfolioApp {
                 const fill = skillFills[i];
                 const level = parseFloat(fill.getAttribute('data-level')) / 100;
                 fill.style.transform = `scaleX(${level})`;
+                this.createSkillBarSparks(fill, level);
             }
             index = end;
             if (index < skillFills.length) {
@@ -1372,6 +1395,35 @@ class PortfolioApp {
             }
         };
         setTimeout(animateBatch, 400);
+    }
+
+    createSkillBarSparks(fill, level) {
+        const bar = fill.closest('.skill-progress');
+        if (!bar) return;
+        const rect = bar.getBoundingClientRect();
+        const sparkCount = 4;
+        const delay = 1600;
+        setTimeout(() => {
+            for (let i = 0; i < sparkCount; i++) {
+                const spark = document.createElement('div');
+                const x = rect.left + rect.width * level;
+                const y = rect.top + rect.height / 2;
+                spark.style.cssText = `
+                    position:fixed;left:${x}px;top:${y}px;
+                    width:3px;height:3px;background:#7bff00;border-radius:50%;
+                    pointer-events:none;z-index:1000;
+                    opacity:1;transition:all 0.6s ease-out;
+                `;
+                document.body.appendChild(spark);
+                const angle = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI;
+                const dist = 15 + Math.random() * 20;
+                requestAnimationFrame(() => {
+                    spark.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px) scale(0)`;
+                    spark.style.opacity = '0';
+                });
+                setTimeout(() => spark.remove(), 700);
+            }
+        }, delay);
     }
 
     // Setup contact form
@@ -1952,7 +2004,214 @@ class PortfolioApp {
         }, Math.random() * 15000 + 10000);
     }
 
-    // Create dummy sounds for low-end devices
+    // --- ENHANCED VISUAL EFFECTS ---
+
+    createStartBurst(button) {
+        const rect = button.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const count = 30;
+        for (let i = 0; i < count; i++) {
+            const p = document.createElement('div');
+            const angle = (i / count) * Math.PI * 2;
+            const dist = 80 + Math.random() * 120;
+            const size = 3 + Math.random() * 4;
+            p.style.cssText = `
+                position:fixed;left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;
+                background:#7bff00;border-radius:50%;pointer-events:none;z-index:99999;
+                opacity:1;transition:all 0.8s cubic-bezier(.25,.46,.45,.94);
+                box-shadow:0 0 6px #7bff00;
+            `;
+            document.body.appendChild(p);
+            requestAnimationFrame(() => {
+                p.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px) scale(0)`;
+                p.style.opacity = '0';
+            });
+            setTimeout(() => p.remove(), 900);
+        }
+    }
+
+    setupCursorTrail() {
+        this._trailElements = [];
+        const maxTrail = 15;
+        let lastX = 0, lastY = 0;
+
+        for (let i = 0; i < maxTrail; i++) {
+            const dot = document.createElement('div');
+            dot.style.cssText = `
+                position:fixed;width:5px;height:5px;border-radius:50%;
+                background:rgba(123,255,0,0.6);pointer-events:none;z-index:99998;
+                opacity:0;transition:opacity 0.3s ease;
+                box-shadow:0 0 4px rgba(123,255,0,0.4);
+                will-change:transform,opacity;
+            `;
+            document.body.appendChild(dot);
+            this._trailElements.push({ el: dot, x: 0, y: 0 });
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            lastX = e.clientX;
+            lastY = e.clientY;
+        }, { passive: true });
+
+        const animate = () => {
+            let prevX = lastX, prevY = lastY;
+            for (let i = 0; i < this._trailElements.length; i++) {
+                const t = this._trailElements[i];
+                t.x += (prevX - t.x) * 0.35;
+                t.y += (prevY - t.y) * 0.35;
+                t.el.style.transform = `translate(${t.x - 2.5}px, ${t.y - 2.5}px)`;
+                const opacityVal = 1 - (i / this._trailElements.length);
+                t.el.style.opacity = String(opacityVal * 0.5);
+                const s = 1 - (i / this._trailElements.length) * 0.5;
+                t.el.style.width = t.el.style.height = (5 * s) + 'px';
+                prevX = t.x;
+                prevY = t.y;
+            }
+            requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+    }
+
+    setupCardTiltEffect() {
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach(card => {
+            card.style.transformStyle = 'preserve-3d';
+            card.style.perspective = '800px';
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 5}deg) translateY(-5px) scale(1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    }
+
+    setupMagneticButtons() {
+        const selectors = '.menu-item, .start-button, .filter-btn, .cv-download-btn';
+        const buttons = document.querySelectorAll(selectors);
+        buttons.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const cx = rect.left + rect.width / 2;
+                const cy = rect.top + rect.height / 2;
+                const dx = e.clientX - cx;
+                const dy = e.clientY - cy;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const maxDist = 60;
+                if (dist < maxDist) {
+                    const pull = (1 - dist / maxDist) * 6;
+                    btn.style.transform = `translate(${dx / dist * pull}px, ${dy / dist * pull}px)`;
+                }
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = '';
+                btn.style.transition = 'transform 0.3s ease';
+                setTimeout(() => { btn.style.transition = ''; }, 300);
+            });
+        });
+    }
+
+    setupScrollProgressBar() {
+        const bar = document.createElement('div');
+        bar.id = 'scrollProgressBar';
+        bar.style.cssText = `
+            position:fixed;top:0;left:0;height:3px;width:0%;
+            background:linear-gradient(90deg,#7bff00,#9fff00,#7bff00);
+            z-index:100000;pointer-events:none;
+            transition:width 0.1s linear;
+            box-shadow:0 0 8px rgba(123,255,0,0.6);
+        `;
+        document.body.appendChild(bar);
+
+        window.addEventListener('scroll', () => {
+            if (this._scrollBarRAF) return;
+            this._scrollBarRAF = requestAnimationFrame(() => {
+                this._scrollBarRAF = null;
+                const scrolled = window.scrollY;
+                const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                const pct = maxScroll > 0 ? (scrolled / maxScroll) * 100 : 0;
+                bar.style.width = pct + '%';
+            });
+        }, { passive: true });
+    }
+
+    startMatrixRain() {
+        const aboutSection = document.getElementById('about');
+        if (!aboutSection) return;
+
+        this._matrixContainer = document.createElement('div');
+        this._matrixContainer.style.cssText = `
+            position:absolute;top:0;left:0;width:100%;height:100%;
+            overflow:hidden;pointer-events:none;z-index:0;opacity:0.15;
+        `;
+        aboutSection.style.position = 'relative';
+        aboutSection.insertBefore(this._matrixContainer, aboutSection.firstChild);
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*<>{}[]';
+        this._matrixInterval = setInterval(() => {
+            const col = document.createElement('div');
+            const x = Math.random() * 100;
+            const len = 3 + Math.floor(Math.random() * 8);
+            let text = '';
+            for (let i = 0; i < len; i++) {
+                text += chars[Math.floor(Math.random() * chars.length)] + '\n';
+            }
+            col.textContent = text;
+            col.style.cssText = `
+                position:absolute;left:${x}%;top:-20px;
+                color:#7bff00;font-family:'Press Start 2P',monospace;font-size:10px;
+                white-space:pre;line-height:14px;
+                animation:matrixFall ${1.5 + Math.random() * 2}s linear forwards;
+            `;
+            this._matrixContainer.appendChild(col);
+            setTimeout(() => col.remove(), 4000);
+        }, 150);
+    }
+
+    stopMatrixRain() {
+        if (this._matrixInterval) {
+            clearInterval(this._matrixInterval);
+            this._matrixInterval = null;
+        }
+        if (this._matrixContainer) {
+            this._matrixContainer.style.transition = 'opacity 1s ease';
+            this._matrixContainer.style.opacity = '0';
+            setTimeout(() => {
+                if (this._matrixContainer && this._matrixContainer.parentNode) {
+                    this._matrixContainer.remove();
+                }
+            }, 1200);
+        }
+    }
+
+    injectEnhancedStyles() {
+        const s = document.createElement('style');
+        s.textContent = `
+            @keyframes matrixFall {
+                0% { transform: translateY(0); opacity: 1; }
+                70% { opacity: 0.7; }
+                100% { transform: translateY(calc(100vh + 40px)); opacity: 0; }
+            }
+            .glitch-transition {
+                animation: glitchShake 80ms ease-out;
+            }
+            @keyframes glitchShake {
+                0% { transform: translate(0, 0); }
+                25% { transform: translate(-2px, 1px); filter: hue-rotate(20deg); }
+                50% { transform: translate(2px, -1px); filter: hue-rotate(-20deg); }
+                75% { transform: translate(-1px, -1px); }
+                100% { transform: translate(0, 0); filter: none; }
+            }
+        `;
+        document.head.appendChild(s);
+    }
+
     createDummySounds() {
         const dummySound = () => {}; // No-op function
         return {

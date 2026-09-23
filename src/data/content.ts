@@ -55,16 +55,16 @@ export const profile = {
   last: 'BEN ISMAIL',
   origin: 'Sfax, Tunisia',
   roles: [
-    'FULL-STACK ENGINEER',
+    'FULL-STACK DEVELOPER',
     'AI & AUTOMATION BUILDER',
     'GAME DEVELOPER',
     'IOT TINKERER',
     'COMMUNITY BUILDER',
   ],
   tagline:
-    'Software engineer from Tunisia building web platforms, bots, games and AI-powered tools — from React + Spring Boot to Raspberry Pi and ESP32.',
+    'Full-stack developer from Tunisia building web platforms, bots, games and AI-powered tools — from React + Spring Boot to Raspberry Pi and ESP32.',
   bio: [
-    "I'm a Computer Science graduate from the Faculty of Sciences of Sfax and a versatile engineer who likes owning a product end-to-end: full-stack web platforms, desktop apps, Discord bots, IoT systems, blockchain games and AI automation.",
+    "I'm a Computer Science graduate from the Faculty of Sciences of Sfax and a versatile developer who likes owning a product end-to-end: full-stack web platforms, desktop apps, Discord bots, IoT systems, blockchain games and AI automation.",
     'I work deeply with LLMs, AI agents and prompt engineering to build intelligent systems that solve real problems. I love hard problems, picking up new tech fast, and shipping things people actually use.',
   ],
   email: 'hamza.benismail.6@gmail.com',
@@ -94,7 +94,7 @@ export const projects: Project[] = [
   {
     id: 'logiserv',
     overview:
-      'My final-year engineering project: a production-style platform that lets a logistics company track its vehicle fleet, schedule and log maintenance, and monitor day-to-day operations from one dashboard. I designed and built it end-to-end — from the data model and REST API to the UI, authentication and deployment.',
+      'My final-year capstone project: a production-style platform that lets a logistics company track its vehicle fleet, schedule and log maintenance, and monitor day-to-day operations from one dashboard. I designed and built it end-to-end — from the data model and REST API to the UI, authentication and deployment.',
     features: [
       'Fleet registry with vehicle profiles, maintenance history and upcoming service tracking',
       'Operational monitoring dashboard built in React + TypeScript',

@@ -60,7 +60,7 @@ function about() {
         </div>
         <div class="pilot__plate">
           <p class="pilot__name">${esc(profile.name.toUpperCase())}</p>
-          <p class="pilot__meta">CLASS · ENGINEER <br />ORIGIN · ${esc(profile.origin.toUpperCase())}</p>
+          <p class="pilot__meta">CLASS · DEVELOPER <br />ORIGIN · ${esc(profile.origin.toUpperCase())}</p>
           <p class="pilot__status"><span class="dot dot--lime"></span> OPEN TO OPPORTUNITIES</p>
         </div>
       </article>

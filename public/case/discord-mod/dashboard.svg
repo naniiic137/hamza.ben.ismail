@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="689" viewBox="0 0 760 689" font-family="'gg sans','Noto Sans','Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif">
+<title>Meme Guardian channel dashboard (mock of the /channeldashboard embed, sample data)</title>
+<rect width="760" height="689" rx="12" fill="#313338"/>
+<rect x="72" y="50" width="600" height="437" rx="4" fill="#2b2d31"/><rect x="72" y="50" width="4" height="437" rx="2" fill="#5865F2"/>
+<circle cx="44" cy="40" r="20" fill="#5865F2"/><text x="44" y="47" font-size="18" text-anchor="middle">🛡️</text>
+<text x="72" y="36" font-size="15" font-weight="600" fill="#f2f3f5">Meme Guardian</text>
+<rect x="194" y="24" width="30" height="16" rx="3" fill="#5865F2"/><text x="209" y="36" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">APP</text>
+<text x="232" y="36" font-size="12" font-weight="400" fill="#949ba4">Today at 14:32</text>
+<text x="88" y="78" font-size="16" font-weight="700" fill="#f2f3f5">🛡️ Channel Control</text>
+<text x="88" y="104" font-size="14" fill="#dbdee1">Channel: <tspan fill="#c9cdfb" font-weight="500">#memes</tspan></text>
+<text x="88" y="124" font-size="14" font-weight="400" fill="#dbdee1">Edit settings or manage members with the buttons below.</text>
+<rect x="576" y="66" width="80" height="80" rx="8" fill="#1e1f22" stroke="#4e5058"/><text x="616" y="110" font-size="11" fill="#949ba4" text-anchor="middle">server icon</text>
+<text x="88" y="154" font-size="13" font-weight="700" fill="#f2f3f5">🟢 Status</text>
+<text x="88" y="174" font-size="14" fill="#dbdee1"><tspan font-weight="700" fill="#f2f3f5">Active</tspan></text>
+<text x="268" y="154" font-size="13" font-weight="700" fill="#f2f3f5">📊 Daily limit</text>
+<text x="268" y="174" font-size="14" fill="#dbdee1"><tspan font-weight="700" fill="#f2f3f5">5</tspan> memes</text>
+<text x="448" y="154" font-size="13" font-weight="700" fill="#f2f3f5">🕒 Cooldown</text>
+<text x="448" y="174" font-size="14" fill="#dbdee1"><tspan font-weight="700" fill="#f2f3f5">1h</tspan></text>
+<text x="88" y="200" font-size="13" font-weight="700" fill="#f2f3f5">⏱️ Reset window</text>
+<text x="88" y="220" font-size="14" fill="#dbdee1"><tspan font-weight="700" fill="#f2f3f5">24h</tspan></text>
+<text x="268" y="200" font-size="13" font-weight="700" fill="#f2f3f5">🎭 Roles</text>
+<text x="268" y="220" font-size="14" fill="#dbdee1"><tspan font-style="italic">Everyone</tspan></text>
+<text x="448" y="200" font-size="13" font-weight="700" fill="#f2f3f5">🚫 Blocked</text>
+<text x="448" y="220" font-size="14" fill="#dbdee1"><tspan font-weight="700" fill="#f2f3f5">0</tspan></text>
+<text x="88" y="246" font-size="13" font-weight="700" fill="#f2f3f5">🔔 Warn on delete</text>
+<text x="88" y="266" font-size="14" fill="#dbdee1">off</text>
+<text x="268" y="246" font-size="13" font-weight="700" fill="#f2f3f5">⚠️ Near-limit warn</text>
+<text x="268" y="266" font-size="14" fill="#dbdee1">off</text>
+<text x="88" y="296" font-size="13" font-weight="700" fill="#f2f3f5">📈 Stats</text>
+<text x="88" y="316" font-size="14" fill="#dbdee1">Submissions seen: <tspan font-weight="700" fill="#f2f3f5">42</tspan></text>
+<text x="88" y="335" font-size="14" fill="#dbdee1">Blocked/deleted: <tspan font-weight="700" fill="#f2f3f5">7</tspan></text>
+<text x="88" y="354" font-size="14" fill="#dbdee1">Active members (this window): <tspan font-weight="700" fill="#f2f3f5">3</tspan></text>
+<text x="88" y="383" font-size="13" font-weight="700" fill="#f2f3f5">🏆 Top members</text>
+<text x="88" y="403" font-size="14" fill="#dbdee1"><tspan fill="#c9cdfb" font-weight="500">@alex</tspan> — 4/5 <tspan fill="#b5bac1">▰▰▰▰▰▰▰▰▱▱</tspan></text>
+<text x="88" y="423" font-size="14" fill="#dbdee1"><tspan fill="#c9cdfb" font-weight="500">@sam</tspan> ⭐ — 3/10 <tspan fill="#b5bac1">▰▰▰▱▱▱▱▱▱▱</tspan></text>
+<text x="88" y="443" font-size="14" fill="#dbdee1"><tspan fill="#c9cdfb" font-weight="500">@jordan</tspan> — 1/5 <tspan fill="#b5bac1">▰▰▱▱▱▱▱▱▱▱</tspan></text>
+<text x="88" y="471" font-size="12" font-weight="400" fill="#949ba4">Uptime: 3h 12m  •  Today at 14:32</text>
+<g opacity="1"><rect x="72" y="497" width="119" height="32" rx="4" fill="#5865F2"/><text x="85" y="518" font-size="14">📊</text><text x="110" y="518" font-size="14" font-weight="500" fill="#fff">Set Limit</text></g>
+<g opacity="1"><rect x="199" y="497" width="140" height="32" rx="4" fill="#5865F2"/><text x="212" y="518" font-size="14">🕒</text><text x="237" y="518" font-size="14" font-weight="500" fill="#fff">Set Cooldown</text></g>
+<g opacity="1"><rect x="347" y="497" width="126" height="32" rx="4" fill="#5865F2"/><text x="360" y="518" font-size="14">⏱️</text><text x="385" y="518" font-size="14" font-weight="500" fill="#fff">Set Window</text></g>
+<g opacity="1"><rect x="481" y="497" width="83" height="32" rx="4" fill="#DA373C"/><text x="494" y="518" font-size="14">🔒</text><text x="519" y="518" font-size="14" font-weight="500" fill="#fff">Lock</text></g>
+<g opacity="1"><rect x="572" y="497" width="119" height="32" rx="4" fill="#4E5058"/><text x="585" y="518" font-size="14">🔔</text><text x="610" y="518" font-size="14" font-weight="500" fill="#fff">Warn: Off</text></g>
+<g opacity="1"><rect x="72" y="537" width="119" height="32" rx="4" fill="#4E5058"/><text x="85" y="558" font-size="14">🕒</text><text x="110" y="558" font-size="14" font-weight="500" fill="#fff">Recent 10</text></g>
+<g opacity="1"><rect x="199" y="537" width="140" height="32" rx="4" fill="#4E5058"/><text x="212" y="558" font-size="14">📋</text><text x="237" y="558" font-size="14" font-weight="500" fill="#fff">Today's List</text></g>
+<g opacity="1"><rect x="347" y="537" width="220" height="32" rx="4" fill="#4E5058"/><text x="360" y="558" font-size="14">👤</text><text x="385" y="558" font-size="14" font-weight="500" fill="#fff">Manage / Look Up Member</text></g>
+<g opacity="1"><rect x="575" y="537" width="162" height="32" rx="4" fill="#4E5058"/><text x="588" y="558" font-size="14">⚠️</text><text x="613" y="558" font-size="14" font-weight="500" fill="#fff">Near-limit: Off</text></g>
+<g opacity="1"><rect x="72" y="577" width="140" height="32" rx="4" fill="#DA373C"/><text x="85" y="598" font-size="14">🗑️</text><text x="110" y="598" font-size="14" font-weight="500" fill="#fff">Reset Counts</text></g>
+<g opacity="1"><rect x="220" y="577" width="133" height="32" rx="4" fill="#4E5058"/><text x="233" y="598" font-size="14">📊</text><text x="258" y="598" font-size="14" font-weight="500" fill="#fff">Reset Stats</text></g>
+<g opacity="0.5"><rect x="361" y="577" width="133" height="32" rx="4" fill="#4E5058"/><text x="374" y="598" font-size="14">✅</text><text x="399" y="598" font-size="14" font-weight="500" fill="#fff">Unblock All</text></g>
+<g opacity="0.5"><rect x="502" y="577" width="133" height="32" rx="4" fill="#4E5058"/><text x="515" y="598" font-size="14">🎭</text><text x="540" y="598" font-size="14" font-weight="500" fill="#fff">Clear Roles</text></g>
+<g opacity="1"><rect x="72" y="617" width="169" height="32" rx="4" fill="#4E5058"/><text x="85" y="638" font-size="14">⬅️</text><text x="110" y="638" font-size="14" font-weight="500" fill="#fff">Back to Overview</text></g>
+<g opacity="1"><rect x="249" y="617" width="104" height="32" rx="4" fill="#4E5058"/><text x="262" y="638" font-size="14">🔄</text><text x="287" y="638" font-size="14" font-weight="500" fill="#fff">Refresh</text></g>
+<text x="72" y="669" font-size="12" fill="#949ba4">Only you can see this  •  <tspan fill="#00a8fc">Dismiss message</tspan></text>
+</svg>

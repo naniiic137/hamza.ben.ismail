@@ -21,6 +21,7 @@ import {
 } from './ui/effects';
 import { initFilters, initModal } from './ui/projects';
 import { initTerminal } from './ui/terminal';
+import { initAnalytics, track } from './ui/analytics';
 import { BugInvaders } from './game/BugInvaders';
 import type { SpaceScene } from './scene/SpaceScene';
 
@@ -216,6 +217,7 @@ function openGame() {
   gameEl.hidden = false;
   lenis.stop();
   sfx.coin();
+  track('play-game', 'Played Bug Invaders');
   game.start();
   $<HTMLCanvasElement>('#gameCanvas').focus();
 }
@@ -267,6 +269,7 @@ $<HTMLFormElement>('#transmit').addEventListener('submit', (e) => {
   const subject = encodeURIComponent(`Portfolio contact from ${name}`);
   const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
   sfx.powerup();
+  track('contact-form', 'Contact form sent');
   toast('▲ TRANSMISSION READY — OPENING MAIL');
   window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
   form.reset();
@@ -282,7 +285,8 @@ document.addEventListener('click', (e) => {
 initSprites();
 initTilt();
 initFilters();
-initModal();
+const modalApi = initModal();
+initAnalytics();
 const term = initTerminal({ playGame: openGame, scrollTo: scrollToId });
 pixelPortrait($<HTMLCanvasElement>('#pilotCanvas'), `${import.meta.env.BASE_URL}portfolio.jpg`);
 continueCountdown($('#continueCount'));
@@ -297,7 +301,11 @@ runBoot().then(async () => {
   initReveals();
   heroIntro();
   ScrollTrigger.refresh();
-  if (location.hash && document.getElementById(location.hash.slice(1))) {
+  const caseMatch = location.hash.match(/^#case\/([\w-]+)$/);
+  if (caseMatch) {
+    scrollToId('projects');
+    setTimeout(() => modalApi.openCase(caseMatch[1]), 900);
+  } else if (location.hash && document.getElementById(location.hash.slice(1))) {
     setTimeout(() => scrollToId(location.hash.slice(1)), 300);
   }
 });

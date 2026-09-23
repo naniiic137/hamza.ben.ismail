@@ -1,5 +1,6 @@
 import { inventory, profile, projects, quests, sections, skillTrees, type Project } from '../data/content';
 import { icon } from './pixels';
+import { caseStudies } from '../data/caseStudies';
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -28,7 +29,7 @@ function hero() {
       <p class="hero__tagline" data-hero>${esc(profile.tagline)}</p>
       <div class="hero__cta" data-hero>
         <a href="#projects" class="btn btn--primary" data-sfx>${icon('play', 12)} START MISSION</a>
-        <a href="${profile.cv}" class="btn" download="Hamza-Ben-Ismail-CV-EN.pdf" data-sfx>${icon('download', 14)} DOWNLOAD CV</a>
+        <a href="${profile.cv}" class="btn" download="Hamza-Ben-Ismail-CV-EN.pdf" data-track="cv-download-en" data-sfx>${icon('download', 14)} DOWNLOAD CV</a>
         <button type="button" class="btn btn--ghost" data-play-game data-sfx>${icon('gamepad', 16)} PLAY GAME</button>
       </div>
       <dl class="hero__stats" data-hero>
@@ -85,8 +86,8 @@ function about() {
           </ul>
         </div>
         <div class="about__cta" data-reveal>
-          <a href="${profile.cv}" class="btn btn--primary" download="Hamza-Ben-Ismail-CV-EN.pdf" data-sfx>${icon('download', 14)} CV · ENGLISH</a>
-          <a href="${profile.cvFr}" class="btn" download="Hamza-Ben-Ismail-CV-FR.pdf" data-sfx>${icon('download', 14)} CV · FRANÇAIS</a>
+          <a href="${profile.cv}" class="btn btn--primary" download="Hamza-Ben-Ismail-CV-EN.pdf" data-track="cv-download-en" data-sfx>${icon('download', 14)} CV · ENGLISH</a>
+          <a href="${profile.cvFr}" class="btn" download="Hamza-Ben-Ismail-CV-FR.pdf" data-track="cv-download-fr" data-sfx>${icon('download', 14)} CV · FRANÇAIS</a>
           <a href="#contact" class="btn" data-sfx>${icon('mail', 16)} OPEN CHANNEL</a>
         </div>
       </div>
@@ -110,6 +111,7 @@ export function projectCard(p: Project, index: number) {
         <div class="card__top">
           <span class="card__num">M-${n}</span>
           <span class="card__cat card__cat--${p.category}">${CAT_LABEL[p.category]}</span>
+          ${caseStudies[p.id] ? '<span class="card__casetag">CASE FILE</span>' : ''}
         </div>
         <canvas class="card__sprite" data-sprite="${p.id}" data-cat="${p.category}" aria-hidden="true"></canvas>
         <h3 class="card__title">${esc(p.title)}</h3>
@@ -117,7 +119,11 @@ export function projectCard(p: Project, index: number) {
         <ul class="card__tech">${p.tech.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
         <div class="card__foot">
           ${links}
-          <button type="button" class="card__brief" data-brief="${p.id}" data-sfx aria-label="Open briefing for ${esc(p.title)}">BRIEFING ▸</button>
+          ${
+            caseStudies[p.id]
+              ? `<button type="button" class="card__brief card__brief--case" data-case="${p.id}" data-sfx aria-label="Read the case study for ${esc(p.title)}">CASE FILE ▸</button>`
+              : `<button type="button" class="card__brief" data-brief="${p.id}" data-sfx aria-label="Open briefing for ${esc(p.title)}">BRIEFING ▸</button>`
+          }
         </div>
       </div>
     </article>`;

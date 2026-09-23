@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" font-family="'gg sans','Noto Sans','Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif">
+<title>Meme Guardian architecture</title>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#80848e"/></marker></defs>
+<rect width="960" height="560" rx="12" fill="#1e1f22"/>
+<text x="32" y="44" font-size="20" font-weight="700" fill="#f2f3f5">Meme Guardian — how it works</text>
+<text x="32" y="66" font-size="13" fill="#949ba4">One Node.js process (bot.js) · discord.js v14 · state held in Maps, persisted to data.json</text>
+<rect x="24" y="100" width="240" height="140" rx="10" fill="#2b2d31" stroke="#80848e" stroke-width="1.5"/>
+<text x="38" y="126" font-size="15" font-weight="700" fill="#f2f3f5">Discord Gateway</text>
+<text x="38" y="150" font-size="12.5" fill="#b5bac1">events: messageCreate,</text>
+<text x="38" y="169" font-size="12.5" fill="#b5bac1">  interactionCreate</text>
+<text x="38" y="188" font-size="12.5" fill="#b5bac1">intents: Guilds, GuildMessages,</text>
+<text x="38" y="207" font-size="12.5" fill="#b5bac1">  MessageContent, GuildMembers</text>
+<rect x="290" y="90" width="310" height="256" rx="10" fill="#2b2d31" stroke="#DA373C" stroke-width="1.5"/>
+<text x="304" y="116" font-size="15" font-weight="700" fill="#f2f3f5">handleMessage (enforcement)</text>
+<text x="304" y="140" font-size="12.5" fill="#b5bac1">tracked channel? admin? → skip</text>
+<text x="304" y="159" font-size="12.5" fill="#b5bac1">1. channel locked?          → delete</text>
+<text x="304" y="178" font-size="12.5" fill="#b5bac1">2. missing allowed role?    → delete</text>
+<text x="304" y="197" font-size="12.5" fill="#b5bac1">3. member blocked?          → delete</text>
+<text x="304" y="216" font-size="12.5" fill="#b5bac1">4. maximized?               → allow</text>
+<text x="304" y="235" font-size="12.5" fill="#b5bac1">5. daily limit reached?     → delete</text>
+<text x="304" y="254" font-size="12.5" fill="#b5bac1">6. still in cooldown?       → delete</text>
+<text x="304" y="273" font-size="12.5" fill="#b5bac1">→ accept: count +1, start cooldown</text>
+<text x="304" y="292" font-size="12.5" fill="#b5bac1">opt. DM on delete (with opt-out button)</text>
+<text x="304" y="311" font-size="12.5" fill="#b5bac1">opt. auto-deleting "1 meme left" notice</text>
+<rect x="290" y="376" width="310" height="150" rx="10" fill="#2b2d31" stroke="#248046" stroke-width="1.5"/>
+<text x="304" y="402" font-size="15" font-weight="700" fill="#f2f3f5">Interaction router</text>
+<text x="304" y="426" font-size="12.5" fill="#b5bac1">23 slash commands (admin-only except /info)</text>
+<text x="304" y="445" font-size="12.5" fill="#b5bac1">buttons · select menus · modals</text>
+<text x="304" y="464" font-size="12.5" fill="#b5bac1">views: Control Center, Channel Control,</text>
+<text x="304" y="483" font-size="12.5" fill="#b5bac1">  member panel, recent / today lists</text>
+<text x="304" y="502" font-size="12.5" fill="#b5bac1">every reply ephemeral, mentions suppressed</text>
+<rect x="660" y="90" width="268" height="84" rx="10" fill="#2b2d31" stroke="#80848e" stroke-width="1.5"/>
+<text x="674" y="116" font-size="15" font-weight="700" fill="#f2f3f5">Background jobs</text>
+<text x="674" y="140" font-size="12.5" fill="#b5bac1">boot: loadData(), resume lock timers</text>
+<text x="674" y="159" font-size="12.5" fill="#b5bac1">every 30 s: expire locks, prune counters</text>
+<rect x="660" y="206" width="268" height="150" rx="10" fill="#2b2d31" stroke="#5865F2" stroke-width="1.5"/>
+<text x="674" y="232" font-size="15" font-weight="700" fill="#f2f3f5">In-memory state (Maps)</text>
+<text x="674" y="256" font-size="12.5" fill="#b5bac1">trackedChannels, messageCounts,</text>
+<text x="674" y="275" font-size="12.5" fill="#b5bac1">rateLimit, cooldown, resetTime,</text>
+<text x="674" y="294" font-size="12.5" fill="#b5bac1">userLimits, blockedUsers, allowedRoles,</text>
+<text x="674" y="313" font-size="12.5" fill="#b5bac1">lockedChannels, warnOnDelete,</text>
+<text x="674" y="332" font-size="12.5" fill="#b5bac1">nearLimitWarn, dmOptOut, stats</text>
+<rect x="660" y="400" width="268" height="126" rx="10" fill="#2b2d31" stroke="#F0B232" stroke-width="1.5"/>
+<text x="674" y="426" font-size="15" font-weight="700" fill="#f2f3f5">data.json  (in DATA_DIR)</text>
+<text x="674" y="450" font-size="12.5" fill="#b5bac1">admin changes → saveData() at once</text>
+<text x="674" y="469" font-size="12.5" fill="#b5bac1">per-message → scheduleSave(), ≤1/s</text>
+<text x="674" y="488" font-size="12.5" fill="#b5bac1">atomic write: .tmp file + rename</text>
+<text x="674" y="507" font-size="12.5" fill="#b5bac1">flushed on SIGINT / SIGTERM</text>
+<line x1="264" y1="145" x2="288" y2="145" stroke="#80848e" stroke-width="1.6" marker-end="url(#ah)"/>
+<line x1="200" y1="240" x2="288" y2="440" stroke="#80848e" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="236" y="350" font-size="11.5" fill="#949ba4" text-anchor="end">interactions</text>
+<line x1="600" y1="250" x2="658" y2="270" stroke="#80848e" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="628" y="246" font-size="11.5" fill="#949ba4" text-anchor="middle">read / write</text>
+<line x1="600" y1="430" x2="658" y2="330" stroke="#80848e" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="636" y="400" font-size="11.5" fill="#949ba4" text-anchor="middle">read / write</text>
+<line x1="794" y1="174" x2="794" y2="204" stroke="#80848e" stroke-width="1.6" marker-end="url(#ah)"/>
+<line x1="794" y1="356" x2="794" y2="398" stroke="#80848e" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="804" y="382" font-size="11.5" fill="#949ba4" text-anchor="start">persist</text>
+</svg>

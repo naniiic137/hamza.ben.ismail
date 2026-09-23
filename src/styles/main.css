@@ -2237,3 +2237,155 @@ main {
     flex: 1 1 100%;
   }
 }
+
+/* ---------------------------------------------------------------- case files */
+
+.modal__panel.is-case {
+  width: min(1040px, 100%);
+}
+.btn--case {
+  --c: var(--void);
+  --b: var(--amber);
+  --bg: var(--amber);
+  --sh: #8a5a1c;
+}
+.btn--case:hover {
+  --bg: var(--cream);
+  --b: var(--cream);
+}
+.card__casetag {
+  margin-left: 6px;
+  padding: 2px 6px;
+  color: var(--amber);
+  box-shadow: inset 0 0 0 2px rgba(255, 217, 122, 0.5);
+}
+.card__top {
+  gap: 0;
+}
+.card__top .card__cat {
+  margin-left: auto;
+}
+.card__brief--case {
+  color: var(--void);
+  background: var(--amber);
+  padding: 4px 8px;
+}
+.card__brief--case:hover {
+  color: var(--void);
+  background: var(--cream);
+}
+.case__title {
+  margin: 0;
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: clamp(20px, 3.6vw, 32px);
+  line-height: 1.3;
+  text-shadow: 3px 3px 0 var(--purple);
+}
+.case__pitch {
+  margin: 14px 0 22px;
+  max-width: 70ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.case__links {
+  margin-bottom: 30px;
+}
+.case__fig {
+  margin: 0;
+  background: var(--void);
+  box-shadow: inset 0 0 0 3px var(--line);
+  padding: 3px;
+}
+.case__fig img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.case__fig figcaption {
+  padding: 8px 10px 6px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.case__fig--hero {
+  margin-bottom: 30px;
+  box-shadow: inset 0 0 0 3px var(--cyan);
+}
+.case__sec {
+  margin-top: 30px;
+}
+.case__text {
+  margin: 0;
+  max-width: 75ch;
+  font-size: 15px;
+  line-height: 1.75;
+}
+.case__how {
+  margin: 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 10px;
+  max-width: 80ch;
+}
+.case__how li {
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+.case__how li::marker {
+  font-family: var(--f-ui);
+  color: var(--cyan);
+}
+.case__challenges {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.case__challenge {
+  padding: 16px 18px;
+  background: var(--night);
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+.case__challenge span {
+  font-family: var(--f-display);
+  font-size: 12px;
+  color: var(--pink);
+}
+.case__challenge h4 {
+  margin: 8px 0 6px;
+  font-family: var(--f-ui);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+.case__challenge p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.case__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.case__status {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+.case__status .px-icon {
+  color: var(--amber);
+}
+@media (max-width: 600px) {
+  .case__gallery,
+  .case__challenges {
+    grid-template-columns: 1fr;
+  }
+  .case__pitch {
+    font-size: 15px;
+  }
+}

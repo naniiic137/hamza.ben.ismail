@@ -4,6 +4,8 @@ import { projects } from '../data/content';
 import { sfx } from './audio';
 import { makeSprite, drawSprite, CATEGORY_COLORS, icon } from './pixels';
 import { projectById, reducedMotion } from './effects';
+import { caseStudies } from '../data/caseStudies';
+import { track } from './analytics';
 
 export function initFilters() {
   const buttons = document.querySelectorAll<HTMLButtonElement>('.filter');
@@ -40,12 +42,16 @@ export function initModal() {
   const body = document.getElementById('modalBody')!;
   const panel = modal.querySelector<HTMLElement>('.modal__panel')!;
   let currentId = '';
+  let mode: 'brief' | 'case' = 'brief';
+  const caseIds = () => projects.map((p) => p.id).filter((id) => caseStudies[id]);
+  const asset = (src: string) => `${import.meta.env.BASE_URL}${src}`;
 
   const close = () => {
     if (modal.hidden) return;
     modal.classList.remove('is-open');
     setTimeout(() => (modal.hidden = true), 200);
     document.dispatchEvent(new CustomEvent('scroll-lock', { detail: false }));
+    if (location.hash.startsWith('#case/')) history.replaceState(null, '', location.pathname + location.search);
     lastFocus?.focus();
   };
 
@@ -56,6 +62,13 @@ export function initModal() {
       .map((c) => c.dataset.id!);
 
   const step = (dir: 1 | -1) => {
+    if (mode === 'case') {
+      const cids = caseIds();
+      const ci = cids.indexOf(currentId);
+      if (ci === -1) return;
+      sfx.click();
+      return renderCase(cids[(ci + dir + cids.length) % cids.length]);
+    }
     const ids = visibleIds();
     const i = ids.indexOf(currentId);
     if (i === -1 || ids.length < 2) return;
@@ -67,6 +80,9 @@ export function initModal() {
     const p = projectById(id);
     if (!p) return;
     currentId = id;
+    mode = 'brief';
+    panel.classList.remove('is-case');
+    track(`briefing/${id}`, `Briefing: ${p.title}`);
     const idx = projects.indexOf(p);
     const ids = visibleIds();
     const pos = ids.indexOf(id);
@@ -85,6 +101,9 @@ export function initModal() {
               `<a class="btn ${i === 0 ? 'btn--primary' : 'btn--ghost'}" href="${l.href}" target="_blank" rel="noopener" data-sfx>${icon(LINK_ICON[l.label] ?? 'arrow', 14)} ${LINK_LABEL[l.label] ?? l.label.toUpperCase()}</a>`,
           )
           .join('');
+    const caseBtn = caseStudies[id]
+      ? `<button type="button" class="btn btn--case" data-case="${id}" data-sfx>${icon('terminal', 18)} READ CASE FILE</button>`
+      : '';
 
     body.innerHTML = `
       <button type="button" class="modal__close" data-close aria-label="Close briefing">${icon('close', 12)} ESC</button>
@@ -109,7 +128,7 @@ export function initModal() {
       }
       <p class="panel-label">LOADOUT</p>
       <ul class="card__tech modal__tech">${p.tech.map((t) => `<li>${t}</li>`).join('')}</ul>
-      <div class="modal__actions">${actions}</div>
+      <div class="modal__actions">${caseBtn}${actions}</div>
       <nav class="modal__nav" aria-label="Browse missions">
         <button type="button" class="modal__step" data-step="-1" data-sfx>◀ PREV</button>
         <span>← → KEYS TO BROWSE</span>
@@ -139,11 +158,77 @@ export function initModal() {
     }
   };
 
-  const open = (id: string) => {
+  /** Long-form case study, rendered in the same modal with a wider layout. */
+  const renderCase = (id: string) => {
+    const p = projectById(id);
+    const cs = caseStudies[id];
+    if (!p || !cs) return;
+    currentId = id;
+    mode = 'case';
+    panel.classList.add('is-case');
+    history.replaceState(null, '', `#case/${id}`);
+    track(`case/${id}`, `Case study: ${p.title}`);
+    const cids = caseIds();
+    const idx = projects.indexOf(p);
+    const [hero, ...rest] = cs.images;
+    const links = p.classified
+      ? `<a class="btn" href="#contact" data-close data-sfx>${icon('mail', 16)} REQUEST A DEMO</a>`
+      : p.links
+          .map(
+            (l, i) =>
+              `<a class="btn ${i === 0 ? 'btn--primary' : 'btn--ghost'}" href="${l.href}" target="_blank" rel="noopener" data-sfx>${icon(LINK_ICON[l.label] ?? 'arrow', 14)} ${LINK_LABEL[l.label] ?? l.label.toUpperCase()}</a>`,
+          )
+          .join('');
+    const figure = (im: { src: string; caption: string }, cls = '') =>
+      `<figure class="case__fig ${cls}"><img src="${asset(im.src)}" alt="${im.caption.replace(/"/g, '&quot;')}" loading="lazy" /><figcaption>${im.caption}</figcaption></figure>`;
+
+    body.innerHTML = `
+      <button type="button" class="modal__close" data-close aria-label="Close case study">${icon('close', 12)} ESC</button>
+      <p class="modal__kicker">CASE FILE · M-${String(idx + 1).padStart(2, '0')} · ${cids.indexOf(id) + 1}/${cids.length}</p>
+      <h3 id="modalTitle" class="case__title">${p.title}</h3>
+      <p class="case__pitch">${cs.pitch}</p>
+      <dl class="modal__facts">${cs.numbers.map((f) => `<div><dt>${f.label}</dt><dd>${f.value}</dd></div>`).join('')}</dl>
+      <div class="modal__actions case__links">${links}</div>
+      ${hero ? figure(hero, 'case__fig--hero') : ''}
+      <section class="case__sec">
+        <p class="panel-label">THE PROBLEM</p>
+        <p class="case__text">${cs.problem}</p>
+      </section>
+      <section class="case__sec">
+        <p class="panel-label">HOW IT WORKS</p>
+        <ol class="case__how">${cs.how.map((h) => `<li>${h}</li>`).join('')}</ol>
+      </section>
+      <section class="case__sec">
+        <p class="panel-label">KEY CHALLENGES</p>
+        <div class="case__challenges">
+          ${cs.challenges
+            .map(
+              (c, i) =>
+                `<article class="case__challenge"><span>${String(i + 1).padStart(2, '0')}</span><h4>${c.title}</h4><p>${c.detail}</p></article>`,
+            )
+            .join('')}
+        </div>
+      </section>
+      ${rest.length ? `<section class="case__sec"><p class="panel-label">GALLERY</p><div class="case__gallery">${rest.map((im) => figure(im)).join('')}</div></section>` : ''}
+      <section class="case__sec">
+        <p class="panel-label">LOADOUT</p>
+        <ul class="card__tech modal__tech">${p.tech.map((t) => `<li>${t}</li>`).join('')}</ul>
+        ${cs.status ? `<p class="case__status">${icon('pin', 10)} ${cs.status}</p>` : ''}
+      </section>
+      <nav class="modal__nav" aria-label="Browse case studies">
+        <button type="button" class="modal__step" data-step="-1" data-sfx>◀ PREV CASE</button>
+        <button type="button" class="modal__step" data-back data-sfx>BRIEFING</button>
+        <button type="button" class="modal__step" data-step="1" data-sfx>NEXT CASE ▶</button>
+      </nav>`;
+    panel.scrollTop = 0;
+  };
+
+  const open = (id: string, asCase = false) => {
     if (!projectById(id)) return;
     lastFocus = document.activeElement as HTMLElement;
     modal.hidden = false;
-    render(id);
+    if (asCase && caseStudies[id]) renderCase(id);
+    else render(id);
     requestAnimationFrame(() => modal.classList.add('is-open'));
     document.dispatchEvent(new CustomEvent('scroll-lock', { detail: true }));
     panel.focus();
@@ -153,6 +238,9 @@ export function initModal() {
     const t = e.target as HTMLElement;
     const brief = t.closest<HTMLElement>('[data-brief]');
     if (brief) return open(brief.dataset.brief!);
+    const caseBtn = t.closest<HTMLElement>('[data-case]');
+    if (caseBtn) return modal.hidden ? open(caseBtn.dataset.case!, true) : renderCase(caseBtn.dataset.case!);
+    if (t.closest('[data-back]')) return render(currentId);
     const stepBtn = t.closest<HTMLElement>('[data-step]');
     if (stepBtn) return step(Number(stepBtn.dataset.step) as 1 | -1);
     // clicking the card body (not a link) also opens the briefing
@@ -179,4 +267,6 @@ export function initModal() {
       }
     }
   });
+
+  return { openCase: (id: string) => open(id, true) };
 }

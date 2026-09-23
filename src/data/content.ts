@@ -124,17 +124,16 @@ export const projects: Project[] = [
       'Capture reveals — a captured piece\'s type is shown to both players',
       'Fair check: the checking square is highlighted, but the piece stays hidden',
       'Private guess-pins to track what you think each hidden piece is',
-      'Chaos mode with fairy pieces (Amazon, Chancellor, Nightrider) and boards up to 10×10',
+      'Chaos mode with 6 fairy pieces (Amazon, Chancellor, Archbishop, Nightrider, Camel, Wizard) and boards up to 10×10',
     ],
     facts: [{ label: 'PLAYERS', value: '2' }, { label: 'NETWORK', value: 'LAN / WEBSOCKETS' }, { label: 'BOARD', value: 'UP TO 10×10' }],
     title: 'Fog Chess',
     category: 'web',
     featured: true,
-    classified: true,
     summary:
       'Hidden-information chess for LAN play: enemy pieces are invisible — you only know a square is occupied. Secret setups, private guess-pins, fair check alerts and a Chaos mode with fairy pieces (Amazon, Chancellor, Nightrider) on boards up to 10×10.',
     tech: ['Node.js', 'Socket.io', 'Express', 'Chess.js'],
-    links: [],
+    links: [gh('fog-chess')],
   },
   {
     id: 'chesscipher',
@@ -205,7 +204,7 @@ export const projects: Project[] = [
     features: [
       'Classic Wordle gameplay with a virtual keyboard, hints and saved progress',
       'Puzzle creator: custom word, 1–20 guesses, 0–10 hints, play limits and lobby size',
-      '33 game modes in 5 categories — Glitch, Mirror, No Backspace, Chain and more',
+      '33 game modes in 8 categories — Glitch, Mirror, No Backspace, Chain and more',
       'Encrypted, shareable puzzle links',
       'Hosted and playable online',
     ],

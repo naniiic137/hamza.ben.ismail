@@ -223,6 +223,56 @@ export const caseStudies: Record<string, CaseStudy> = {
     status:
       "Tested with published RFC test vectors and a blind-relay integration test; not independently audited — a learning project, not a replacement for Signal.",
   },
+  linkpulse: {
+    pitch:
+      "A bit.ly-style URL shortener built like a system-design interview answer: fast cached redirects, an asynchronous analytics pipeline, HyperLogLog unique visitors and atomic rate limits — all tested against real PostgreSQL and Redis in CI.",
+    problem:
+      "Redirects are read-heavy (around 100 reads per write) and must be fast, while click analytics are write-heavy. Doing both in the request path makes every visitor wait for analytics writes. A shortener also needs short codes that never collide and can’t be guessed, protection from abuse, and safe handling of URLs it fetches for link previews.",
+    how: [
+      "GET /:code runs an atomic rate-limit check, reads the link from Redis (PostgreSQL on a miss, with negative caching for unknown codes), checks the max-clicks quota, queues the click without waiting and answers with a 302.",
+      "A background consumer group reads clicks from a Redis Stream and batch-inserts them into PostgreSQL; click ids make the inserts idempotent, and crashed consumers’ pending clicks are reclaimed.",
+      "Unique visitors use one HyperLogLog per link per day, so any date range is a single PFCOUNT across those days — 16 KB per counter, under 2% error.",
+      "Fastify 5 + TypeScript with TypeBox schemas that also generate the OpenAPI docs; a React dashboard with Recharts, QR codes and a live click counter over Server-Sent Events.",
+    ],
+    challenges: [
+      {
+        title: 'Short codes that never collide and can’t be guessed',
+        detail:
+          "Random codes need retries once the table fills up, and a plain counter is guessable. Each server leases blocks of 1,000 ids from a PostgreSQL sequence, and a keyed Feistel permutation maps each id to a 7-character base62 code — unique by construction, not enumerable, one database call per 1,000 links. A test checks the permutation exhaustively.",
+      },
+      {
+        title: 'Analytics that never slow down a redirect',
+        detail:
+          "The redirect only queues the click. Delivery is at-least-once, so inserts use ON CONFLICT DO NOTHING on the click id; a bad row falls back to row-by-row inserts, and nothing is acknowledged while the database is down.",
+      },
+      {
+        title: 'Exact limits under concurrency',
+        detail:
+          "Max-click quotas and sliding-window rate limits run as atomic Lua scripts in Redis. In the test, 6 simultaneous visits to a link limited to 3 let exactly 3 through, and link-preview bots like Slackbot never use up the quota.",
+      },
+      {
+        title: 'Fetching user URLs safely (SSRF)',
+        detail:
+          "Tricks like decimal, hex or IPv6-mapped IP addresses are normalised before checking, the private-IP check runs inside the socket’s DNS lookup so DNS rebinding can’t slip past it, and every redirect hop is re-validated with port, timeout and size limits.",
+      },
+    ],
+    numbers: [
+      { label: 'TESTS', value: '146' },
+      { label: 'CACHED REDIRECTS/S', value: '~8K' },
+      { label: 'P50 LATENCY', value: '4 MS' },
+      { label: 'POSSIBLE CODES', value: '3.5 TRILLION' },
+    ],
+    images: [
+      img('linkpulse', 'dashboard.webp', "The dashboard: 30-day clicks, unique visitors, active links and the top links."),
+      img('linkpulse', 'analytics.webp', "Per-link analytics: live counter, clicks over time, unique visitors (HyperLogLog), bots filtered, referrers, countries, devices, browsers and OS."),
+      img('linkpulse', 'links.webp', "All links with their status — active, click limit reached or expired."),
+      img('linkpulse', 'create-qr.webp', "A new short link with its QR code, ready to download."),
+      img('linkpulse', 'rate-limited.webp', "Rate limiting in the UI: a 429 with an exact Retry-After countdown."),
+      img('linkpulse', 'mobile-analytics.webp', "Analytics on a phone."),
+    ],
+    status:
+      "All 114 API tests pass in CI against real PostgreSQL 16 and Redis 7. Load-test numbers are from a local run on a 4-core desktop with the in-memory backend; the app isn’t deployed publicly.",
+  },
   picopulse: {
     pitch:
       'Live telemetry from a Raspberry Pi Pico to a browser dashboard over USB — no drivers, no server, no app to install.',

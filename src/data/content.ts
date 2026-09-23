@@ -245,6 +245,27 @@ export const projects: Project[] = [
     links: [gh('cipher-chat')],
   },
   {
+    id: 'linkpulse',
+    overview:
+      "A bit.ly-style URL shortener built as a system-design answer: redirects are served from cache and never wait on analytics, clicks flow through Redis Streams into PostgreSQL in batches, unique visitors are counted with HyperLogLog, and every endpoint is protected by atomic rate limits. A React dashboard shows the analytics live.",
+    features: [
+      "Cache-first redirects with negative caching; about 8,000 cached redirects/s at 4 ms p50 in a local load test",
+      "Click analytics off the request path: Redis Streams → batched, idempotent PostgreSQL inserts",
+      "Unique visitors with HyperLogLog; referrers, countries, devices, browsers and a live counter (SSE)",
+      "Collision-free, non-guessable 7-character codes (Feistel permutation over leased id blocks)",
+      "Sliding-window rate limits and max-click quotas in atomic Lua; bots filtered",
+      "SSRF protection that blocks DNS rebinding; Argon2id passwords, hashed API keys, OpenAPI docs, QR codes",
+    ],
+    facts: [{ label: 'TESTS', value: '146' }, { label: 'REDIRECTS/S', value: '~8K' }, { label: 'CI', value: 'REAL PG + REDIS' }],
+    title: 'LinkPulse',
+    category: 'web',
+    featured: true,
+    summary:
+      "URL shortener with real-time analytics: cache-first redirects, a Redis Streams → PostgreSQL click pipeline, HyperLogLog unique visitors and atomic rate limits. Fastify + React.",
+    tech: ['TypeScript', 'Fastify', 'Redis', 'PostgreSQL', 'React', 'Docker'],
+    links: [gh('linkpulse')],
+  },
+  {
     id: 'picopulse',
     overview:
       'Live telemetry from a Raspberry Pi Pico to a browser dashboard over USB — no drivers, no server, no app. MicroPython firmware streams a versioned JSON protocol; the dashboard reads it with the Web Serial API, charts it live and sends commands back. A built-in simulator lets anyone try it without a board.',

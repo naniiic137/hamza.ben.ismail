@@ -330,39 +330,45 @@ export const caseStudies: Record<string, CaseStudy> = {
     pitch:
       'A real-time multiplayer party game for phones: write a convincing fake answer to a trivia question, then spot the real one among your friends’ bluffs.',
     problem:
-      'Friends in the same room wanted a phone-based bluffing game in Arabic — no app to install, no accounts, just a room code.',
+      'Friends in the same room wanted a phone-based bluffing game in Arabic — no app to install, no accounts, just a room code. And phones around a table lock, reload and drop off the WiFi, so a round has to survive a player vanishing halfway through.',
     how: [
       'An Express server serves the game and Socket.io carries every event; each room lives in memory and moves through lobby → picking → question → voting → results → finished.',
-      'One server-side timer per room broadcasts the countdown, and a phase ends early once everyone has answered or voted.',
-      'The server shuffles the real answer with the bluffs and sends only the texts, so no phone knows the correct answer — or who wrote each bluff — before the reveal.',
-      'Scoring: +2 for finding the real answer, +1 for every friend your bluff fooled.',
+      'One server-side timer per room broadcasts the countdown, and a phase ends as soon as every connected player has answered or voted — re-checked whenever someone disconnects or leaves.',
+      'The server shuffles the real answer with the bluffs and sends each option as just an id, its text and an “own” flag, so no phone knows the correct answer — or who wrote each bluff — before the reveal.',
+      'Every browser keeps a random player token; on reload it asks to resume, and the server re-attaches it to the same seat and re-sends the current phase and timer.',
+      'Scoring: +2 for finding the real answer, +1 for every friend your bluff fooled — to every author of a merged bluff. Tied scores share a place on the podium.',
     ],
     challenges: [
       {
         title: 'Keeping every phone in sync',
         detail:
-          'The server is the single source of truth: it pushes full room snapshots plus phase events, and phones only send intentions.',
+          'The server is the single source of truth: it pushes full room snapshots plus phase events, and phones only send intentions. Delayed transitions re-check the game state, so a phase can never start twice.',
       },
       {
         title: 'Keeping the answer secret',
         detail:
-          'Vote options carry only text and an index; authorship and the correct answer are revealed only in the results event.',
+          'Vote options carry no authorship, and the correct answer only arrives in the results event. The old host debug panel, which could show answers mid-round, was removed — and a test checks it stays gone.',
       },
       {
-        title: 'Timers vs finishing early',
+        title: 'Surviving reloads and dropped phones',
         detail:
-          'One interval per room with pause support; the early-finish path clears it, and delayed transitions re-check the game state so a phase can never start twice.',
+          'A seat is held for 60 seconds under a per-browser token that other players never see. Coming back restores the same seat, score, answer and vote; offline players aren’t waited for, and if the host leaves, the next connected player takes over.',
       },
       {
-        title: 'Player text on everyone’s screen',
+        title: 'One bad event can’t take a room down',
         detail:
-          'Names, bluffs and chat are escaped when rendered, and the server validates every payload so malformed input can’t crash a room.',
+          'Settings are whitelisted and clamped, text is trimmed and capped, and every socket handler and timer callback is wrapped, so a malformed event is logged instead of crashing the server. Player text is escaped wherever it is shown.',
+      },
+      {
+        title: 'The same bluff, typed twice',
+        detail:
+          'Answers are normalised — case, spacing, punctuation, accents and harakat, Arabic letter variants, leading articles — so identical bluffs merge into one option with shared credit, and typing the real answer is caught when you submit.',
       },
     ],
     numbers: [
       { label: 'QUESTIONS', value: '325' },
-      { label: 'CATEGORIES', value: '13' },
       { label: 'LANGUAGES', value: 'AR · EN' },
+      { label: 'TESTS', value: '23' },
       { label: 'INSTALL', value: 'NONE' },
     ],
     images: [
@@ -380,8 +386,9 @@ export const caseStudies: Record<string, CaseStudy> = {
     how: [
       'A Node.js + Express server with Socket.io; the static front end needs no build step.',
       'A match state machine moves through lobby → house-rules negotiation → secret setup → playing → game over, and routes each move to the right rules engine.',
-      'Classic mode turns the two secret arrangements into a FEN position and plays it with chess.js (with castling disabled). Chaos mode uses its own engine with leap/slide move tables, fairy pieces and board sizes up to 10×10.',
+      'Classic mode turns the two secret arrangements into a FEN position and plays it with chess.js; castling is allowed when king and rook start on their standard squares. Chaos mode uses its own engine with leap/slide move tables, fairy pieces, board sizes up to 10×10 and its own threefold-repetition and 50-move draws.',
       'Before every message, a fog module converts the true board into a per-player view: your pieces with their types, the opponent’s as “occupied”, and an anonymised move log. The full board is only sent at game over, for the final reveal.',
+      'The server hands each seat a random token that the browser sends back in the Socket.io handshake: a reload within 60 seconds resumes the same seat, otherwise the player who stayed wins by abandonment.',
     ],
     challenges: [
       {
@@ -400,6 +407,11 @@ export const caseStudies: Record<string, CaseStudy> = {
           'Secret arrangements are validated and composed into a FEN that chess.js loads without its usual starting-position checks, so pawns can even start on the back rank.',
       },
       {
+        title: 'Reconnecting without leaking the fog',
+        detail:
+          'A returning player is rebuilt through the same per-player filter as every other update — own pieces, “occupied” squares, an anonymised log — so resuming can’t reveal anything. Hidden piece types are never sent while the game runs (the reconnect tests assert every opponent square carries nothing but “occupied”), tokens come only from the server, and a third connection is refused while a seat is held.',
+      },
+      {
         title: 'Negotiating house rules between two players',
         detail:
           'Rule proposals are versioned: any edit resets both players’ agreement, stale “agree” clicks are rejected, and the server sanitises and validates every configuration.',
@@ -409,15 +421,15 @@ export const caseStudies: Record<string, CaseStudy> = {
       { label: 'MODES', value: '2' },
       { label: 'FAIRY PIECES', value: '6' },
       { label: 'BOARDS', value: '8×8 · 10×8 · 10×10' },
-      { label: 'SERVER JS', value: '~1,760 LINES' },
+      { label: 'TESTS', value: '11' },
     ],
     images: [
-      img('fog-chess', 'classic-game.jpg', 'A classic game from White’s fogged view: hidden enemy tokens, two private guess-pins and an anonymised move log.'),
+      img('fog-chess', 'classic-game.jpg', 'A classic game from White’s fogged view: hidden enemy tokens, two private guess-pins and an anonymised move log paired White/Black.'),
       img('fog-chess', 'chaos-house-rules.jpg', 'House-rules negotiation: Chaos mode on a 10×8 board with four fairy pieces enabled.'),
       img('fog-chess', 'chaos-game.jpg', 'A Chaos game with a custom arrangement: your fairy pieces shown as lettered badges, the opponent’s hidden.'),
     ],
     status:
-      'Work in progress: playable end to end on a local network in both modes. Next up: rooms, reconnecting after a disconnect, and clocks.',
+      'Work in progress: playable end to end on a local network in both modes, with reconnection. Still missing: rooms (one match per server for now) and clocks.',
   },
   checkers: {
     pitch:

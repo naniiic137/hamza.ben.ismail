@@ -41,20 +41,33 @@ const LINK_LABEL: Record<string, string> = { GitHub: 'VIEW ON GITHUB', Live: 'PL
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, iframe, [contenteditable="true"], [tabindex]:not([tabindex="-1"])';
 
-/** Makes everything except `keep` inert (unreachable by mouse, keyboard and screen readers). */
-function setBackgroundInert(keep: HTMLElement[], on: boolean) {
+/**
+ * Makes everything except `keep` inert (unreachable by mouse, keyboard and screen
+ * readers). `owner` tags what this call changed, so the briefing and the
+ * mini-game can stack without undoing each other.
+ */
+export function setBackgroundInert(keep: HTMLElement[], on: boolean, owner = 'modal') {
+  const key = `${owner}Inert`;
   document.querySelectorAll<HTMLElement>('body > *').forEach((el) => {
     if (keep.includes(el) || el.tagName === 'SCRIPT') return;
     if (on) {
       if (el.inert) return;
       el.inert = true;
-      el.dataset.modalInert = '';
-    } else if ('modalInert' in el.dataset) {
+      el.dataset[key] = '';
+    } else if (key in el.dataset) {
       el.inert = false;
-      delete el.dataset.modalInert;
+      delete el.dataset[key];
     }
   });
 }
+
+/** Moves focus back to the control that opened an overlay, if it is still on the page. */
+export function restoreFocus(el: HTMLElement | null) {
+  if (el && el.isConnected && el !== document.body) el.focus({ preventScroll: true });
+}
+
+/** The CLOSE / ESC label used by overlay close buttons (touch and narrow screens say CLOSE). */
+export const closeLabel = `<span class="kbd-only">ESC</span><span class="touch-only">CLOSE</span>`;
 
 export function initModal() {
   const modal = document.getElementById('modal')!;
@@ -74,8 +87,8 @@ export function initModal() {
       )
       .join('');
 
-  /** `restoreFocus` is false when an in-page link inside the modal moves focus elsewhere. */
-  const close = (restoreFocus = true) => {
+  /** `restore` is false when an in-page link inside the modal moves focus elsewhere. */
+  const close = (restore = true) => {
     if (!isOpen) return;
     isOpen = false;
     modal.classList.remove('is-open');
@@ -85,7 +98,7 @@ export function initModal() {
     setBackgroundInert([modal, toastEl], false);
     document.dispatchEvent(new CustomEvent('scroll-lock', { detail: false }));
     if (location.hash.startsWith('#case/')) history.replaceState(null, '', location.pathname + location.search);
-    if (restoreFocus) lastFocus?.focus();
+    if (restore) restoreFocus(lastFocus);
   };
 
   /** Projects currently visible under the active filter, in page order. */
@@ -135,7 +148,7 @@ export function initModal() {
       : '';
 
     body.innerHTML = `
-      <button type="button" class="modal__close" data-close aria-label="Close briefing">${icon('close', 12)} ESC</button>
+      <button type="button" class="modal__close" data-close aria-label="Close briefing">${icon('close', 12)} ${closeLabel}</button>
       <p class="modal__kicker">MISSION BRIEFING · M-${String(idx + 1).padStart(2, '0')}${pos > -1 ? ` · ${pos + 1}/${ids.length}` : ''}</p>
       <div class="modal__head">
         <canvas class="modal__sprite" width="132" height="108" aria-hidden="true"></canvas>
@@ -161,7 +174,7 @@ export function initModal() {
       <div class="modal__actions">${caseBtn}${actions}</div>
       <nav class="modal__nav" aria-label="Browse missions">
         <button type="button" class="modal__step" data-step="-1" data-sfx>◀ PREV</button>
-        <span>← → KEYS TO BROWSE</span>
+        <span class="kbd-only">← → KEYS TO BROWSE</span>
         <button type="button" class="modal__step" data-step="1" data-sfx>NEXT ▶</button>
       </nav>`;
     const sc = body.querySelector<HTMLCanvasElement>('.modal__sprite')!;
@@ -208,7 +221,7 @@ export function initModal() {
       `<figure class="case__fig ${cls}"><img src="${asset(im.src)}" alt="${esc(im.caption)}" loading="lazy" /><figcaption>${esc(im.caption)}</figcaption></figure>`;
 
     body.innerHTML = `
-      <button type="button" class="modal__close" data-close aria-label="Close case study">${icon('close', 12)} ESC</button>
+      <button type="button" class="modal__close" data-close aria-label="Close case study">${icon('close', 12)} ${closeLabel}</button>
       <p class="modal__kicker">CASE FILE · M-${String(idx + 1).padStart(2, '0')} · ${cids.indexOf(id) + 1}/${cids.length}</p>
       <h3 id="modalTitle" class="case__title">${esc(p.title)}</h3>
       <p class="case__pitch">${esc(cs.pitch)}</p>
@@ -248,11 +261,22 @@ export function initModal() {
     panel.scrollTop = 0;
   };
 
-  const open = (id: string, asCase = false) => {
+  /** The card's own briefing / case-file button: where focus returns when nothing else is known. */
+  const cardButton = (id: string) => document.querySelector<HTMLElement>(`.card[data-id="${CSS.escape(id)}"] .card__brief`);
+
+  /**
+   * `opener` is the control that asked for the modal; focus goes back to it on
+   * close. (Clicking a button doesn't focus it in every browser, and clicking a
+   * card's body focuses nothing, so document.activeElement alone isn't enough.)
+   */
+  const open = (id: string, asCase = false, opener?: HTMLElement | null) => {
     if (!projectById(id)) return;
     const wasOpen = isOpen;
     isOpen = true;
-    if (!wasOpen) lastFocus = document.activeElement as HTMLElement;
+    if (!wasOpen) {
+      const active = document.activeElement as HTMLElement | null;
+      lastFocus = opener ?? (active && active !== document.body ? active : cardButton(id));
+    }
     modal.hidden = false;
     if (asCase && caseStudies[id]) renderCase(id);
     else render(id);
@@ -265,15 +289,15 @@ export function initModal() {
   document.addEventListener('click', (e) => {
     const t = e.target as HTMLElement;
     const brief = t.closest<HTMLElement>('[data-brief]');
-    if (brief) return open(brief.dataset.brief!);
+    if (brief) return open(brief.dataset.brief!, false, brief);
     const caseBtn = t.closest<HTMLElement>('[data-case]');
-    if (caseBtn) return !isOpen ? open(caseBtn.dataset.case!, true) : renderCase(caseBtn.dataset.case!);
+    if (caseBtn) return !isOpen ? open(caseBtn.dataset.case!, true, caseBtn) : renderCase(caseBtn.dataset.case!);
     if (t.closest('[data-back]')) return render(currentId);
     const stepBtn = t.closest<HTMLElement>('[data-step]');
     if (stepBtn) return step(Number(stepBtn.dataset.step) as 1 | -1);
     // clicking the card body (not a link) also opens the briefing
     const card = t.closest<HTMLElement>('.card');
-    if (card && !t.closest('a,button')) return open(card.dataset.id!);
+    if (card && !t.closest('a,button')) return open(card.dataset.id!, false, cardButton(card.dataset.id!));
     const closer = t.closest('[data-close]');
     // An in-page link (e.g. "request a demo" → #contact) takes focus to its target instead.
     if (closer) close(!closer.matches('a[href^="#"]'));
@@ -303,5 +327,5 @@ export function initModal() {
     }
   });
 
-  return { openCase: (id: string) => open(id, true) };
+  return { openCase: (id: string) => open(id, true, cardButton(id)) };
 }

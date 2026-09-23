@@ -9,6 +9,11 @@ interface Ctx {
 }
 
 const e = (s: string) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]!);
+/** Pads or truncates (with …) to exactly `n` characters, so columns stay aligned. */
+const fit = (s: string, n: number) => {
+  const chars = Array.from(s);
+  return chars.length > n ? chars.slice(0, n - 1).join('') + '…' : s.padEnd(n + s.length - chars.length, ' ');
+};
 const link = (href: string, label = href) => `<a href="${href}" target="_blank" rel="noopener">${e(label)}</a>`;
 
 const FILES: Record<string, string> = {
@@ -48,7 +53,7 @@ const COMMANDS: Record<string, { desc: string; run: (args: string[], c: Ctx) => 
     run: (_a, c) =>
       c.print(
         projects
-          .map((p, i) => `M-${String(i + 1).padStart(2, '0')} ${p.title.padEnd(24, ' ')} ${p.classified ? '[classified]' : p.links[0] ? link(p.links[0].href, '[open]') : ''}`)
+          .map((p, i) => `M-${String(i + 1).padStart(2, '0')} ${e(fit(p.title, 24))} ${p.classified ? '[classified]' : p.links[0] ? link(p.links[0].href, '[open]') : ''}`)
           .join('\n'),
       ),
   },
@@ -91,7 +96,8 @@ const COMMANDS: Record<string, { desc: string; run: (args: string[], c: Ctx) => 
   cat: {
     desc: 'read a file — cat about.txt',
     run: (a, c) => {
-      const f = FILES[a[0] ?? ''];
+      if (!a[0]) return c.print('usage: cat &lt;file&gt; — try <span class="t-cmd">ls</span>', 't-err');
+      const f = FILES[a[0]];
       if (f) c.print(e(f));
       else c.print(`cat: ${e(a[0] ?? '')}: no such file. try <span class="t-cmd">ls</span>`, 't-err');
     },

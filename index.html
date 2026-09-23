@@ -128,10 +128,25 @@
     </div>
 
     <!-- Mini-game -->
-    <div class="game" id="game" hidden>
-      <canvas id="gameCanvas" tabindex="-1" aria-label="Bug Invaders mini-game"></canvas>
-      <div class="game__hint">← → / A D MOVE · SPACE FIRE · P PAUSE · ESC EXIT</div>
-      <button class="game__exit hud__btn" id="gameExit" type="button">EXIT ✕</button>
+    <div class="game" id="game" role="dialog" aria-modal="true" aria-labelledby="gameTitle" hidden>
+      <div class="game__bar">
+        <h2 class="game__title" id="gameTitle">BUG INVADERS</h2>
+        <button class="game__exit hud__btn" id="gameExit" type="button" aria-label="Close the game">
+          <span class="kbd-only">EXIT · ESC</span><span class="touch-only">✕ CLOSE</span>
+        </button>
+      </div>
+      <div class="game__stage" id="gameStage">
+        <canvas id="gameCanvas" tabindex="-1" aria-label="Bug Invaders game screen"></canvas>
+      </div>
+      <div class="game__pad touch-only" aria-hidden="true">
+        <button type="button" class="game__key" data-key="arrowleft" tabindex="-1">◀</button>
+        <button type="button" class="game__key game__key--fire" data-key=" " tabindex="-1">FIRE</button>
+        <button type="button" class="game__key" data-key="arrowright" tabindex="-1">▶</button>
+      </div>
+      <p class="game__hint">
+        <span class="kbd-only">← → / A D MOVE · SPACE FIRE · P PAUSE · ESC EXIT</span>
+        <span class="touch-only">HOLD ◀ ▶ TO MOVE · HOLD FIRE TO SHOOT · OR DRAG ON THE SCREEN</span>
+      </p>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>

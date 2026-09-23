@@ -19,7 +19,7 @@ import {
   bindSfx, continueCountdown, copyText, countUp, fillBar, initSprites, initTilt, pixelPortrait,
   reducedMotion, scramble, toast, typeRoles,
 } from './ui/effects';
-import { initFilters, initModal } from './ui/projects';
+import { initFilters, initModal, restoreFocus, setBackgroundInert } from './ui/projects';
 import { initTerminal } from './ui/terminal';
 import { initAnalytics, track } from './ui/analytics';
 import { BugInvaders } from './game/BugInvaders';
@@ -119,13 +119,14 @@ soundBtn.addEventListener('click', () => {
 $('#playIcon').innerHTML = icon('gamepad', 16);
 
 const menuBtn = $('#menuBtn');
-const closeMenu = () => {
-  document.body.classList.remove('menu-open');
-  menuBtn.setAttribute('aria-expanded', 'false');
-};
-menuBtn.addEventListener('click', () => {
-  const open = document.body.classList.toggle('menu-open');
+const setMenu = (open: boolean) => {
+  document.body.classList.toggle('menu-open', open);
   menuBtn.setAttribute('aria-expanded', String(open));
+  menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+};
+const closeMenu = () => setMenu(false);
+menuBtn.addEventListener('click', () => {
+  setMenu(!document.body.classList.contains('menu-open'));
   sfx.click();
 });
 
@@ -248,9 +249,20 @@ function heroIntro() {
 
 const gameEl = $('#game');
 let game: BugInvaders | null = null;
+/** The control that launched the game; focus goes back there when it closes. */
+let gameOpener: HTMLElement | null = null;
 function openGame() {
-  if (!game) game = new BugInvaders($<HTMLCanvasElement>('#gameCanvas'), closeGame);
+  if (!gameEl.hidden) return;
+  if (!game)
+    game = new BugInvaders($<HTMLCanvasElement>('#gameCanvas'), closeGame, {
+      stage: $('#gameStage'),
+      pad: $$('#game [data-key]'),
+    });
+  gameOpener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  closeMenu();
   gameEl.hidden = false;
+  // The rest of the page is unreachable (Tab, clicks, screen readers) while playing.
+  setBackgroundInert([gameEl, $('#toast')], true, 'game');
   lenis.stop();
   pauseScene('game', true);
   sfx.coin();
@@ -259,10 +271,15 @@ function openGame() {
   $<HTMLCanvasElement>('#gameCanvas').focus();
 }
 function closeGame() {
+  if (gameEl.hidden) return;
   game?.stop();
   gameEl.hidden = true;
-  lenis.start();
+  setBackgroundInert([gameEl, $('#toast')], false, 'game');
+  // A briefing left open underneath keeps the page locked.
+  if ($('#modal').hidden) lenis.start();
   pauseScene('game', false);
+  restoreFocus(gameOpener);
+  gameOpener = null;
 }
 $('#playBtn').addEventListener('click', openGame);
 $('#gameExit').addEventListener('click', closeGame);
@@ -273,7 +290,7 @@ document.addEventListener('click', (e) => {
 const KONAMI = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
 let kIdx = 0;
 window.addEventListener('keydown', (e) => {
-  if (!gameEl.hidden) return;
+  if (!gameEl.hidden || !$('#modal').hidden) return;
   kIdx = e.key.toLowerCase() === KONAMI[kIdx] ? kIdx + 1 : e.key.toLowerCase() === KONAMI[0] ? 1 : 0;
   if (kIdx === KONAMI.length) {
     kIdx = 0;
@@ -293,9 +310,8 @@ $<HTMLFormElement>('#transmit').addEventListener('submit', (e) => {
   const email = String(data.get('email') || '').trim();
   const message = String(data.get('message') || '').trim();
   let bad: HTMLElement | null = null;
-  form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input,textarea').forEach((f) => {
-    const invalid = !f.value.trim() || (f.type === 'email' && !/^\S+@\S+\.\S+$/.test(f.value));
-    f.closest('.field')!.classList.toggle('is-invalid', invalid);
+  fields(form).forEach((f) => {
+    const invalid = !validateField(f);
     if (invalid && !bad) bad = f;
   });
   if (bad) {
@@ -313,6 +329,38 @@ $<HTMLFormElement>('#transmit').addEventListener('submit', (e) => {
   // Nothing has been sent yet: keep the message until the visitor confirms.
   form.querySelector<HTMLElement>('.transmit__note')!.innerHTML =
     `Opening your email app… press send there. No mail app? <button type="button" class="transmit__link" data-copy="${profile.email}">Copy my address</button> · <button type="button" class="transmit__link" data-transmit-clear>Sent it — clear the form</button>`;
+});
+
+/** Each field's error text; `null` when the value is fine. */
+function fieldError(f: HTMLInputElement | HTMLTextAreaElement): string | null {
+  const v = f.value.trim();
+  if (f.name === 'name') return v ? null : 'Enter your name.';
+  if (f.name === 'email') {
+    if (!v) return 'Enter your email address, so I can reply.';
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? null : 'This email address looks incomplete — e.g. you@domain.com.';
+  }
+  if (f.name === 'message') return v ? null : 'Write a message first.';
+  return null;
+}
+
+const fields = (form: HTMLFormElement) => Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input,textarea'));
+
+/** Shows or clears the error under one field (text + aria-invalid). Returns true when valid. */
+function validateField(f: HTMLInputElement | HTMLTextAreaElement) {
+  const err = fieldError(f);
+  const field = f.closest('.field')!;
+  const out = field.querySelector<HTMLElement>('.field__error')!;
+  field.classList.toggle('is-invalid', !!err);
+  out.textContent = err ?? '';
+  if (err) f.setAttribute('aria-invalid', 'true');
+  else f.removeAttribute('aria-invalid');
+  return !err;
+}
+
+// Once a field has been flagged, its message updates as the visitor fixes it.
+$<HTMLFormElement>('#transmit').addEventListener('input', (e) => {
+  const f = e.target as HTMLInputElement | HTMLTextAreaElement;
+  if (f.getAttribute('aria-invalid') === 'true') validateField(f);
 });
 
 document.addEventListener('click', (e) => {

@@ -227,6 +227,10 @@ function experienceSection() {
   </section>`;
 }
 
+/** A labelled form field with a slot for its error message (announced via aria-describedby). */
+const field = (name: string, label: string, control: string) =>
+  `<div class="field"><label for="tx-${name}">${label}</label>${control}<p class="field__error" id="tx-${name}-err"></p></div>`;
+
 function contactSection() {
   const user = profile.email.split('@')[0];
   return `
@@ -249,9 +253,9 @@ function contactSection() {
       <div class="contact__side">
         <form class="transmit px-box" id="transmit" data-reveal novalidate>
           <p class="panel-label">NEW TRANSMISSION</p>
-          <label class="field"><span>CALLSIGN</span><input name="name" type="text" required autocomplete="name" placeholder="Your name" /></label>
-          <label class="field"><span>FREQUENCY</span><input name="email" type="email" required autocomplete="email" placeholder="you@domain.com" /></label>
-          <label class="field"><span>MESSAGE</span><textarea name="message" rows="4" required placeholder="Let's build something..."></textarea></label>
+          ${field('name', 'CALLSIGN', '<input id="tx-name" name="name" type="text" required autocomplete="name" placeholder="Your name" aria-describedby="tx-name-err" />')}
+          ${field('email', 'FREQUENCY', '<input id="tx-email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="you@domain.com" aria-describedby="tx-email-err" />')}
+          ${field('message', 'MESSAGE', '<textarea id="tx-message" name="message" rows="4" required placeholder="Let&#39;s build something..." aria-describedby="tx-message-err"></textarea>')}
           <button class="btn btn--primary btn--block" type="submit" data-sfx>${icon('rocket', 12)} SEND TRANSMISSION</button>
           <p class="transmit__note">Opens your mail app with the message ready to send.</p>
         </form>

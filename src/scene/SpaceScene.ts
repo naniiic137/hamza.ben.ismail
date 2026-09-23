@@ -428,7 +428,9 @@ export class SpaceScene {
     const portrait = window.innerWidth / window.innerHeight < 0.85;
     const keys: Key[] = portrait
       ? [
-          { pos: v(0, -8, 44), look: v(0, 7, 0) },
+          // Tall screens: the hero text fills the column, so the planet rises from
+          // the bottom edge (a horizon) instead of sitting behind the copy.
+          { pos: v(0, 2, 36), look: v(0, 22.5, 0) },
           { pos: v(-28, 6, 30), look: v(0, 2, 0) },
           { pos: v(10, 34, 70), look: v(0, 0, 0) },
           { pos: v(-40, 25, 90), look: GAS_POS },
@@ -457,7 +459,8 @@ export class SpaceScene {
   private resize() {
     const w = window.innerWidth;
     const h = window.innerHeight;
-    this.pixelSize = (w >= 1700 ? 4 : w >= 900 ? 3 : 2) + QUALITY[this.quality].px;
+    // Phones get chunkier pixels: cheaper to render and it keeps the pixel-art look.
+    this.pixelSize = (w >= 1700 ? 4 : w >= 900 ? 3 : w >= 600 ? 2 : 3) + QUALITY[this.quality].px;
     const lw = Math.ceil(w / this.pixelSize);
     const lh = Math.ceil(h / this.pixelSize);
     // Both passes run at the low resolution; CSS scales the canvas up by an

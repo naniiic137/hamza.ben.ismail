@@ -131,7 +131,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       'Tailoring every application by hand is slow, and generic AI tools inflate scores and invent experience that falls apart in the interview. I also wanted it to cost nothing to run — no paid API.',
     how: [
       'Four interchangeable providers — an offline analyzer, Google Gemini (free tier), Ollama (local) and any OpenAI-compatible API — all return the same payload, validated with zod.',
-      'The offline analyzer uses a curated 107-skill taxonomy with French synonyms and implied skills, and detects “required” vs “nice to have” sections in English and French job ads.',
+      'The offline analyzer uses a curated 177-skill taxonomy (one skill per product, so it never swaps GitLab for Git) with French synonyms and implied skills, and detects “required” vs “nice to have” sections in English and French job ads.',
       'LLMs only label skills and write text; the app checks every claim against the CV and computes the score itself, with the same formula for every provider.',
       'Everything runs in the browser: CVs can be uploaded as PDF and parsed locally with pdf.js, and API keys never leave the device.',
     ],
@@ -158,8 +158,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
     numbers: [
-      { label: 'TESTS', value: '97' },
-      { label: 'SKILLS IN TAXONOMY', value: '107' },
+      { label: 'TESTS', value: '176' },
+      { label: 'SKILLS IN TAXONOMY', value: '177' },
       { label: 'PROVIDERS', value: '4' },
       { label: 'OUTPUT', value: 'EN · FR' },
     ],

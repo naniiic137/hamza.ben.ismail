@@ -207,14 +207,14 @@ export const projects: Project[] = [
     overview:
       'A browser-only AI copilot for job applications. Paste your CV and a job ad and get a grounded match score, skill gaps, tailored CV bullets, an EN/FR cover letter and interview prep. It runs free: offline with a built-in analyzer, or with a free/local LLM (Gemini free tier, Ollama, any OpenAI-compatible API).',
     features: [
-      'Offline analyzer: 107-skill taxonomy with French synonyms, section-aware required vs nice-to-have detection',
+      'Offline analyzer: 177-skill taxonomy (one skill per product) with French synonyms, section-aware required vs nice-to-have detection',
       'Pluggable LLM providers: Gemini, Ollama, OpenAI-compatible — all returning one zod-validated schema',
       'Grounding: every “you have this skill” claim must quote the CV, and is checked against it',
       'Score computed by the app (same formula for every provider), not by the model',
       'CV upload as PDF (parsed in the browser with pdf.js), EN/FR output, history, dark/light themes',
-      'Keys stay in the browser; 97 automated tests; CI + GitHub Pages deploy',
+      'Keys stay in the browser; strict CSP; 176 automated tests plus a golden-set evaluation (100% extraction precision); CI + GitHub Pages deploy',
     ],
-    facts: [{ label: 'TESTS', value: '97' }, { label: 'PROVIDERS', value: '4' }, { label: 'COST', value: 'FREE' }],
+    facts: [{ label: 'TESTS', value: '176' }, { label: 'PROVIDERS', value: '4' }, { label: 'COST', value: 'FREE' }],
     title: 'JobFit AI',
     category: 'web',
     featured: true,

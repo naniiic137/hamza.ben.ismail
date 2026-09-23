@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 
-// The site is served from a custom domain root (see public/CNAME),
-// so assets are resolved from "/".
+// Relative base so the build works both on the custom domain root
+// and under a sub-path like username.github.io/repo/.
 export default defineConfig({
-  base: '/',
+  base: './',
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 900,

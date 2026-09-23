@@ -284,7 +284,7 @@ initTilt();
 initFilters();
 initModal();
 const term = initTerminal({ playGame: openGame, scrollTo: scrollToId });
-pixelPortrait($<HTMLCanvasElement>('#pilotCanvas'), '/portfolio.jpg');
+pixelPortrait($<HTMLCanvasElement>('#pilotCanvas'), `${import.meta.env.BASE_URL}portfolio.jpg`);
 continueCountdown($('#continueCount'));
 
 gsap.set('[data-reveal], [data-hero]', { opacity: 0 });

@@ -54,7 +54,7 @@ function about() {
       <article class="pilot px-box" data-reveal>
         <div class="pilot__frame">
           <canvas class="pilot__pixel" id="pilotCanvas" aria-hidden="true"></canvas>
-          <img class="pilot__photo" src="/portfolio.jpg" alt="Portrait of ${esc(profile.name)}" loading="lazy" width="563" height="562" />
+          <img class="pilot__photo" src="${import.meta.env.BASE_URL}portfolio.jpg" alt="Portrait of ${esc(profile.name)}" loading="lazy" width="563" height="562" />
           <span class="pilot__scan" aria-hidden="true"></span>
           <span class="pilot__hint">HOVER TO DECODE</span>
         </div>

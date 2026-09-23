@@ -53,7 +53,7 @@ export const profile = {
   name: 'Hamza Ben Ismail',
   first: 'HAMZA',
   last: 'BEN ISMAIL',
-  origin: 'Sfax, Tunisia',
+  origin: 'Nabeul, Tunisia',
   roles: [
     'FULL-STACK DEVELOPER',
     'AI & AUTOMATION BUILDER',

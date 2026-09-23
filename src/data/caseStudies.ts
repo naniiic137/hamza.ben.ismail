@@ -24,7 +24,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       'Each site is its own small project — an HTML page with its own styles, script, optimised WebP images and (optionally) one self-hosted open-source font — so it runs from disk with no network at all.',
       'Features are real, not mock-ups: reservations follow opening hours, the shop has a working cart and checkout validation, the hotel prices a stay with taxes and offer codes, the inventory app keeps its data between visits.',
       'Without a backend, form submissions and app data are stored in the browser, and every form validates and confirms.',
-      'A landing page lists all nine with industry filters and a live preview at desktop or phone size.',
+      'A landing page lists all fourteen with industry filters and a live preview at desktop or phone size.',
     ],
     challenges: [
       {

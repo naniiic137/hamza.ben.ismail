@@ -153,10 +153,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       { label: 'OUTPUT', value: 'EN · FR' },
     ],
     images: [
-      img('jobfit', '02-results.png', 'Results: the match score computed by the app, coverage by category, and matched vs missing skills.'),
-      img('jobfit', '01-input.png', 'Input: paste or upload a CV and a job ad — sample data for an instant demo.'),
-      img('jobfit', '04-bullets.png', 'Tailored CV bullets, before and after, with placeholders where a real number is needed.'),
-      img('jobfit', '03-cover-letter.png', 'A cover-letter draft built only from what the CV actually says.'),
+      img('jobfit', '02-results.webp', 'Results: the match score computed by the app, coverage by category, and matched vs missing skills.'),
+      img('jobfit', '01-input.webp', 'Input: paste or upload a CV and a job ad — sample data for an instant demo.'),
+      img('jobfit', '04-bullets.webp', 'Tailored CV bullets, before and after, with placeholders where a real number is needed.'),
+      img('jobfit', '03-cover-letter.webp', 'A cover-letter draft built only from what the CV actually says.'),
     ],
     status:
       'The offline mode is fully tested; the LLM providers are covered by tests with mocked responses.',
@@ -202,9 +202,9 @@ export const caseStudies: Record<string, CaseStudy> = {
       { label: 'CHART LIBS', value: 'NONE' },
     ],
     images: [
-      img('picopulse', 'alerts-controls.png', 'A temperature alert firing, with LED and sample-rate controls and the device acknowledging each command.'),
-      img('picopulse', 'dashboard.png', 'The full dashboard: temperature, analog input and free-memory charts, serial monitor and device panel.'),
-      img('picopulse', 'mobile.png', 'The same dashboard on a phone.'),
+      img('picopulse', 'alerts-controls.webp', 'A temperature alert firing, with LED and sample-rate controls and the device acknowledging each command.'),
+      img('picopulse', 'dashboard.webp', 'The full dashboard: temperature, analog input and free-memory charts, serial monitor and device panel.'),
+      img('picopulse', 'mobile.webp', 'The same dashboard on a phone.'),
     ],
     status:
       'Hardware testing on a real Pico is in progress; the online demo runs in simulator mode.',
@@ -250,9 +250,9 @@ export const caseStudies: Record<string, CaseStudy> = {
       { label: 'INSTALL', value: 'NONE' },
     ],
     images: [
-      img('kalak', 'overview.png', 'Home, lobby with host settings, picking a topic and writing a bluff.'),
-      img('kalak', 'round.png', 'Voting among the bluffs, then the reveal: who fooled whom, points and scoreboard.'),
-      img('kalak', 'final-podium.png', 'The final podium.'),
+      img('kalak', 'overview.webp', 'Home, lobby with host settings, picking a topic and writing a bluff.'),
+      img('kalak', 'round.webp', 'Voting among the bluffs, then the reveal: who fooled whom, points and scoreboard.'),
+      img('kalak', 'final-podium.webp', 'The final podium.'),
     ],
   },
 
@@ -343,9 +343,9 @@ export const caseStudies: Record<string, CaseStudy> = {
       { label: 'BACKEND', value: 'NONE' },
     ],
     images: [
-      img('checkers', 'game.png', 'A game from a share link: a Queen king selected, moves in purple, captures in red, with Flying, Knight and Crown kings on the board.'),
-      img('checkers', 'settings.png', 'The rules panel — board presets, default king mode, active king types and rule toggles.'),
-      img('checkers', 'editor.png', 'The board editor on a 10×10 board with mixed king types placed by hand.'),
+      img('checkers', 'game.webp', 'A game from a share link: a Queen king selected, moves in purple, captures in red, with Flying, Knight and Crown kings on the board.'),
+      img('checkers', 'settings.webp', 'The rules panel — board presets, default king mode, active king types and rule toggles.'),
+      img('checkers', 'editor.webp', 'The board editor on a 10×10 board with mixed king types placed by hand.'),
     ],
   },
 
@@ -390,9 +390,9 @@ export const caseStudies: Record<string, CaseStudy> = {
       { label: 'ROUND-TRIP TEST', value: '206 / 206' },
     ],
     images: [
-      img('chesscipher', 'encrypt.png', 'Encrypt mode: “MEET AT MIDNIGHT” hidden on the board, with the PGN-style filename that carries it.'),
-      img('chesscipher', 'decrypt.png', 'Decrypt mode: the filename decoded back to the message, with the letter-mapping overlay on.'),
-      img('chesscipher', 'free-board.png', 'Free Board: type with the keyboard and pieces place themselves.'),
+      img('chesscipher', 'encrypt.webp', 'Encrypt mode: “MEET AT MIDNIGHT” hidden on the board, with the PGN-style filename that carries it.'),
+      img('chesscipher', 'decrypt.webp', 'Decrypt mode: the filename decoded back to the message, with the letter-mapping overlay on.'),
+      img('chesscipher', 'free-board.webp', 'Free Board: type with the keyboard and pieces place themselves.'),
     ],
   },
   wordle: {
@@ -434,8 +434,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       { label: 'CIPHER', value: 'AES-128-GCM' },
     ],
     images: [
-      img('wordle', 'game.png', 'A puzzle in progress with Timed and Reveal First modes stacked — countdown bar, coloured board and keyboard.'),
-      img('wordle', 'share-link.png', 'The creator’s mode grid and a freshly generated encrypted share link.'),
+      img('wordle', 'game.webp', 'A puzzle in progress with Timed and Reveal First modes stacked — countdown bar, coloured board and keyboard.'),
+      img('wordle', 'share-link.webp', 'The creator’s mode grid and a freshly generated encrypted share link.'),
     ],
     status:
       'Live on Netlify. Security hardening (12-byte IVs, XSS fixes, rate limiting, session cleanup) was contributed by Jihed Jarboui.',

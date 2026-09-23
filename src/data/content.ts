@@ -137,20 +137,21 @@ export const projects: Project[] = [
   {
     id: 'websites',
     overview:
-      'Nine complete, working websites for different industries — a fine-dining restaurant, a QR table menu, a wedding, a fashion shop, a real-estate agency, a delivery company, a luxury hotel, an inventory SaaS and a personal brand — plus a landing page I use to show clients what I can build. Pure HTML, CSS and JavaScript, fully responsive, and they work offline.',
+      'Fourteen complete, working websites for different industries — restaurant, QR table menu, wedding, fashion shop, real estate, delivery, luxury hotel, inventory SaaS, personal brand, medical clinic, car rental, gym, barber & beauty salon and a Tunisian tour agency — plus a landing page I use to show clients what I can build. Pure HTML, CSS and JavaScript, fully responsive, and they work offline.',
     features: [
       'Restaurant reservations with opening-hour rules; QR menu with ordering, filters and EN/FR/AR (right-to-left)',
       'E-commerce: filters, quick view with variants, cart, promo codes and a 4-step checkout with card validation',
       'Real estate: search, favourites, compare 3 homes, mortgage calculator; hotel booking with availability calendar and live pricing',
       'Delivery quotes across 29 Tunisian cities with a live tracking simulation',
+      'Clinic appointments by doctor and slot, car rental with live itemised pricing, gym class booking, salon booking that fits multi-service appointments, and Tunisian tour pricing by season',
       'A working inventory mini-app: CRUD, stock movements, alerts, hand-drawn charts, CSV import/export',
       'Every site responsive (390 → 1440 px), accessible, and with zero external requests',
     ],
-    facts: [{ label: 'SITES', value: '9' }, { label: 'FRAMEWORKS', value: 'NONE' }, { label: 'OFFLINE', value: 'YES' }],
+    facts: [{ label: 'SITES', value: '14' }, { label: 'FRAMEWORKS', value: 'NONE' }, { label: 'OFFLINE', value: 'YES' }],
     title: 'Websites for Businesses',
     category: 'web',
     summary:
-      '9 complete client-style websites — restaurant, QR menu, shop, real estate, hotel, delivery, inventory app, wedding, portfolio — responsive and offline-ready.',
+      '14 complete client-style websites — restaurant, QR menu, shop, real estate, hotel, clinic, car rental, gym, salon, travel, delivery, inventory app and more — responsive and offline-ready.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Responsive', 'Accessibility'],
     links: [
       { label: 'Live', href: 'https://websites-preview.netlify.app' },

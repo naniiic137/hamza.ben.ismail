@@ -17,7 +17,7 @@ const img = (id: string, file: string, caption: string) => ({ src: `case/${id}/$
 export const caseStudies: Record<string, CaseStudy> = {
   websites: {
     pitch:
-      'Nine complete websites for real kinds of businesses — each with the features its customers actually use — built without frameworks and working fully offline.',
+      'Fourteen complete websites for real kinds of businesses — each with the features its customers actually use — built without frameworks and working fully offline.',
     problem:
       'I show this collection to potential clients. The first version had three problems: images hot-linked from another server broke offline, the sites weren’t usable on phones, and they looked nice but did little. I rebuilt all of them to fix exactly that.',
     how: [
@@ -49,12 +49,14 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
     numbers: [
-      { label: 'SITES', value: '9' },
+      { label: 'SITES', value: '14' },
       { label: 'EXTERNAL REQUESTS', value: '0' },
       { label: 'TESTED WIDTHS', value: '390 · 768 · 1440' },
       { label: 'FRAMEWORKS', value: 'NONE' },
     ],
     images: [
+      img('websites', 'travel-agency-website.webp', 'Rihla Tours — Tunisian tours with day-by-day itineraries and a seasonal price calculator.'),
+      img('websites', 'clinic-website.webp', 'Nour Clinic — appointments by doctor and time slot, with add-to-calendar.'),
       img('websites', 'hotel-website.webp', 'The Azure Palace — a luxury hotel with a booking widget and live pricing.'),
       img('websites', 'ecommerce-store.webp', 'LUXE — a fashion store with filters, cart and checkout.'),
       img('websites', 'digital-menu.webp', 'Ember & Oak — a QR table menu with ordering, filters and three languages.'),

@@ -132,18 +132,33 @@ export function initSprites() {
     c.height = s.h * scale;
     sprites.set(c, s);
   });
+  // Only redraw sprites that are on screen.
+  const visible = new Set<HTMLCanvasElement>();
+  const io = new IntersectionObserver(
+    (entries) =>
+      entries.forEach((e) => {
+        const c = e.target as HTMLCanvasElement;
+        if (e.isIntersecting) visible.add(c);
+        else visible.delete(c);
+      }),
+    { rootMargin: '100px 0px' },
+  );
+  sprites.forEach((_s, c) => io.observe(c));
+
   let frame = 0;
+  const drawOne = (s: Sprite, c: HTMLCanvasElement) => {
+    const ctx = c.getContext('2d')!;
+    ctx.clearRect(0, 0, c.width, c.height);
+    const colors = CATEGORY_COLORS[c.dataset.cat as keyof typeof CATEGORY_COLORS];
+    const f = c.closest('.card:hover') ? frame : Math.floor(frame / 2);
+    drawSprite(ctx, s, f, scale, colors);
+  };
+  sprites.forEach(drawOne); // first frame for every sprite
   const draw = () => {
-    sprites.forEach((s, c) => {
-      const ctx = c.getContext('2d')!;
-      ctx.clearRect(0, 0, c.width, c.height);
-      const colors = CATEGORY_COLORS[c.dataset.cat as keyof typeof CATEGORY_COLORS];
-      const f = c.closest('.card:hover') ? frame : Math.floor(frame / 2);
-      drawSprite(ctx, s, f, scale, colors);
-    });
+    if (document.hidden) return;
+    visible.forEach((c) => drawOne(sprites.get(c)!, c));
     frame++;
   };
-  draw();
   if (!reducedMotion()) setInterval(draw, 260);
 }
 

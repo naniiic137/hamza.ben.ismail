@@ -22,6 +22,20 @@ interface Key {
 
 const v = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
 
+/**
+ * Quality tiers. The scene starts at tier 0 (tier 1 on GPUs the browser flags as
+ * slow) and steps down when frames stay slow for a few seconds.
+ */
+const QUALITY = [
+  { px: 0, stars: 1, belt: 1 },
+  { px: 1, stars: 0.6, belt: 0.7 },
+  { px: 2, stars: 0.35, belt: 0.45 },
+];
+/** Average frame time (ms) above which the scene counts as struggling (~35 fps). */
+const SLOW_FRAME_MS = 28.5;
+/** Seconds of sustained slow frames before dropping a quality tier. */
+const SLOW_SECONDS = 3;
+
 const GAS_POS = v(-150, 12, 20);
 const SUN_POS = v(240, 70, 40);
 
@@ -57,14 +71,47 @@ export class SpaceScene {
   private pointer = new THREE.Vector2();
   private smoothPointer = new THREE.Vector2();
   private pixelSize = 3;
-  private running = true;
   private fade = { value: 0 };
+  private fadeStart = -1;
+  private fadeDuration = 1600;
   private dummy = new THREE.Object3D();
   private reduced: boolean;
 
+  /** Pending requestAnimationFrame id (0 = no frame scheduled). */
+  private raf = 0;
+  /** Reasons the scene is currently not rendering (tab hidden, overlay open, context lost...). */
+  private paused = new Set<string>();
+  private quality = 0;
+  private frameAvg = 16;
+  private slowFor = 0;
+  private warmup = 1;
+  private starTotal = 0;
+  private canvas: HTMLCanvasElement;
+
   constructor(canvas: HTMLCanvasElement) {
-    this.reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    this.reduced = motionQuery.matches;
+
+    // Prefer a hardware-accelerated context. If the browser reports a major
+    // performance caveat (software rendering, blocklisted GPU) still render,
+    // but on a fresh canvas and starting at a lower quality tier.
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: false,
+        powerPreference: 'high-performance',
+        failIfMajorPerformanceCaveat: true,
+      });
+    } catch {
+      const fresh = canvas.cloneNode() as HTMLCanvasElement;
+      canvas.replaceWith(fresh);
+      canvas = fresh;
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'low-power' });
+      this.quality = 1;
+    }
+    this.canvas = canvas;
+    this.renderer = renderer;
     this.renderer.setPixelRatio(1);
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 2000);
@@ -92,34 +139,81 @@ export class SpaceScene {
 
     this.build();
     this.buildPath();
-    this.resize();
+    this.applyQuality();
     window.addEventListener('resize', () => this.resize());
-    window.addEventListener('pointermove', (e) => {
-      this.pointer.set((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1);
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        this.pointer.set((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1);
+      },
+      { passive: true },
+    );
+    document.addEventListener('visibilitychange', () => this.setPaused('hidden', document.hidden));
+    canvas.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault();
+      this.setPaused('context-lost', true);
     });
-    document.addEventListener('visibilitychange', () => {
-      this.running = !document.hidden;
-      if (this.running) {
-        this.last = performance.now();
-        this.loop();
-      }
+    canvas.addEventListener('webglcontextrestored', () => {
+      // three.js re-uploads geometry, textures and programs by itself.
+      this.resize();
+      this.setPaused('context-lost', false);
     });
-    this.loop();
+    motionQuery.addEventListener('change', () => {
+      this.reduced = motionQuery.matches;
+      if (this.reduced) this.fade.value = 1;
+      this.stop();
+      this.requestRender();
+    });
+    if (document.hidden) this.paused.add('hidden');
+    this.requestRender();
   }
 
-  /** 0..1 over the whole page. */
-  setProgress(p: number) {
+  /** 0..1 over the whole page. `snap` skips the camera easing (first placement). */
+  setProgress(p: number, snap = false) {
     this.progress = THREE.MathUtils.clamp(p, 0, 1);
+    if (snap) this.smoothProgress = this.progress;
+    if (this.reduced) this.requestRender();
   }
 
   fadeIn(duration = 1.6) {
-    const start = performance.now();
-    const step = () => {
-      const t = Math.min(1, (performance.now() - start) / (duration * 1000));
-      this.fade.value = t * t * (3 - 2 * t);
-      if (t < 1) requestAnimationFrame(step);
-    };
-    step();
+    if (this.reduced) {
+      this.fade.value = 1;
+      this.requestRender();
+      return;
+    }
+    this.fadeDuration = duration * 1000;
+    this.fadeStart = performance.now();
+    this.requestRender();
+  }
+
+  /**
+   * Stops rendering while `on` for the given reason (e.g. "overlay" while a modal
+   * or the mini-game covers the page). Rendering resumes once no reason is left.
+   */
+  setPaused(reason: string, on: boolean) {
+    if (on) {
+      this.paused.add(reason);
+      this.stop();
+    } else if (this.paused.delete(reason) && !this.paused.size) {
+      this.warmup = 0.5;
+      this.requestRender();
+    }
+  }
+
+  /**
+   * Schedules a frame unless one is already pending, so loops can never pile up.
+   * With motion enabled that frame keeps the loop going; with
+   * prefers-reduced-motion it draws a single still frame.
+   */
+  private requestRender() {
+    if (this.raf || this.paused.size) return;
+    this.last = performance.now();
+    this.raf = requestAnimationFrame(this.tick);
+  }
+
+  private stop() {
+    if (this.raf) cancelAnimationFrame(this.raf);
+    this.raf = 0;
   }
 
   // ------------------------------------------------------------------ build
@@ -184,6 +278,7 @@ export class SpaceScene {
         depthWrite: false,
       }),
     );
+    this.starTotal = N;
     s.add(this.stars);
 
     // Sun
@@ -352,19 +447,31 @@ export class SpaceScene {
     this.pathLook = new THREE.CatmullRomCurve3(keys.map((k) => k.look), false, 'centripetal');
   }
 
+  private applyQuality() {
+    const q = QUALITY[this.quality];
+    this.stars.geometry.setDrawRange(0, Math.round(this.starTotal * q.stars));
+    this.belt.count = Math.round(this.beltData.length * q.belt);
+    this.resize();
+  }
+
   private resize() {
     const w = window.innerWidth;
     const h = window.innerHeight;
-    this.pixelSize = w >= 1700 ? 4 : w >= 900 ? 3 : 2;
+    this.pixelSize = (w >= 1700 ? 4 : w >= 900 ? 3 : 2) + QUALITY[this.quality].px;
     const lw = Math.ceil(w / this.pixelSize);
     const lh = Math.ceil(h / this.pixelSize);
-    this.renderer.setSize(w, h, false);
+    // Both passes run at the low resolution; CSS scales the canvas up by an
+    // exact integer factor with image-rendering: pixelated.
+    this.renderer.setSize(lw, lh, false);
+    this.canvas.style.width = `${lw * this.pixelSize}px`;
+    this.canvas.style.height = `${lh * this.pixelSize}px`;
     this.rt.setSize(lw, lh);
     this.postMat.uniforms.uRes.value.set(lw, lh);
     this.camera.aspect = w / h;
     this.camera.fov = w / h < 0.85 ? 62 : 45;
     this.camera.updateProjectionMatrix();
     this.buildPath();
+    this.requestRender();
   }
 
   private spawnShootingStar() {
@@ -378,18 +485,47 @@ export class SpaceScene {
 
   // ------------------------------------------------------------------ loop
 
-  private loop = () => {
-    if (!this.running) return;
-    requestAnimationFrame(this.loop);
-    const now = performance.now();
-    const dt = Math.max(0, Math.min((now - this.last) / 1000, 0.05));
+  /** Watches frame times and steps quality down when the GPU can't keep up. */
+  private adapt(rawMs: number, dt: number) {
+    if (this.warmup > 0) {
+      this.warmup -= dt;
+      return;
+    }
+    if (rawMs > 250) return; // a one-off hitch (tab switch, GC), not a trend
+    this.frameAvg += (rawMs - this.frameAvg) * 0.1;
+    this.slowFor = this.frameAvg > SLOW_FRAME_MS ? this.slowFor + dt : Math.max(0, this.slowFor - dt);
+    if (this.slowFor > SLOW_SECONDS && this.quality < QUALITY.length - 1) {
+      this.quality++;
+      this.slowFor = 0;
+      this.warmup = 1;
+      this.frameAvg = 16;
+      this.applyQuality();
+    }
+  }
+
+  private tick = (now: number) => {
+    this.raf = 0;
+    if (this.paused.size) return;
+    const rawMs = Math.max(0, now - this.last);
+    const dt = this.reduced ? 0 : Math.min(rawMs / 1000, 0.05);
     this.last = now;
-    const speed = this.reduced ? 0.15 : 1;
-    this.timeUniform.value += dt * speed;
+    if (!this.reduced) {
+      this.raf = requestAnimationFrame(this.tick);
+      this.adapt(rawMs, dt);
+    }
+
+    if (this.fadeStart >= 0) {
+      const f = Math.min(1, (now - this.fadeStart) / this.fadeDuration);
+      this.fade.value = f * f * (3 - 2 * f);
+      if (f >= 1) this.fadeStart = -1;
+    }
+
+    this.timeUniform.value += dt;
     const t = this.timeUniform.value;
 
     // camera
-    this.smoothProgress += (this.progress - this.smoothProgress) * Math.min(1, dt * 3.5);
+    if (this.reduced) this.smoothProgress = this.progress;
+    else this.smoothProgress += (this.progress - this.smoothProgress) * Math.min(1, dt * 3.5);
     this.smoothPointer.lerp(this.pointer, Math.min(1, dt * 2.5));
     const p = this.smoothProgress;
     const cp = this.pathPos.getPoint(p);
@@ -400,15 +536,15 @@ export class SpaceScene {
     this.camera.lookAt(look);
 
     // bodies
-    this.planetMesh.rotation.y += dt * 0.05 * speed;
-    this.clouds.rotation.y += dt * 0.065 * speed;
+    this.planetMesh.rotation.y += dt * 0.05;
+    this.clouds.rotation.y += dt * 0.065;
     this.moonPivot.rotation.y = t * 0.08;
     this.satPivot.rotation.y = t * 0.22 + 1.5;
     (this.satLight.material as THREE.MeshBasicMaterial).color.set(Math.sin(t * 6) > 0.3 ? '#ff6f91' : '#261b52');
     this.gas.rotation.y = t * 0.02;
     this.stars.rotation.y = t * 0.003;
 
-    for (let i = 0; i < this.beltData.length; i++) {
+    for (let i = 0; i < this.belt.count; i++) {
       const b = this.beltData[i];
       const a = b.a + t * (0.9 / b.r) * 0.6;
       this.dummy.position.set(Math.cos(a) * b.r, b.y, Math.sin(a) * b.r);

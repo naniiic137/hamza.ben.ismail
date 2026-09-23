@@ -34,10 +34,23 @@ renderPage($('#main'));
 
 // ------------------------------------------------------------------ universe
 
+// The page never waits for three.js: content is revealed as soon as the boot
+// sequence ends and the WebGL scene fades in whenever it is ready.
 let scene: SpaceScene | null = null;
-const scenePromise = import('./scene/SpaceScene')
+let booted = false;
+/** Why the scene should currently be paused (modal / mini-game covering the page). */
+const scenePause: Record<string, boolean> = {};
+const pauseScene = (reason: string, on: boolean) => {
+  scenePause[reason] = on;
+  scene?.setPaused(reason, on);
+};
+
+import('./scene/SpaceScene')
   .then(({ SpaceScene }) => {
     scene = new SpaceScene($<HTMLCanvasElement>('#space'));
+    scene.setProgress(cameraProgress(window.scrollY), true);
+    Object.entries(scenePause).forEach(([reason, on]) => scene!.setPaused(reason, on));
+    if (booted) scene.fadeIn();
   })
   .catch((err) => {
     console.warn('WebGL unavailable, using fallback background', err);
@@ -216,6 +229,7 @@ function openGame() {
   if (!game) game = new BugInvaders($<HTMLCanvasElement>('#gameCanvas'), closeGame);
   gameEl.hidden = false;
   lenis.stop();
+  pauseScene('game', true);
   sfx.coin();
   track('play-game', 'Played Bug Invaders');
   game.start();
@@ -225,6 +239,7 @@ function closeGame() {
   game?.stop();
   gameEl.hidden = true;
   lenis.start();
+  pauseScene('game', false);
 }
 $('#playBtn').addEventListener('click', openGame);
 $('#gameExit').addEventListener('click', closeGame);
@@ -293,9 +308,9 @@ continueCountdown($('#continueCount'));
 
 gsap.set('[data-reveal], [data-hero]', { opacity: 0 });
 
-runBoot().then(async () => {
+runBoot().then(() => {
+  booted = true;
   document.body.classList.remove('is-booting');
-  await scenePromise;
   scene?.fadeIn();
   lenis.start();
   initReveals();

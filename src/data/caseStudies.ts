@@ -74,7 +74,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       'A React 18 + TypeScript single-page app uses TanStack Query against a stateless, JWT-secured Spring Boot 3 REST API (13 endpoints, documented with OpenAPI).',
       'Every status change goes through one method on the application entity, which appends a timeline entry and sets the applied date automatically.',
       'Filtering uses JPA Specifications; statistics come from aggregate queries plus weekly bucketing in Java.',
-      'PostgreSQL with Flyway migrations in production, in-memory H2 (PostgreSQL mode) for development and tests, Docker Compose with nginx for the full stack, and GitHub Actions CI.',
+      'PostgreSQL with Flyway migrations in production, in-memory H2 (PostgreSQL mode) for development and tests, Docker Compose with nginx for the full stack. GitHub Actions CI runs three jobs: backend tests (with PostgreSQL via Testcontainers and JaCoCo coverage), frontend tests, and a Docker Compose smoke test that registers, logs in and moves an application through nginx.',
     ],
     challenges: [
       {
@@ -90,7 +90,17 @@ export const caseStudies: Record<string, CaseStudy> = {
       {
         title: 'Instant drag-and-drop that stays correct',
         detail:
-          'A drop updates the board immediately, then rolls back if the server rejects it or refreshes from the server; drag sensors are tuned so clicks still open cards and phones can still scroll.',
+          'A drop updates the board immediately, then rolls back if the server rejects it or refreshes from the server; drag sensors are tuned so clicks still open cards and phones can still scroll. Every card also has a keyboard “Move to…” menu.',
+      },
+      {
+        title: 'Two tabs, one application',
+        detail:
+          'Optimistic locking with a version column: a stale edit gets a 409 instead of silently overwriting newer changes, and the UI refreshes and explains what happened.',
+      },
+      {
+        title: 'Security beyond the login form',
+        detail:
+          'Failed logins are throttled per account and per IP (429 with Retry-After), unknown emails still cost a bcrypt check so accounts can’t be enumerated by timing, passwords over bcrypt’s 72-byte limit are rejected cleanly, and nginx adds CSP and security headers.',
       },
       {
         title: 'Queries that stay correct under paging',
@@ -99,7 +109,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
     numbers: [
-      { label: 'TESTS', value: '53' },
+      { label: 'TESTS', value: '98' },
+      { label: 'COVERAGE', value: '86%' },
       { label: 'ENDPOINTS', value: '13' },
       { label: 'STATUSES', value: '6' },
       { label: 'CI', value: 'GITHUB ACTIONS' },

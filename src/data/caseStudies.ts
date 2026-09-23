@@ -158,7 +158,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
     numbers: [
-      { label: 'TESTS', value: '176' },
+      { label: 'TESTS', value: '196' },
       { label: 'SKILLS IN TAXONOMY', value: '177' },
       { label: 'PROVIDERS', value: '4' },
       { label: 'OUTPUT', value: 'EN · FR' },
@@ -312,7 +312,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
     numbers: [
-      { label: 'TESTS', value: '69 + 28' },
+      { label: 'TESTS', value: '74 + 28' },
       { label: 'RATE', value: '0.2–20 HZ' },
       { label: 'JS BUNDLE', value: '8.9 KB GZIP' },
       { label: 'CHART LIBS', value: 'NONE' },

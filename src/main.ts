@@ -1,9 +1,9 @@
-import '@fontsource/press-start-2p/400.css';
-import '@fontsource/silkscreen/400.css';
-import '@fontsource/silkscreen/700.css';
-import '@fontsource/vt323/400.css';
-import '@fontsource/jetbrains-mono/400.css';
-import '@fontsource/jetbrains-mono/700.css';
+import '@fontsource/press-start-2p/latin-400.css';
+import '@fontsource/silkscreen/latin-400.css';
+import '@fontsource/silkscreen/latin-700.css';
+import '@fontsource/vt323/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-700.css';
 import './styles/main.css';
 
 import gsap from 'gsap';

@@ -15,6 +15,245 @@ export interface CaseStudy {
 const img = (id: string, file: string, caption: string) => ({ src: `case/${id}/${file}`, caption });
 
 export const caseStudies: Record<string, CaseStudy> = {
+  websites: {
+    pitch:
+      'Nine complete websites for real kinds of businesses — each with the features its customers actually use — built without frameworks and working fully offline.',
+    problem:
+      'I show this collection to potential clients. The first version had three problems: images hot-linked from another server broke offline, the sites weren’t usable on phones, and they looked nice but did little. I rebuilt all of them to fix exactly that.',
+    how: [
+      'Each site is its own small project — an HTML page with its own styles, script, optimised WebP images and (optionally) one self-hosted open-source font — so it runs from disk with no network at all.',
+      'Features are real, not mock-ups: reservations follow opening hours, the shop has a working cart and checkout validation, the hotel prices a stay with taxes and offer codes, the inventory app keeps its data between visits.',
+      'Without a backend, form submissions and app data are stored in the browser, and every form validates and confirms.',
+      'A landing page lists all nine with industry filters and a live preview at desktop or phone size.',
+    ],
+    challenges: [
+      {
+        title: 'Never depend on another server',
+        detail:
+          'Every image was downloaded, converted to compressed WebP with responsive sizes, and every font self-hosted — the sites make zero external requests, verified automatically.',
+      },
+      {
+        title: 'Designed for phones, not squeezed onto them',
+        detail:
+          'Each layout was checked at phone, tablet and desktop widths with no horizontal scrolling; tables become cards, filters become bottom sheets, and menus become accessible drawers.',
+      },
+      {
+        title: 'Real features without a backend',
+        detail:
+          'Carts, bookings, RSVPs and inventory persist in the browser, calculators work on real formulas, and the QR menu generates its table codes in the page itself.',
+      },
+      {
+        title: 'Nine distinct identities',
+        detail:
+          'Each industry got its own typography, palette and tone — from a dark-and-gold French restaurant to a teal inventory dashboard and an Arabic-ready menu.',
+      },
+    ],
+    numbers: [
+      { label: 'SITES', value: '9' },
+      { label: 'EXTERNAL REQUESTS', value: '0' },
+      { label: 'TESTED WIDTHS', value: '390 · 768 · 1440' },
+      { label: 'FRAMEWORKS', value: 'NONE' },
+    ],
+    images: [
+      img('websites', 'hotel-website.webp', 'The Azure Palace — a luxury hotel with a booking widget and live pricing.'),
+      img('websites', 'ecommerce-store.webp', 'LUXE — a fashion store with filters, cart and checkout.'),
+      img('websites', 'digital-menu.webp', 'Ember & Oak — a QR table menu with ordering, filters and three languages.'),
+      img('websites', 'inventory-dashboard.webp', 'StockPulse — a working inventory mini-app.'),
+      img('websites', 'real-estate-website.webp', 'PrimeNest Realty — search, compare and mortgage calculator.'),
+    ],
+  },
+
+  applytrack: {
+    pitch:
+      'A full-stack job-application tracker — drag-and-drop Kanban, automatic status timeline, interviews and a stats dashboard — built with React + TypeScript on a Spring Boot REST API.',
+    problem:
+      'Job seekers juggle dozens of applications in spreadsheets, forget who to follow up with, and never see their real response rate. I also wanted a public project that shows the React + Spring Boot stack I use at work, where the code is private.',
+    how: [
+      'A React 18 + TypeScript single-page app uses TanStack Query against a stateless, JWT-secured Spring Boot 3 REST API (13 endpoints, documented with OpenAPI).',
+      'Every status change goes through one method on the application entity, which appends a timeline entry and sets the applied date automatically.',
+      'Filtering uses JPA Specifications; statistics come from aggregate queries plus weekly bucketing in Java.',
+      'PostgreSQL with Flyway migrations in production, in-memory H2 (PostgreSQL mode) for development and tests, Docker Compose with nginx for the full stack, and GitHub Actions CI.',
+    ],
+    challenges: [
+      {
+        title: 'A timeline that can’t drift',
+        detail:
+          'A status can change through a form, a quick action or a Kanban drop — all three go through the same entity method, which records history and ignores no-op moves.',
+      },
+      {
+        title: 'Users can only ever see their own data',
+        detail:
+          'Every lookup is scoped to the owner, and another user’s IDs return 404 so nothing can be probed. A dedicated integration test covers reads, updates, status moves, deletes, interviews, tags and stats.',
+      },
+      {
+        title: 'Instant drag-and-drop that stays correct',
+        detail:
+          'A drop updates the board immediately, then rolls back if the server rejects it or refreshes from the server; drag sensors are tuned so clicks still open cards and phones can still scroll.',
+      },
+      {
+        title: 'Queries that stay correct under paging',
+        detail:
+          'Tag filters use an EXISTS subquery so pages never contain duplicates, search escapes wildcards, related data loads in batches, and an injectable clock makes the date logic testable.',
+      },
+    ],
+    numbers: [
+      { label: 'TESTS', value: '53' },
+      { label: 'ENDPOINTS', value: '13' },
+      { label: 'STATUSES', value: '6' },
+      { label: 'CI', value: 'GITHUB ACTIONS' },
+    ],
+    images: [
+      img('applytrack', 'board.jpg', 'The Kanban board: six status columns with follow-up badges — drag a card to move it.'),
+      img('applytrack', 'dashboard.jpg', 'Stats: response and interview rates, applications per week, pipeline and upcoming follow-ups.'),
+      img('applytrack', 'detail-drawer.jpg', 'An application’s detail drawer with notes, interviews and its automatic status timeline.'),
+      img('applytrack', 'mobile.jpg', 'Board, dashboard and detail view on a phone.'),
+    ],
+    status: 'Tested with H2 locally and in CI; the Docker Compose setup is included for running the full stack with PostgreSQL.',
+  },
+
+  jobfit: {
+    pitch:
+      'A browser-only AI copilot for job applications: paste a CV and a job ad, get a grounded match score, skill gaps, tailored bullets, an EN/FR cover letter and interview prep — for free.',
+    problem:
+      'Tailoring every application by hand is slow, and generic AI tools inflate scores and invent experience that falls apart in the interview. I also wanted it to cost nothing to run — no paid API.',
+    how: [
+      'Four interchangeable providers — an offline analyzer, Google Gemini (free tier), Ollama (local) and any OpenAI-compatible API — all return the same payload, validated with zod.',
+      'The offline analyzer uses a curated 107-skill taxonomy with French synonyms and implied skills, and detects “required” vs “nice to have” sections in English and French job ads.',
+      'LLMs only label skills and write text; the app checks every claim against the CV and computes the score itself, with the same formula for every provider.',
+      'Everything runs in the browser: CVs can be uploaded as PDF and parsed locally with pdf.js, and API keys never leave the device.',
+    ],
+    challenges: [
+      {
+        title: 'The same score, whatever the model',
+        detail:
+          'Models disagree on numbers, so they don’t produce the score: they label each skill as required or nice-to-have and present or missing, and the app applies one weighted formula.',
+      },
+      {
+        title: 'No invented experience',
+        detail:
+          'The grounding rule leads the prompt, every “in your CV” claim must include a verbatim quote, and a post-check matches it against the CV. Unverifiable claims are flagged and earn no points.',
+      },
+      {
+        title: 'Unreliable JSON from LLMs',
+        detail:
+          'Each provider gets JSON mode or a schema, the response is extracted tolerantly, validated with zod, and repaired with exactly one follow-up call listing the validation errors.',
+      },
+      {
+        title: 'Useful with no API key',
+        detail:
+          'The offline mode builds its analysis only from quotes of the CV, so the demo works instantly and honestly for anyone.',
+      },
+    ],
+    numbers: [
+      { label: 'TESTS', value: '97' },
+      { label: 'SKILLS IN TAXONOMY', value: '107' },
+      { label: 'PROVIDERS', value: '4' },
+      { label: 'OUTPUT', value: 'EN · FR' },
+    ],
+    images: [
+      img('jobfit', '02-results.png', 'Results: the match score computed by the app, coverage by category, and matched vs missing skills.'),
+      img('jobfit', '01-input.png', 'Input: paste or upload a CV and a job ad — sample data for an instant demo.'),
+      img('jobfit', '04-bullets.png', 'Tailored CV bullets, before and after, with placeholders where a real number is needed.'),
+      img('jobfit', '03-cover-letter.png', 'A cover-letter draft built only from what the CV actually says.'),
+    ],
+    status:
+      'The offline mode is fully tested; the LLM providers are covered by tests with mocked responses.',
+  },
+
+  picopulse: {
+    pitch:
+      'Live telemetry from a Raspberry Pi Pico to a browser dashboard over USB — no drivers, no server, no app to install.',
+    problem:
+      'Watching a microcontroller usually means a serial terminal full of text, or setting up a desktop app or a message broker. I wanted a structured protocol and a live instrument panel you open from a URL — plus a simulator so anyone can try it without a board.',
+    how: [
+      'MicroPython firmware runs one non-blocking loop: it reads the RP2040’s internal temperature sensor (smoothed), an optional analog input, uptime and free memory, and prints one JSON line per sample at 0.2–20 Hz.',
+      'Commands (LED, blink, sample rate) come back over the same USB link and are read without ever blocking sampling.',
+      'The dashboard connects with the Web Serial API, turns the byte stream into validated messages, keeps ring buffers and draws hand-written canvas charts every frame.',
+      'A simulator in the page speaks exactly the same protocol, so the online demo works for visitors without a Pico.',
+    ],
+    challenges: [
+      {
+        title: 'Messages split across reads',
+        detail:
+          'USB chunks can hold half a line or several lines. The parser keeps the unfinished tail between reads, and tests prove the output is identical whether the stream arrives whole or in 1, 3, 7 or 64-character pieces.',
+      },
+      {
+        title: 'Commands without stalling the sensor',
+        detail:
+          'The firmware polls for input with a zero timeout, uses millisecond deadlines instead of sleeps, and runs blinking as a small state machine.',
+      },
+      {
+        title: 'No fake numbers',
+        detail:
+          'Readings that can’t be real (an unwired input, a simulator that reports zero) are sent as null instead of being converted into believable-looking values.',
+      },
+      {
+        title: 'A demo that stays honest',
+        detail:
+          'The simulator is clearly labelled, and a test checks that every line it produces passes the same validator as real device data.',
+      },
+    ],
+    numbers: [
+      { label: 'TESTS', value: '45 + 11' },
+      { label: 'RATE', value: '0.2–20 HZ' },
+      { label: 'JS BUNDLE', value: '8.9 KB GZIP' },
+      { label: 'CHART LIBS', value: 'NONE' },
+    ],
+    images: [
+      img('picopulse', 'alerts-controls.png', 'A temperature alert firing, with LED and sample-rate controls and the device acknowledging each command.'),
+      img('picopulse', 'dashboard.png', 'The full dashboard: temperature, analog input and free-memory charts, serial monitor and device panel.'),
+      img('picopulse', 'mobile.png', 'The same dashboard on a phone.'),
+    ],
+    status:
+      'Hardware testing on a real Pico is in progress; the online demo runs in simulator mode.',
+  },
+
+  kalak: {
+    pitch:
+      'A real-time multiplayer party game for phones: write a convincing fake answer to a trivia question, then spot the real one among your friends’ bluffs.',
+    problem:
+      'Friends in the same room wanted a phone-based bluffing game in Arabic — no app to install, no accounts, just a room code.',
+    how: [
+      'An Express server serves the game and Socket.io carries every event; each room lives in memory and moves through lobby → picking → question → voting → results → finished.',
+      'One server-side timer per room broadcasts the countdown, and a phase ends early once everyone has answered or voted.',
+      'The server shuffles the real answer with the bluffs and sends only the texts, so no phone knows the correct answer — or who wrote each bluff — before the reveal.',
+      'Scoring: +2 for finding the real answer, +1 for every friend your bluff fooled.',
+    ],
+    challenges: [
+      {
+        title: 'Keeping every phone in sync',
+        detail:
+          'The server is the single source of truth: it pushes full room snapshots plus phase events, and phones only send intentions.',
+      },
+      {
+        title: 'Keeping the answer secret',
+        detail:
+          'Vote options carry only text and an index; authorship and the correct answer are revealed only in the results event.',
+      },
+      {
+        title: 'Timers vs finishing early',
+        detail:
+          'One interval per room with pause support; the early-finish path clears it, and delayed transitions re-check the game state so a phase can never start twice.',
+      },
+      {
+        title: 'Player text on everyone’s screen',
+        detail:
+          'Names, bluffs and chat are escaped when rendered, and the server validates every payload so malformed input can’t crash a room.',
+      },
+    ],
+    numbers: [
+      { label: 'QUESTIONS', value: '325' },
+      { label: 'CATEGORIES', value: '13' },
+      { label: 'LANGUAGES', value: 'AR · EN' },
+      { label: 'INSTALL', value: 'NONE' },
+    ],
+    images: [
+      img('kalak', 'overview.png', 'Home, lobby with host settings, picking a topic and writing a bluff.'),
+      img('kalak', 'round.png', 'Voting among the bluffs, then the reveal: who fooled whom, points and scoreboard.'),
+      img('kalak', 'final-podium.png', 'The final podium.'),
+    ],
+  },
+
   'fog-chess': {
     pitch:
       'Real-time chess for two players on the same network where you can see where enemy pieces are — but never what they are — and each player sets up their army in secret.',

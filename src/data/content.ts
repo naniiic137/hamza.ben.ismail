@@ -114,6 +114,50 @@ export const projects: Project[] = [
     links: [],
   },
   {
+    id: 'applytrack',
+    overview:
+      'A full-stack job-application tracker I built to prove the stack I use professionally in public: a React + TypeScript single-page app on a JWT-secured Spring Boot REST API. Track every application on a drag-and-drop Kanban board, keep an automatic status timeline, log interviews and see your response rate at a glance.',
+    features: [
+      'Drag-and-drop Kanban board across 6 statuses, with instant updates that roll back if the server refuses',
+      'Automatic status timeline — every move is recorded, whichever way the status changes',
+      'Interviews, follow-up reminders, tags, search, filters and pagination',
+      'Stats dashboard: response and interview rates, applications per week, pipeline',
+      'Stateless JWT auth with strict per-user data isolation (tested)',
+      'Flyway migrations, PostgreSQL in production, Docker Compose, CI on GitHub Actions',
+    ],
+    facts: [{ label: 'TESTS', value: '53' }, { label: 'ENDPOINTS', value: '13' }, { label: 'STACK', value: 'SPRING + REACT' }],
+    title: 'ApplyTrack',
+    category: 'web',
+    featured: true,
+    summary:
+      'Full-stack job-application tracker: drag-and-drop Kanban, status timeline, interviews and stats. React + TypeScript on a Spring Boot REST API with JWT.',
+    tech: ['Spring Boot', 'Java', 'React', 'TypeScript', 'PostgreSQL', 'Docker'],
+    links: [gh('applytrack')],
+  },
+  {
+    id: 'websites',
+    overview:
+      'Nine complete, working websites for different industries — a fine-dining restaurant, a QR table menu, a wedding, a fashion shop, a real-estate agency, a delivery company, a luxury hotel, an inventory SaaS and a personal brand — plus a landing page I use to show clients what I can build. Pure HTML, CSS and JavaScript, fully responsive, and they work offline.',
+    features: [
+      'Restaurant reservations with opening-hour rules; QR menu with ordering, filters and EN/FR/AR (right-to-left)',
+      'E-commerce: filters, quick view with variants, cart, promo codes and a 4-step checkout with card validation',
+      'Real estate: search, favourites, compare 3 homes, mortgage calculator; hotel booking with availability calendar and live pricing',
+      'Delivery quotes across 29 Tunisian cities with a live tracking simulation',
+      'A working inventory mini-app: CRUD, stock movements, alerts, hand-drawn charts, CSV import/export',
+      'Every site responsive (390 → 1440 px), accessible, and with zero external requests',
+    ],
+    facts: [{ label: 'SITES', value: '9' }, { label: 'FRAMEWORKS', value: 'NONE' }, { label: 'OFFLINE', value: 'YES' }],
+    title: 'Websites for Businesses',
+    category: 'web',
+    summary:
+      '9 complete client-style websites — restaurant, QR menu, shop, real estate, hotel, delivery, inventory app, wedding, portfolio — responsive and offline-ready.',
+    tech: ['HTML', 'CSS', 'JavaScript', 'Responsive', 'Accessibility'],
+    links: [
+      { label: 'Live', href: 'https://websites-preview.netlify.app' },
+      gh('websites-preview'),
+    ],
+  },
+  {
     id: 'fog-chess',
     overview:
       'A real-time chess variant for two players on the same WiFi, close to Kriegspiel: you can see that a square is occupied, but never what the enemy piece is. The server holds the full board and enforces standard chess rules; each player only receives a filtered "fog of war" view, so the real board is never sent to the client.',
@@ -157,6 +201,47 @@ export const projects: Project[] = [
     links: [gh('ChessCipher')],
   },
   {
+    id: 'jobfit',
+    overview:
+      'A browser-only AI copilot for job applications. Paste your CV and a job ad and get a grounded match score, skill gaps, tailored CV bullets, an EN/FR cover letter and interview prep. It runs free: offline with a built-in analyzer, or with a free/local LLM (Gemini free tier, Ollama, any OpenAI-compatible API).',
+    features: [
+      'Offline analyzer: 107-skill taxonomy with French synonyms, section-aware required vs nice-to-have detection',
+      'Pluggable LLM providers: Gemini, Ollama, OpenAI-compatible — all returning one zod-validated schema',
+      'Grounding: every “you have this skill” claim must quote the CV, and is checked against it',
+      'Score computed by the app (same formula for every provider), not by the model',
+      'CV upload as PDF (parsed in the browser with pdf.js), EN/FR output, history, dark/light themes',
+      'Keys stay in the browser; 97 automated tests; CI + GitHub Pages deploy',
+    ],
+    facts: [{ label: 'TESTS', value: '97' }, { label: 'PROVIDERS', value: '4' }, { label: 'COST', value: 'FREE' }],
+    title: 'JobFit AI',
+    category: 'web',
+    featured: true,
+    summary:
+      'AI job-application copilot: CV vs job ad → grounded match score, skill gaps, tailored bullets and an EN/FR cover letter. Works offline or with free LLMs.',
+    tech: ['React', 'TypeScript', 'LLMs', 'Prompt Engineering', 'zod', 'Vitest'],
+    links: [gh('jobfit-ai')],
+  },
+  {
+    id: 'picopulse',
+    overview:
+      'Live telemetry from a Raspberry Pi Pico to a browser dashboard over USB — no drivers, no server, no app. MicroPython firmware streams a versioned JSON protocol; the dashboard reads it with the Web Serial API, charts it live and sends commands back. A built-in simulator lets anyone try it without a board.',
+    features: [
+      'MicroPython firmware: RP2040 temperature sensor, analog input, non-blocking command handling',
+      'Versioned newline-delimited JSON protocol (5 message types, 6 commands)',
+      'Web Serial dashboard: live canvas charts, min/avg/max, threshold alerts, LED control, CSV export',
+      'Robust stream parsing tested against every possible chunk split',
+      'Simulator mode speaking the exact protocol, plus a Wokwi simulation of the firmware',
+      '45 web tests + 11 firmware tests, CI and GitHub Pages deploy',
+    ],
+    facts: [{ label: 'BOARD', value: 'RASPBERRY PI PICO' }, { label: 'TESTS', value: '56' }, { label: 'RUNTIME DEPS', value: '0' }],
+    title: 'PicoPulse',
+    category: 'web',
+    summary:
+      'Raspberry Pi Pico → browser telemetry over USB with MicroPython and the Web Serial API: live charts, alerts and device control. No drivers, no server.',
+    tech: ['MicroPython', 'Raspberry Pi Pico', 'TypeScript', 'Web Serial', 'Canvas'],
+    links: [gh('picopulse')],
+  },
+  {
     id: 'chkoba',
     overview:
       'A multiplayer browser version of Chkobba (شكوبة), the classic Tunisian card game. Games sync in real time through Firebase Realtime Database, so friends can play from anywhere just by sharing a link — no server to run, deployable to any static host.',
@@ -175,6 +260,26 @@ export const projects: Project[] = [
       'Multiplayer browser version of the classic Tunisian card game. Firebase Realtime Database powers play across any network, with 2-player and 4-player team modes and full Shkobba scoring.',
     tech: ['JavaScript', 'Firebase', 'Real-Time'],
     links: [gh('Chkoba')],
+  },
+  {
+    id: 'kalak',
+    overview:
+      'A real-time multiplayer party game for phones, inspired by Kalak / Fibbage. Everyone writes a convincing fake answer to a trivia question, then tries to spot the real one among the bluffs — points for finding the truth and for fooling friends. Arabic-first, with English support.',
+    features: [
+      'Rooms with 5-character codes, up to 12 players by default, host settings',
+      'Server-authoritative state machine: lobby → picking → question → voting → results',
+      'The real answer is shuffled with the bluffs server-side — clients never learn it early',
+      '325 hand-written questions in 13 categories, in Arabic and English',
+      'Per-room timers with early finish, podium with confetti',
+      'Hardened against injected HTML and malformed socket payloads',
+    ],
+    facts: [{ label: 'QUESTIONS', value: '325' }, { label: 'CATEGORIES', value: '13' }, { label: 'LANGUAGES', value: 'AR · EN' }],
+    title: 'Kalak (كلك)',
+    category: 'web',
+    summary:
+      'Real-time multiplayer trivia-bluffing party game for phones (Arabic/English): write fake answers, spot the real one. Node.js + Socket.io.',
+    tech: ['Node.js', 'Socket.io', 'Express', 'JavaScript'],
+    links: [gh('Kalak')],
   },
   {
     id: 'checkers',
@@ -296,6 +401,25 @@ export const projects: Project[] = [
       'Generates personalized, gamified savings challenges — with interactive HTML trackers for PC and phone plus printable sheets for physical tracking.',
     tech: ['Python', 'HTML', 'CSS', 'JavaScript'],
     links: [gh('MicroSaving')],
+  },
+  {
+    id: 'employer-manager',
+    overview:
+      'The desktop application I built during my internship at Tunisie Telecom to digitise intern records for HR: search by national ID, add, edit, archive and list interns, stored in an embedded SQLite database — no server to install.',
+    features: [
+      'Login window and four-tab main window: search, add, edit, data grid',
+      'SQLite database embedded next to the executable, with a table bootstrap',
+      'National ID as primary key, with a clear message on duplicates',
+      'Archive: records move to a mirrored archive table, with a grid toggle',
+      'Text export of a record (PDF reporting was prototyped)',
+    ],
+    facts: [{ label: 'CONTEXT', value: 'TUNISIE TELECOM' }, { label: 'DATE', value: '08/2022 – 09/2022' }, { label: 'DATABASE', value: 'SQLITE' }],
+    title: 'Intern Manager (Tunisie Telecom)',
+    category: 'desktop',
+    summary:
+      'Desktop app built during my Tunisie Telecom internship to manage intern records: search, add, edit and archive, with an embedded SQLite database.',
+    tech: ['Lazarus', 'Free Pascal', 'SQLite'],
+    links: [gh('Employer-Manager')],
   },
   {
     id: 'inventory',
@@ -701,8 +825,8 @@ export const quests: Quest[] = [
     icon: 'briefcase',
     status: 'complete',
     summary:
-      'Designed and built an employee management application with secure CRUD over staff records, plus a Delphi + SQLite tool to track internships.',
-    rewards: ['Corporate XP', 'HR System', 'Secure CRUD', 'Delphi + SQLite'],
+      'Designed and built a desktop application for HR to manage intern records — search by national ID, add, edit, archive and list — with Lazarus (Delphi-compatible Pascal) and an embedded SQLite database.',
+    rewards: ['Corporate XP', 'HR Desktop App', 'Lazarus / Pascal', 'SQLite'],
   },
   {
     title: 'The Journey Begins',

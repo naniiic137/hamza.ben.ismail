@@ -203,7 +203,7 @@ export const projects: Project[] = [
     summary:
       'Steganography that hides secret messages inside chess positions. SHA-256 maps characters to squares and generates realistic-looking boards as camouflage. Ships as a Python CLI and a drag-and-drop browser app.',
     tech: ['Python', 'JavaScript', 'SHA-256', 'Steganography'],
-    links: [gh('ChessCipher')],
+    links: [{ label: 'Live', href: 'https://naniiic137.github.io/ChessCipher/' }, gh('ChessCipher')],
   },
   {
     id: 'jobfit',
@@ -308,7 +308,7 @@ export const projects: Project[] = [
     summary:
       'Multiplayer browser version of the classic Tunisian card game. Firebase Realtime Database powers play across any network, with 2-player and 4-player team modes and full Shkobba scoring.',
     tech: ['JavaScript', 'Firebase', 'Real-Time'],
-    links: [gh('Chkoba')],
+    links: [{ label: 'Live', href: 'https://chkooba.netlify.app' }, gh('Chkoba')],
   },
   {
     id: 'kalak',
@@ -350,7 +350,7 @@ export const projects: Project[] = [
     summary:
       'Fully customizable checkers: adjustable board size, 6 king movement modes, a board editor, shareable links and real-time peer-to-peer multiplayer over WebRTC.',
     tech: ['JavaScript', 'WebRTC', 'Multiplayer'],
-    links: [gh('Custom-Checkers')],
+    links: [{ label: 'Live', href: 'https://naniiic137.github.io/Custom-Checkers/' }, gh('Custom-Checkers')],
   },
   {
     id: 'wordle',

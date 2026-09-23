@@ -219,7 +219,7 @@ export const projects: Project[] = [
     summary:
       'AI job-application copilot: CV vs job ad → grounded match score, skill gaps, tailored bullets and an EN/FR cover letter. Works offline or with free LLMs.',
     tech: ['React', 'TypeScript', 'LLMs', 'Prompt Engineering', 'zod', 'Vitest'],
-    links: [gh('jobfit-ai')],
+    links: [{ label: 'Live', href: 'https://naniiic137.github.io/jobfit-ai/' }, gh('jobfit-ai')],
   },
   {
     id: 'picopulse',
@@ -239,7 +239,7 @@ export const projects: Project[] = [
     summary:
       'Raspberry Pi Pico → browser telemetry over USB with MicroPython and the Web Serial API: live charts, alerts and device control. No drivers, no server.',
     tech: ['MicroPython', 'Raspberry Pi Pico', 'TypeScript', 'Web Serial', 'Canvas'],
-    links: [gh('picopulse')],
+    links: [{ label: 'Live', href: 'https://naniiic137.github.io/picopulse/' }, gh('picopulse')],
   },
   {
     id: 'chkoba',

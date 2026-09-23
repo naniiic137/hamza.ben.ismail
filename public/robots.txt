@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.hamzabenismail.cloud-ip.cc/sitemap.xml

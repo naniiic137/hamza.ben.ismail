@@ -43,7 +43,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           'Carts, bookings, RSVPs and inventory persist in the browser, calculators work on real formulas, and the QR menu generates its table codes in the page itself.',
       },
       {
-        title: 'Nine distinct identities',
+        title: 'Fourteen distinct identities',
         detail:
           'Each industry got its own typography, palette and tone — from a dark-and-gold French restaurant to a teal inventory dashboard and an Arabic-ready menu.',
       },

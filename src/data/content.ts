@@ -94,22 +94,22 @@ export const projects: Project[] = [
   {
     id: 'logiserv',
     overview:
-      'My final-year capstone project: a production-style platform that lets a logistics company track its vehicle fleet, schedule and log maintenance, and monitor day-to-day operations from one dashboard. I designed and built it end-to-end — from the data model and REST API to the UI, authentication and deployment.',
+      'Built during my capstone internship at STEG (Tunisian Electricity and Gas Company): a web platform to manage and track maintenance interventions on buildings and vehicles. I designed and built it end-to-end — from requirements and the data model to the REST API, UI, authentication and production deployment.',
     features: [
-      'Fleet registry with vehicle profiles, maintenance history and upcoming service tracking',
-      'Operational monitoring dashboard built in React + TypeScript',
-      'Spring Boot REST API with a relational database behind it',
-      'Keycloak single sign-on with role-based access control',
-      'Real-time notifications powered by Redis + Firebase',
+      'Tracking of maintenance interventions for buildings and vehicles, with history and status',
+      'Monitoring dashboard and reporting built in React + TypeScript',
+      'Containerized microservices: Spring Boot REST services on PostgreSQL',
+      'Keycloak single sign-on with LDAP-based role management',
+      'Automated real-time notifications powered by Redis + Firebase',
       'Fully containerized with Docker and served behind an Nginx reverse proxy',
     ],
-    facts: [{ label: 'TYPE', value: 'FINAL YEAR PROJECT' }, { label: 'DATE', value: 'APR–JUN 2025' }, { label: 'SCOPE', value: 'FULL-STACK' }],
+    facts: [{ label: 'CONTEXT', value: 'CAPSTONE @ STEG' }, { label: 'DATE', value: '04/2025 – 07/2025' }, { label: 'SCOPE', value: 'FULL-STACK' }],
     title: 'LOGISERV',
     category: 'web',
     featured: true,
     classified: true,
     summary:
-      'Full-stack fleet maintenance & operations platform. React + TypeScript frontend, Spring Boot REST API, Keycloak auth, Redis + Firebase real-time notifications, Dockerized and served behind Nginx.',
+      'Maintenance-intervention management platform built at STEG. React + TypeScript, Spring Boot microservices, PostgreSQL, Keycloak + LDAP roles, Redis + Firebase notifications, Docker and Nginx.',
     tech: ['React', 'TypeScript', 'Spring Boot', 'Keycloak', 'Redis', 'Docker'],
     links: [],
   },
@@ -658,7 +658,7 @@ export const quests: Quest[] = [
     icon: 'gamepad',
     status: 'active',
     summary:
-      'Building the Orange Crush tap-to-earn crypto game and the ToLZ NFT collection. Grew and run a Discord community of 1,000+ players as both developer and community manager, and launched ToLZ on OpenSea.',
+      'Building the Orange Crush tap-to-earn crypto game — smart contracts, game mechanics and backend infrastructure. Launched the ToLZ NFT collection on OpenSea and grew a Discord community of 1,000+ members.',
     rewards: ['Game Dev', 'NFT Launch', '1000+ Community', 'Blockchain', 'Tap-to-Earn'],
     links: [
       { label: 'Play Orange Crush', href: 'https://orangecrush.app/game' },
@@ -667,34 +667,24 @@ export const quests: Quest[] = [
     ],
   },
   {
-    title: 'LOGISERV — Final Year Project',
-    org: 'Academic Project',
-    date: 'APR — JUN 2025',
+    title: 'Capstone Intern — Full-Stack Developer',
+    org: 'STEG — Tunisian Electricity and Gas Company',
+    date: 'APR — JUL 2025',
     icon: 'rocket',
     status: 'complete',
     summary:
-      'Designed and shipped a full-stack fleet maintenance & monitoring platform: React + TypeScript, Spring Boot REST API, Keycloak auth, Redis + Firebase notifications, Docker and Nginx.',
+      'Built LOGISERV, a platform to manage and track maintenance interventions on buildings and vehicles, from requirements to production: React + TypeScript, Spring Boot microservices, PostgreSQL, Keycloak with LDAP roles, Redis + Firebase notifications, Docker and Nginx.',
     rewards: ['Full-Stack', 'React + TS', 'Spring Boot', 'Docker', 'Keycloak'],
   },
   {
     title: 'B.Sc. Computer Science',
     org: 'Faculty of Sciences of Sfax',
-    date: '2022 — 2025',
+    date: '2021 — 2025',
     icon: 'grad',
     status: 'complete',
     summary:
       'Computer Science degree focused on software development, web technologies and system architecture — a strong foundation in fundamentals and modern practices.',
     rewards: ['Software Eng.', 'Web Tech', 'Architecture', 'Algorithms'],
-  },
-  {
-    title: 'Software Developer Intern',
-    org: 'Tunisie Telecom',
-    date: '2024',
-    icon: 'briefcase',
-    status: 'complete',
-    summary:
-      'Built an employee management application to streamline HR operations — secure CRUD over staff records, centralized access and a clean UI that replaced manual record-keeping.',
-    rewards: ['Corporate XP', 'HR System', 'Secure CRUD', 'UI/UX'],
   },
   {
     title: 'Pascal Programming',
@@ -704,6 +694,16 @@ export const quests: Quest[] = [
     status: 'complete',
     summary: 'Five years of Pascal that built my core: programming logic, algorithms and problem solving.',
     rewards: ['Algorithmic Thinking', 'Logic', '5 Years'],
+  },
+  {
+    title: 'Software Development Intern',
+    org: 'Tunisie Telecom',
+    date: 'AUG — SEP 2022',
+    icon: 'briefcase',
+    status: 'complete',
+    summary:
+      'Designed and built an employee management application with secure CRUD over staff records, plus a Delphi + SQLite tool to track internships.',
+    rewards: ['Corporate XP', 'HR System', 'Secure CRUD', 'Delphi + SQLite'],
   },
   {
     title: 'The Journey Begins',

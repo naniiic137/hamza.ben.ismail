@@ -84,7 +84,7 @@ export const profile = {
     { name: 'AI / LLM', value: 8 },
     { name: 'AUTOMATION', value: 9 },
     { name: 'GAME DEV', value: 7 },
-    { name: 'HARDWARE', value: 6 },
+    { name: 'HARDWARE', value: 8 },
   ],
 };
 
@@ -227,14 +227,16 @@ export const projects: Project[] = [
     overview:
       'Live telemetry from a Raspberry Pi Pico to a browser dashboard over USB — no drivers, no server, no app. MicroPython firmware streams a versioned JSON protocol; the dashboard reads it with the Web Serial API, charts it live and sends commands back. A built-in simulator lets anyone try it without a board.',
     features: [
-      'MicroPython firmware: RP2040 temperature sensor, analog input, non-blocking command handling',
+      'MicroPython firmware: RP2040 temperature sensor (16× oversampled, TEMP_OFFSET_C calibration), analog input, non-blocking command handling',
+      'Resilient firmware loop: survives exceptions with rate-limited error reports, optional hardware watchdog, uptime that survives the 2^30 ms tick wrap, strict command validation',
       'Versioned newline-delimited JSON protocol (5 message types, 6 commands)',
       'Web Serial dashboard: live canvas charts, min/avg/max, threshold alerts, LED control, CSV export',
+      'Dashboard redraws at most 30 fps and only on new data, keeps at most 30 minutes of history, recovers from non-fatal serial read errors and throttles screen-reader alerts',
       'Robust stream parsing tested against every possible chunk split',
       'Simulator mode speaking the exact protocol, plus a Wokwi simulation of the firmware',
-      '45 web tests + 11 firmware tests, CI and GitHub Pages deploy',
+      '69 web tests (Vitest) + 28 firmware tests (unittest), CI and GitHub Pages deploy — testing on a real Pico still pending',
     ],
-    facts: [{ label: 'BOARD', value: 'RASPBERRY PI PICO' }, { label: 'TESTS', value: '56' }, { label: 'RUNTIME DEPS', value: '0' }],
+    facts: [{ label: 'BOARD', value: 'RASPBERRY PI PICO' }, { label: 'TESTS', value: '97' }, { label: 'RUNTIME DEPS', value: '0' }],
     title: 'PicoPulse',
     category: 'web',
     summary:
@@ -769,7 +771,7 @@ export const quests: Quest[] = [
     icon: 'gamepad',
     status: 'active',
     summary:
-      'Building the Orange Crush tap-to-earn crypto game — smart contracts, game mechanics and backend infrastructure. Launched the ToLZ NFT collection on OpenSea and grew a Discord community of 1,000+ members.',
+      'Building the Orange Crush tap-to-earn crypto game — game mechanics, backend infrastructure and smart-contract integration. Launched the ToLZ NFT collection on OpenSea and grew a Discord community of 1,000+ members.',
     rewards: ['Game Dev', 'NFT Launch', '1000+ Community', 'Blockchain', 'Tap-to-Earn'],
     links: [
       { label: 'Play Orange Crush', href: 'https://orangecrush.app/game' },

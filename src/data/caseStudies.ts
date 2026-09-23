@@ -168,9 +168,9 @@ export const caseStudies: Record<string, CaseStudy> = {
     problem:
       'Watching a microcontroller usually means a serial terminal full of text, or setting up a desktop app or a message broker. I wanted a structured protocol and a live instrument panel you open from a URL — plus a simulator so anyone can try it without a board.',
     how: [
-      'MicroPython firmware runs one non-blocking loop: it reads the RP2040’s internal temperature sensor (smoothed), an optional analog input, uptime and free memory, and prints one JSON line per sample at 0.2–20 Hz.',
+      'MicroPython firmware runs one non-blocking loop: it reads the RP2040’s internal temperature sensor (16× oversampled, with a TEMP_OFFSET_C calibration constant), an optional analog input, uptime and free memory, and prints one JSON line per sample at 0.2–20 Hz.',
       'Commands (LED, blink, sample rate) come back over the same USB link and are read without ever blocking sampling.',
-      'The dashboard connects with the Web Serial API, turns the byte stream into validated messages, keeps ring buffers and draws hand-written canvas charts every frame.',
+      'The dashboard connects with the Web Serial API, turns the byte stream into validated messages, keeps ring buffers capped at 30 minutes of data and redraws hand-written canvas charts only when new data arrives, at most 30 times a second.',
       'A simulator in the page speaks exactly the same protocol, so the online demo works for visitors without a Pico.',
     ],
     challenges: [
@@ -185,6 +185,11 @@ export const caseStudies: Record<string, CaseStudy> = {
           'The firmware polls for input with a zero timeout, uses millisecond deadlines instead of sleeps, and runs blinking as a small state machine.',
       },
       {
+        title: 'Keep running whatever happens',
+        detail:
+          'An exception inside the loop is caught and reported at a limited rate instead of killing the firmware; commands are validated strictly; an optional hardware watchdog can be armed; and uptime is computed so it survives the 2^30 ms tick wrap. On the web side, non-fatal serial read errors are recovered from. These paths are covered by unit tests — testing on a real Pico is still pending.',
+      },
+      {
         title: 'No fake numbers',
         detail:
           'Readings that can’t be real (an unwired input, a simulator that reports zero) are sent as null instead of being converted into believable-looking values.',
@@ -196,7 +201,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
     numbers: [
-      { label: 'TESTS', value: '45 + 11' },
+      { label: 'TESTS', value: '69 + 28' },
       { label: 'RATE', value: '0.2–20 HZ' },
       { label: 'JS BUNDLE', value: '8.9 KB GZIP' },
       { label: 'CHART LIBS', value: 'NONE' },
@@ -207,7 +212,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       img('picopulse', 'mobile.webp', 'The same dashboard on a phone.'),
     ],
     status:
-      'Hardware testing on a real Pico is in progress; the online demo runs in simulator mode.',
+      'Hardware testing on a real Pico is still pending; the online demo runs in simulator mode.',
   },
 
   kalak: {

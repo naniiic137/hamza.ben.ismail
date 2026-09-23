@@ -174,8 +174,7 @@ function skillsSection() {
                 (s) => `
               <li class="skill">
                 <span class="skill__name">${esc(s.name)}</span>
-                <span class="seg-bar seg-bar--sm" data-fill="${Math.round(s.level / 10)}">${'<i></i>'.repeat(10)}</span>
-                <span class="skill__val">${s.level}</span>
+                <span class="seg-bar seg-bar--sm" data-fill="${Math.round(s.level / 10)}" aria-hidden="true">${'<i></i>'.repeat(10)}</span>
               </li>`,
               )
               .join('')}

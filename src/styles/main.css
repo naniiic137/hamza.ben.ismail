@@ -1441,19 +1441,13 @@ main {
 }
 .skill {
   display: grid;
-  grid-template-columns: minmax(120px, 1.1fr) 1fr 28px;
+  grid-template-columns: minmax(120px, 1.1fr) 1fr;
   align-items: center;
   gap: 12px;
 }
 .skill__name {
   font-size: 13px;
   color: var(--ink);
-}
-.skill__val {
-  font-family: var(--f-term);
-  font-size: 18px;
-  color: var(--dim);
-  text-align: right;
 }
 
 .inventory {
@@ -2076,7 +2070,7 @@ main {
     grid-template-columns: 1fr;
   }
   .skill {
-    grid-template-columns: 1fr 90px 26px;
+    grid-template-columns: 1fr 100px;
   }
   .trees {
     grid-template-columns: 1fr;

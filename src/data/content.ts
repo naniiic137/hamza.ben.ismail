@@ -245,7 +245,7 @@ export const projects: Project[] = [
     summary:
       "End-to-end encrypted real-time chat with a blind relay: X3DH + Double Ratchet, Argon2id, three cipher suites, signed messages and a live view of what the server sees.",
     tech: ['TypeScript', 'React', 'Node.js', 'WebSocket', 'Web Crypto', 'SQLite'],
-    links: [gh('cipher-chat')],
+    links: [{ label: 'Live', href: 'https://naniiic137.github.io/cipher-chat/' }, gh('cipher-chat')],
   },
   {
     id: 'linkpulse',

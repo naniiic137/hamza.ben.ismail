@@ -488,7 +488,7 @@ export const projects: Project[] = [
     summary:
       "Desktop sales log with SQLite: record sales, search, and export today’s or all sales to CSV. Built with Python and ttkbootstrap.",
     tech: ["Python", "ttkbootstrap", "SQLite"],
-    links: [gh('simple-inventory')],
+    links: [gh('simple-sales-manager')],
   },
   {
     id: 'calc-vault',
@@ -655,7 +655,7 @@ export const projects: Project[] = [
     summary:
       "Caesar cipher CLI: encrypt, decrypt and brute-force crack a message with any shift, preserving case and punctuation. Unit-tested.",
     tech: ["Python", "argparse", "unittest"],
-    links: [gh('Encrypte-And-Decryption')],
+    links: [gh('Caesar-Cipher')],
   },
   {
     id: 'love-calc',
@@ -727,7 +727,7 @@ export const projects: Project[] = [
     summary:
       "Windows desktop password generator with a length slider and character-type options, built with Lazarus / Free Pascal.",
     tech: ["Lazarus", "Free Pascal"],
-    links: [gh('Password-Genetrater')],
+    links: [gh('Password-Generator')],
   },
 ];
 

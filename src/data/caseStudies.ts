@@ -173,6 +173,56 @@ export const caseStudies: Record<string, CaseStudy> = {
       'The offline mode is fully tested; the LLM providers are covered by tests with mocked responses.',
   },
 
+  'cipher-chat': {
+    pitch:
+      "An end-to-end encrypted real-time chat where the relay server provably sees only ciphertext — yet still controls who may join a room.",
+    problem:
+      "“End-to-end encrypted” is easy to claim and hard to check. I wanted an app that makes the claim visible — a live panel showing every frame the server receives, plus a button that corrupts a message in transit — and testable, with an integration test that inspects everything the server ever handles.",
+    how: [
+      "Keys are created on the device and shared through a link fragment (never sent to the server), a passphrase stretched with Argon2id, an X3DH-style handshake, or a key file / QR code.",
+      "One room secret is split with HKDF into separate keys for messages, the room header, files and membership. Messages are signed with Ed25519, padded to hide their length, then encrypted with the room’s cipher suite.",
+      "1:1 rooms switch to a Double Ratchet after the handshake, so every message has its own key and a stolen key doesn’t unlock the past.",
+      "The relay (Node.js, WebSocket, SQLite) stores only ciphertext and a public verifier. The same relay code runs in the browser for the offline demo, with tabs talking over BroadcastChannel.",
+    ],
+    challenges: [
+      {
+        title: 'Gating rooms without giving the server the key',
+        detail:
+          "An HMAC challenge would need the key on the server, so the membership key seeds an Ed25519 key pair instead. The relay keeps only the public key and checks a signature over a one-time nonce — a leaked database can’t be used to join.",
+      },
+      {
+        title: 'Assuming the relay is malicious',
+        detail:
+          "A hostile relay could weaken the passphrase settings, swap the cipher or replay old frames. Those public fields are bound into the encryption, clients refuse weak Argon2id/PBKDF2 parameters, and per-sender counters flag replays — even of deleted messages.",
+      },
+      {
+        title: 'A demo that needs no server',
+        detail:
+          "The relay logic is transport-agnostic: on GitHub Pages one tab is elected (Web Locks) to host it and the other tabs connect over BroadcastChannel — each tab is a separate person.",
+      },
+      {
+        title: 'Testing forward secrecy honestly',
+        detail:
+          "My first test failed, and it exposed a wrong assumption about when the Double Ratchet recovers after a key theft. The final test models an attacker who keeps listening and shows recovery only after a full Diffie-Hellman round trip, exactly as the design specifies.",
+      },
+    ],
+    numbers: [
+      { label: 'TESTS', value: '257' },
+      { label: 'RFC TEST VECTOR SETS', value: '6' },
+      { label: 'CIPHER SUITES', value: '3' },
+      { label: 'KEY-SHARING MODES', value: '4' },
+    ],
+    images: [
+      img('cipher-chat', 'server-view-inspector.webp', "“What the server sees”: every frame is ciphertext (0 plaintext leaks), and a bit flipped in transit is rejected in the chat."),
+      img('cipher-chat', 'chat-verified-contact.webp', "A 1:1 Double Ratchet room with a verified contact, an encrypted file and signed messages."),
+      img('cipher-chat', 'room-wizard.webp', "Creating a room: choose the cipher suite and one of four ways to share the key."),
+      img('cipher-chat', 'safety-numbers.webp', "Safety numbers: compare 60 digits or scan the QR code to verify a contact."),
+      img('cipher-chat', 'enigma-playground.webp', "The classic ciphers playground: an Enigma machine with rotor windows and the full signal path."),
+      img('cipher-chat', 'mobile.webp', "The chat on a phone."),
+    ],
+    status:
+      "Tested with published RFC test vectors and a blind-relay integration test; not independently audited — a learning project, not a replacement for Signal.",
+  },
   picopulse: {
     pitch:
       'Live telemetry from a Raspberry Pi Pico to a browser dashboard over USB — no drivers, no server, no app to install.',

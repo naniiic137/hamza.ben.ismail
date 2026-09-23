@@ -224,6 +224,27 @@ export const projects: Project[] = [
     links: [{ label: 'Live', href: 'https://naniiic137.github.io/jobfit-ai/' }, gh('jobfit-ai')],
   },
   {
+    id: 'cipher-chat',
+    overview:
+      "An end-to-end encrypted real-time chat where the relay server only ever sees ciphertext — and a live “What the server sees” panel lets you check that yourself, frame by frame. Keys are created on your device and shared by link, passphrase, handshake or key file; the server still controls who may join without ever knowing the key.",
+    features: [
+      "Three cipher suites: AES-256-GCM, ChaCha20-Poly1305 and XChaCha20-Poly1305",
+      "Four ways to share a key: secret link, passphrase (Argon2id or PBKDF2), X3DH-style handshake, or key file / QR",
+      "1:1 rooms use a Double Ratchet: every message gets its own key (forward secrecy)",
+      "Signed, padded messages; tampering, replays and forged senders are rejected",
+      "Encrypted file sharing, safety numbers with QR verification, key rotation, disappearing messages",
+      "Classic ciphers playground (Caesar, Vigenère, XOR, Atbash, Enigma) — clearly labelled as not secure",
+    ],
+    facts: [{ label: 'TESTS', value: '257' }, { label: 'CIPHER SUITES', value: '3' }, { label: 'RFC TEST VECTORS', value: '6 SETS' }],
+    title: 'CipherChat',
+    category: 'web',
+    featured: true,
+    summary:
+      "End-to-end encrypted real-time chat with a blind relay: X3DH + Double Ratchet, Argon2id, three cipher suites, signed messages and a live view of what the server sees.",
+    tech: ['TypeScript', 'React', 'Node.js', 'WebSocket', 'Web Crypto', 'SQLite'],
+    links: [gh('cipher-chat')],
+  },
+  {
     id: 'picopulse',
     overview:
       'Live telemetry from a Raspberry Pi Pico to a browser dashboard over USB — no drivers, no server, no app. MicroPython firmware streams a versioned JSON protocol; the dashboard reads it with the Web Serial API, charts it live and sends commands back. A built-in simulator lets anyone try it without a board.',

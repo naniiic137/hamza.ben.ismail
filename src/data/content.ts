@@ -566,22 +566,6 @@ export const projects: Project[] = [
     links: [gh('Clock-Simulation')],
   },
   {
-    id: 'valorant',
-    overview:
-      'A small automation script that instantly locks in your preferred agent during VALORANT\'s agent-select screen.',
-    features: [
-      'Detects the agent-select screen',
-      'Automatically selects and locks your chosen agent',
-    ],
-    facts: [{ label: 'LANGUAGE', value: 'PYTHON' }, { label: 'TYPE', value: 'AUTOMATION' }],
-    title: 'Valorant Agent Lock',
-    category: 'python',
-    summary:
-      'Automation script that instantly locks your preferred Valorant agent using screen detection and automated input.',
-    tech: ['Python', 'Automation', 'Computer Vision'],
-    links: [gh('Valorant-Agent-selection')],
-  },
-  {
     id: 'file-sorter',
     overview:
       'Drop the script into any messy folder and run it — files are organized automatically into tidy folders.',
@@ -676,21 +660,6 @@ export const projects: Project[] = [
     summary: 'Generates strong random passwords with configurable length and character sets.',
     tech: ['Python', 'Security'],
     links: [gh('Password-Genetrater')],
-  },
-  {
-    id: 'zip',
-    overview:
-      'An educational look at compression: builds archives that are tiny on disk but expand into huge amounts of data, showing how compression ratios can be abused. For learning and testing only.',
-    features: [
-      'Configurable output size',
-      'Demonstrates extreme compression ratios',
-    ],
-    facts: [{ label: 'LANGUAGE', value: 'PYTHON' }, { label: 'PURPOSE', value: 'EDUCATIONAL' }],
-    title: 'Zip Bomb Lab',
-    category: 'python',
-    summary: 'Explores compression by building archives that look tiny but expand enormously — configurable and educational.',
-    tech: ['Python', 'Compression'],
-    links: [gh('Zip-Bomb')],
   },
 ];
 

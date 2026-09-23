@@ -37,6 +37,12 @@
         "sameAs": ["https://github.com/naniiic137", "https://www.linkedin.com/in/hamzabenismail1"]
       }
     </script>
+    <noscript>
+      <style>
+        .boot, .hud, .tracker, .telemetry, #space, .skip-link { display: none !important; }
+        body.is-booting { overflow: auto; }
+      </style>
+    </noscript>
   </head>
   <body class="is-booting">
     <a class="skip-link" href="#about">Skip to content</a>
@@ -45,10 +51,33 @@
     <canvas id="space" aria-hidden="true"></canvas>
     <div class="crt" aria-hidden="true"></div>
 
+    <!-- Without JavaScript: the essentials, instead of a boot screen that never ends -->
+    <noscript>
+      <main class="nojs">
+        <h1>Hamza Ben Ismail</h1>
+        <p class="nojs__role">Full-Stack Developer · AI &amp; Automation · Game Dev — Nabeul, Tunisia</p>
+        <p>
+          Full-stack developer building web platforms, bots, games, IoT systems and AI-powered tools —
+          from React + Spring Boot to Raspberry Pi and ESP32. This portfolio is an interactive pixel
+          universe that needs JavaScript; here are the essentials.
+        </p>
+        <ul class="nojs__links">
+          <li><a href="cv/Hamza-Ben-Ismail-CV-EN.pdf" download>Download CV (English, PDF)</a></li>
+          <li><a href="cv/Hamza-Ben-Ismail-CV-FR.pdf" download>Télécharger le CV (français, PDF)</a></li>
+          <li><a href="mailto:hamza.benismail.6@gmail.com">hamza.benismail.6@gmail.com</a></li>
+          <li><a href="https://github.com/naniiic137" rel="noopener">GitHub — @naniiic137</a></li>
+          <li><a href="https://www.linkedin.com/in/hamzabenismail1" rel="noopener">LinkedIn — hamzabenismail1</a></li>
+        </ul>
+      </main>
+    </noscript>
+
+    <!-- Screen readers hear "Loading" once and "Ready" once, not every boot line -->
+    <p class="sr-only" id="bootStatus" role="status"></p>
+
     <!-- Boot sequence -->
-    <div id="boot" class="boot" role="status" aria-live="polite">
+    <div id="boot" class="boot">
       <div class="boot__inner">
-        <pre class="boot__log" id="bootLog"></pre>
+        <pre class="boot__log" id="bootLog" aria-hidden="true"></pre>
         <div class="boot__bar"><span id="bootBar"></span></div>
         <p class="boot__press" id="bootPress">PRESS START</p>
       </div>

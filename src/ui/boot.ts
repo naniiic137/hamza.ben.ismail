@@ -20,6 +20,9 @@ export function runBoot(): Promise<void> {
   const bar = document.getElementById('bootBar')!;
   const press = document.getElementById('bootPress')!;
   const skipBtn = document.getElementById('bootSkip')!;
+  // The visual log is aria-hidden; assistive tech gets one "loading" and one "ready".
+  const status = document.getElementById('bootStatus');
+  setTimeout(() => status && !status.textContent && (status.textContent = 'Loading portfolio…'), 50);
 
   let seen = false;
   try {
@@ -42,6 +45,7 @@ export function runBoot(): Promise<void> {
       bar.style.width = '100%';
       sfx.start();
       boot.classList.add('is-done');
+      if (status) status.textContent = 'Ready. Portfolio loaded.';
       window.removeEventListener('keydown', finish);
       boot.removeEventListener('click', finish);
       setTimeout(() => {

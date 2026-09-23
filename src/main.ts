@@ -284,11 +284,23 @@ $<HTMLFormElement>('#transmit').addEventListener('submit', (e) => {
   const subject = encodeURIComponent(`Portfolio contact from ${name}`);
   const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
   sfx.powerup();
-  track('contact-form', 'Contact form sent');
-  toast('▲ TRANSMISSION READY — OPENING MAIL');
+  track('contact-form', 'Contact form: mail app opened');
+  toast('▲ OPENING YOUR EMAIL APP…');
   window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
-  form.reset();
+  // Nothing has been sent yet: keep the message until the visitor confirms.
+  form.querySelector<HTMLElement>('.transmit__note')!.innerHTML =
+    `Opening your email app… press send there. No mail app? <button type="button" class="transmit__link" data-copy="${profile.email}">Copy my address</button> · <button type="button" class="transmit__link" data-transmit-clear>Sent it — clear the form</button>`;
 });
+
+document.addEventListener('click', (e) => {
+  if (!(e.target as HTMLElement).closest('[data-transmit-clear]')) return;
+  const form = $<HTMLFormElement>('#transmit');
+  form.reset();
+  form.querySelector<HTMLElement>('.transmit__note')!.textContent = TRANSMIT_NOTE;
+  toast('✔ FORM CLEARED');
+});
+
+const TRANSMIT_NOTE = $('#transmit .transmit__note').textContent ?? '';
 
 document.addEventListener('click', (e) => {
   const c = (e.target as HTMLElement).closest<HTMLElement>('[data-copy]');

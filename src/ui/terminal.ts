@@ -71,7 +71,14 @@ const COMMANDS: Record<string, { desc: string; run: (args: string[], c: Ctx) => 
   },
   github: { desc: 'open GitHub', run: (_a, c) => (c.print('opening github...'), window.open(profile.github, '_blank', 'noopener')) },
   linkedin: { desc: 'open LinkedIn', run: (_a, c) => (c.print('opening linkedin...'), window.open(profile.linkedin, '_blank', 'noopener')) },
-  cv: { desc: 'download my CV', run: (_a, c) => (c.print('downloading cv.pdf...'), window.open(profile.cv, '_blank', 'noopener')) },
+  cv: {
+    desc: 'download my CV — cv fr for French',
+    run: (a, c) => {
+      const fr = (a[0] ?? '').toLowerCase() === 'fr';
+      c.print(`downloading Hamza-Ben-Ismail-CV-${fr ? 'FR' : 'EN'}.pdf...`);
+      window.open(fr ? profile.cvFr : profile.cv, '_blank', 'noopener');
+    },
+  },
   hire: {
     desc: 'the best command',
     run: (_a, c) => {

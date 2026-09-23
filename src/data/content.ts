@@ -70,7 +70,9 @@ export const profile = {
   email: 'hamza.benismail.6@gmail.com',
   github: 'https://github.com/naniiic137',
   linkedin: 'https://www.linkedin.com/in/hamzabenismail1',
-  cv: 'https://drive.google.com/uc?export=download&id=1u4yNHhXIsZkBB2D6D5Zsd_wdAy1ia4ws&confirm=t',
+  // PDFs live in public/cv/ — replace them there to update the CV.
+  cv: `${import.meta.env.BASE_URL}cv/Hamza-Ben-Ismail-CV-EN.pdf`,
+  cvFr: `${import.meta.env.BASE_URL}cv/Hamza-Ben-Ismail-CV-FR.pdf`,
   stats: [
     { value: 0, suffix: '', label: 'PROJECTS' }, // filled from projects.length below
     { value: 5, suffix: '+', label: 'YEARS CODING' },

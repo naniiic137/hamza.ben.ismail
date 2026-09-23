@@ -2068,7 +2068,8 @@ main {
   .stat dd {
     font-size: 16px;
   }
-  .hero__cta .btn {
+  .hero__cta .btn,
+  .about__cta .btn {
     flex: 1 1 auto;
   }
   .attrs__list {

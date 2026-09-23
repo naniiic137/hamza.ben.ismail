@@ -28,7 +28,7 @@ function hero() {
       <p class="hero__tagline" data-hero>${esc(profile.tagline)}</p>
       <div class="hero__cta" data-hero>
         <a href="#projects" class="btn btn--primary" data-sfx>${icon('play', 12)} START MISSION</a>
-        <a href="${profile.cv}" class="btn" target="_blank" rel="noopener" data-sfx>${icon('download', 14)} DOWNLOAD CV</a>
+        <a href="${profile.cv}" class="btn" download="Hamza-Ben-Ismail-CV-EN.pdf" data-sfx>${icon('download', 14)} DOWNLOAD CV</a>
         <button type="button" class="btn btn--ghost" data-play-game data-sfx>${icon('gamepad', 16)} PLAY GAME</button>
       </div>
       <dl class="hero__stats" data-hero>
@@ -85,7 +85,8 @@ function about() {
           </ul>
         </div>
         <div class="about__cta" data-reveal>
-          <a href="${profile.cv}" class="btn btn--primary" target="_blank" rel="noopener" data-sfx>${icon('download', 14)} DOWNLOAD CV</a>
+          <a href="${profile.cv}" class="btn btn--primary" download="Hamza-Ben-Ismail-CV-EN.pdf" data-sfx>${icon('download', 14)} CV · ENGLISH</a>
+          <a href="${profile.cvFr}" class="btn" download="Hamza-Ben-Ismail-CV-FR.pdf" data-sfx>${icon('download', 14)} CV · FRANÇAIS</a>
           <a href="#contact" class="btn" data-sfx>${icon('mail', 16)} OPEN CHANNEL</a>
         </div>
       </div>

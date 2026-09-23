@@ -443,18 +443,18 @@ export const projects: Project[] = [
   {
     id: 'calc-vault',
     overview:
-      'A Windows app that looks and works like an ordinary calculator. Enter a secret sequence and it reveals a hidden vault where you can store private files — perfect camouflage for sensitive data.',
+      'An early Lazarus prototype: a working calculator that doubles as a disguise — typing a secret PIN opens a hidden screen. It was meant to become a file vault, but file hiding was never finished, so it stays a UI prototype.',
     features: [
       'Fully working calculator as the disguise',
-      'Secret code sequence to set up and unlock the vault',
-      'Hidden storage space for your files',
+      'Secret PIN sequence opens a hidden screen',
+      'Honest status: the file-vault part was never completed',
     ],
-    facts: [{ label: 'PLATFORM', value: 'WINDOWS' }, { label: 'DISGUISE', value: 'CALCULATOR' }],
-    title: 'Calculator Vault',
+    facts: [{ label: 'PLATFORM', value: 'WINDOWS' }, { label: 'STATUS', value: 'PROTOTYPE' }],
+    title: 'Calculator Disguise (prototype)',
     category: 'desktop',
     summary:
-      'A Windows app disguised as a calculator that hides a secret vault — files inside are encrypted and kept out of sight.',
-    tech: ['Windows', 'Encryption', 'Security'],
+      'Early Lazarus prototype: a working calculator where a secret PIN opens a hidden screen. The planned file vault was never finished.',
+    tech: ['Lazarus', 'Free Pascal'],
     links: [gh('Calculateur-To-Hide-Files')],
   },
   {

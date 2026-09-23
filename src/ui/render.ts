@@ -2,7 +2,7 @@ import { inventory, profile, projects, quests, sections, skillTrees, type Projec
 import { icon } from './pixels';
 import { caseStudies } from '../data/caseStudies';
 
-const esc = (s: string) =>
+export const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
 const CAT_LABEL = { web: 'WEB', python: 'PYTHON', desktop: 'DESKTOP' } as const;
@@ -11,21 +11,21 @@ function sectionHead(code: string, label: string, title: string, sub: string) {
   return `
     <header class="sec-head" data-reveal>
       <p class="sec-head__code"><span>${code}</span> // ${label}</p>
-      <h2 class="sec-head__title" data-scramble>${title}</h2>
+      <h2 class="sec-head__title"><span class="sr-only">${esc(title)}</span><span aria-hidden="true" data-scramble>${esc(title)}</span></h2>
       <p class="sec-head__sub"><span class="prompt">&gt;</span> ${sub}<span class="blink">█</span></p>
     </header>`;
 }
 
 function hero() {
   return `
-  <section class="hero" id="hero" data-section="hero">
+  <section class="hero" id="hero" data-section="hero" tabindex="-1">
     <div class="hero__inner">
       <p class="hero__player" data-hero><span class="dot"></span> PLAYER 1 READY · ${esc(profile.origin.toUpperCase())}</p>
       <h1 class="hero__name" data-hero aria-label="${esc(profile.name)}">
-        <span class="hero__line glitch" data-text="${profile.first}">${profile.first}</span>
-        <span class="hero__line hero__line--2 glitch" data-text="${profile.last}">${profile.last}</span>
+        <span class="hero__line glitch" data-text="${esc(profile.first)}">${esc(profile.first)}</span>
+        <span class="hero__line hero__line--2 glitch" data-text="${esc(profile.last)}">${esc(profile.last)}</span>
       </h1>
-      <p class="hero__role" data-hero><span class="hero__role-label">CLASS:</span> <span id="roleText">${profile.roles[0]}</span><span class="caret">▌</span></p>
+      <p class="hero__role" data-hero><span class="hero__role-label">CLASS:</span> <span id="roleText">${esc(profile.roles[0])}</span><span class="caret">▌</span></p>
       <p class="hero__tagline" data-hero>${esc(profile.tagline)}</p>
       <div class="hero__cta" data-hero>
         <a href="#projects" class="btn btn--primary" data-sfx>${icon('play', 12)} START MISSION</a>
@@ -49,7 +49,7 @@ function hero() {
 
 function about() {
   return `
-  <section class="section about" id="about" data-section="about">
+  <section class="section about" id="about" data-section="about" tabindex="-1">
     ${sectionHead('01', 'PILOT PROFILE', 'WHO IS PILOT?', 'loading character sheet... done.')}
     <div class="about__grid">
       <article class="pilot px-box" data-reveal>
@@ -77,7 +77,7 @@ function about() {
               .map(
                 (a) => `
               <li class="attr">
-                <span class="attr__name">${a.name}</span>
+                <span class="attr__name">${esc(a.name)}</span>
                 <span class="seg-bar" data-fill="${a.value}">${'<i></i>'.repeat(10)}</span>
                 <span class="attr__val">${String(a.value).padStart(2, '0')}</span>
               </li>`,
@@ -102,7 +102,7 @@ export function projectCard(p: Project, index: number) {
     : p.links
         .map(
           (l) =>
-            `<a class="card__link" href="${l.href}" target="_blank" rel="noopener" data-sfx>${icon(l.label === 'GitHub' ? 'github' : 'arrow', 12)} ${esc(l.label.toUpperCase())}</a>`,
+            `<a class="card__link" href="${esc(l.href)}" target="_blank" rel="noopener" data-sfx>${icon(l.label === 'GitHub' ? 'github' : 'arrow', 12)} ${esc(l.label.toUpperCase())}</a>`,
         )
         .join('');
   return `
@@ -137,13 +137,13 @@ function projectsSection() {
     desktop: projects.filter((p) => p.category === 'desktop').length,
   };
   return `
-  <section class="section projects" id="projects" data-section="projects">
+  <section class="section projects" id="projects" data-section="projects" tabindex="-1">
     ${sectionHead('02', 'MISSION LOG', 'MISSIONS', `${projects.length} missions found. Select one for a briefing.`)}
-    <div class="filters" role="tablist" aria-label="Filter projects" data-reveal>
+    <div class="filters" role="group" aria-label="Filter projects by category" data-reveal>
       ${(['all', 'web', 'python', 'desktop'] as const)
         .map(
           (f, i) =>
-            `<button type="button" role="tab" class="filter ${i === 0 ? 'is-active' : ''}" data-filter="${f}" aria-selected="${i === 0}" data-sfx>${f.toUpperCase()} <span>${counts[f]}</span></button>`,
+            `<button type="button" class="filter ${i === 0 ? 'is-active' : ''}" data-filter="${f}" aria-pressed="${i === 0}" data-sfx>${f.toUpperCase()} <span>${counts[f]}</span></button>`,
         )
         .join('')}
     </div>
@@ -155,7 +155,7 @@ function projectsSection() {
 
 function skillsSection() {
   return `
-  <section class="section skills" id="skills" data-section="skills">
+  <section class="section skills" id="skills" data-section="skills" tabindex="-1">
     ${sectionHead('03', 'TECH TREE', 'SKILLS', 'scanning abilities... all systems nominal.')}
     <div class="trees">
       ${skillTrees
@@ -165,7 +165,7 @@ function skillsSection() {
         <article class="tree px-box" data-reveal>
           <header class="tree__head">
             <span class="tree__icon">${icon(tree.icon, 22)}</span>
-            <h3>${tree.title}</h3>
+            <h3>${esc(tree.title)}</h3>
             <span class="tree__lv">LV.${Math.round(avg / 10)}</span>
           </header>
           <ul class="tree__list">
@@ -194,7 +194,7 @@ function skillsSection() {
 
 function experienceSection() {
   return `
-  <section class="section experience" id="experience" data-section="experience">
+  <section class="section experience" id="experience" data-section="experience" tabindex="-1">
     ${sectionHead('04', 'QUEST LOG', 'EXPERIENCE', 'replaying save file from 2019...')}
     <ol class="quests" id="quests">
       <li class="quests__rail" aria-hidden="true"><span class="quests__fill" id="questFill"></span></li>
@@ -215,7 +215,7 @@ function experienceSection() {
             ${
               q.links
                 ? `<div class="quest__links">${q.links
-                    .map((l) => `<a href="${l.href}" target="_blank" rel="noopener" data-sfx>${icon('arrow', 10)} ${esc(l.label)}</a>`)
+                    .map((l) => `<a href="${esc(l.href)}" target="_blank" rel="noopener" data-sfx>${icon('arrow', 10)} ${esc(l.label)}</a>`)
                     .join('')}</div>`
                 : ''
             }
@@ -230,7 +230,7 @@ function experienceSection() {
 function contactSection() {
   const user = profile.email.split('@')[0];
   return `
-  <section class="section contact" id="contact" data-section="contact">
+  <section class="section contact" id="contact" data-section="contact" tabindex="-1">
     ${sectionHead('05', 'OPEN CHANNEL', 'CONTACT', 'channel open. awaiting transmission.')}
     <div class="contact__grid">
       <div class="term px-box" data-reveal>

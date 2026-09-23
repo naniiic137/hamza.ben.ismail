@@ -65,11 +65,30 @@ gsap.ticker.add((t) => lenis.raf(t * 1000));
 gsap.ticker.lagSmoothing(0);
 lenis.stop();
 
-document.addEventListener('scroll-lock', (e) => ((e as CustomEvent<boolean>).detail ? lenis.stop() : lenis.start()));
+document.addEventListener('scroll-lock', (e) => {
+  const locked = (e as CustomEvent<boolean>).detail;
+  if (locked) lenis.stop();
+  else lenis.start();
+  pauseScene('modal', locked);
+});
 
-const scrollToId = (id: string) => {
+/**
+ * Scrolls to a section. With `focus`, keyboard/screen-reader focus moves there
+ * too once the scroll ends (sections carry tabindex="-1").
+ */
+const scrollToId = (id: string, focus = false) => {
   const el = document.getElementById(id);
-  if (el) lenis.scrollTo(el, { offset: id === 'hero' ? 0 : -70, duration: 1.6 });
+  if (!el) return;
+  const offset = id === 'hero' ? 0 : -70;
+  const done = () => {
+    if (focus) el.focus({ preventScroll: true });
+  };
+  if (lenis.isStopped || reducedMotion()) {
+    lenis.scrollTo(el, { offset, immediate: true, force: true });
+    done();
+  } else {
+    lenis.scrollTo(el, { offset, duration: 1.6, onComplete: done });
+  }
 };
 
 document.addEventListener('click', (e) => {
@@ -79,7 +98,9 @@ document.addEventListener('click', (e) => {
   if (!id || !document.getElementById(id)) return;
   e.preventDefault();
   closeMenu();
-  scrollToId(id);
+  // Links inside the briefing close it first (in the same click), then scroll.
+  if (a.closest('#modal')) setTimeout(() => scrollToId(id, true), 0);
+  else scrollToId(id, true);
   history.replaceState(null, '', id === 'hero' ? location.pathname : `#${id}`);
 });
 
@@ -180,7 +201,9 @@ gsap.ticker.add(() => {
 
 function initReveals() {
   const reduced = reducedMotion();
-  $$('.sec-head__title').forEach((el) => {
+  // Only the aria-hidden visual copy of each heading is scrambled; the real
+  // text stays intact for screen readers.
+  $$('.sec-head__title [data-scramble]').forEach((el) => {
     ScrollTrigger.create({ trigger: el, start: 'top 85%', once: true, onEnter: () => scramble(el, 900) });
   });
 

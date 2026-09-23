@@ -21,7 +21,8 @@
   --blue: #2388d0;
   --lime: #a8f06b;
   --muted: #a7a3c7;
-  --dim: #6f6a92;
+  /* ≥ 4.5:1 on --void, --deep, --night and --indigo */
+  --dim: #8e8ab1;
 
   --panel: rgba(13, 10, 31, 0.88);
   --panel-solid: #0d0a1f;

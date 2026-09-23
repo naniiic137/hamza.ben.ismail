@@ -6,6 +6,7 @@ import { makeSprite, drawSprite, CATEGORY_COLORS, icon } from './pixels';
 import { projectById, reducedMotion } from './effects';
 import { caseStudies } from '../data/caseStudies';
 import { track } from './analytics';
+import { esc } from './render';
 
 export function initFilters() {
   const buttons = document.querySelectorAll<HTMLButtonElement>('.filter');
@@ -16,7 +17,7 @@ export function initFilters() {
       buttons.forEach((b) => {
         const on = b === btn;
         b.classList.toggle('is-active', on);
-        b.setAttribute('aria-selected', String(on));
+        b.setAttribute('aria-pressed', String(on));
       });
       const show: HTMLElement[] = [];
       cards.forEach((c) => {
@@ -37,22 +38,54 @@ let lastFocus: HTMLElement | null = null;
 const LINK_ICON: Record<string, string> = { GitHub: 'github', Live: 'play' };
 const LINK_LABEL: Record<string, string> = { GitHub: 'VIEW ON GITHUB', Live: 'PLAY LIVE DEMO' };
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, iframe, [contenteditable="true"], [tabindex]:not([tabindex="-1"])';
+
+/** Makes everything except `keep` inert (unreachable by mouse, keyboard and screen readers). */
+function setBackgroundInert(keep: HTMLElement[], on: boolean) {
+  document.querySelectorAll<HTMLElement>('body > *').forEach((el) => {
+    if (keep.includes(el) || el.tagName === 'SCRIPT') return;
+    if (on) {
+      if (el.inert) return;
+      el.inert = true;
+      el.dataset.modalInert = '';
+    } else if ('modalInert' in el.dataset) {
+      el.inert = false;
+      delete el.dataset.modalInert;
+    }
+  });
+}
+
 export function initModal() {
   const modal = document.getElementById('modal')!;
   const body = document.getElementById('modalBody')!;
   const panel = modal.querySelector<HTMLElement>('.modal__panel')!;
+  const toastEl = document.getElementById('toast')!;
   let currentId = '';
+  let isOpen = false;
   let mode: 'brief' | 'case' = 'brief';
   const caseIds = () => projects.map((p) => p.id).filter((id) => caseStudies[id]);
-  const asset = (src: string) => `${import.meta.env.BASE_URL}${src}`;
+  const asset = (src: string) => `${import.meta.env.BASE_URL}${esc(src)}`;
+  const linkButtons = (links: { label: string; href: string }[]) =>
+    links
+      .map(
+        (l, i) =>
+          `<a class="btn ${i === 0 ? 'btn--primary' : 'btn--ghost'}" href="${esc(l.href)}" target="_blank" rel="noopener" data-sfx>${icon(LINK_ICON[l.label] ?? 'arrow', 14)} ${esc(LINK_LABEL[l.label] ?? l.label.toUpperCase())}</a>`,
+      )
+      .join('');
 
-  const close = () => {
-    if (modal.hidden) return;
+  /** `restoreFocus` is false when an in-page link inside the modal moves focus elsewhere. */
+  const close = (restoreFocus = true) => {
+    if (!isOpen) return;
+    isOpen = false;
     modal.classList.remove('is-open');
-    setTimeout(() => (modal.hidden = true), 200);
+    setTimeout(() => {
+      if (!isOpen) modal.hidden = true;
+    }, 200);
+    setBackgroundInert([modal, toastEl], false);
     document.dispatchEvent(new CustomEvent('scroll-lock', { detail: false }));
     if (location.hash.startsWith('#case/')) history.replaceState(null, '', location.pathname + location.search);
-    lastFocus?.focus();
+    if (restoreFocus) lastFocus?.focus();
   };
 
   /** Projects currently visible under the active filter, in page order. */
@@ -89,20 +122,16 @@ export function initModal() {
     const overview = p.overview ?? p.summary;
     const facts = [
       { label: 'SECTOR', value: p.category.toUpperCase() },
-      { label: 'STATUS', value: p.classified ? 'CLASSIFIED' : 'OPEN SOURCE' },
+      // Public repos are "All rights reserved", so don't call them open source.
+      { label: 'STATUS', value: p.classified ? 'CLASSIFIED' : 'PUBLIC REPO' },
       ...(p.facts ?? []),
     ];
     const actions = p.classified
       ? `<span class="tag tag--lock">${icon('lock', 10)} SOURCE CLASSIFIED — ASK ME FOR A DEMO</span>
          <a class="btn" href="#contact" data-close data-sfx>${icon('mail', 16)} REQUEST A DEMO</a>`
-      : p.links
-          .map(
-            (l, i) =>
-              `<a class="btn ${i === 0 ? 'btn--primary' : 'btn--ghost'}" href="${l.href}" target="_blank" rel="noopener" data-sfx>${icon(LINK_ICON[l.label] ?? 'arrow', 14)} ${LINK_LABEL[l.label] ?? l.label.toUpperCase()}</a>`,
-          )
-          .join('');
+      : linkButtons(p.links);
     const caseBtn = caseStudies[id]
-      ? `<button type="button" class="btn btn--case" data-case="${id}" data-sfx>${icon('terminal', 18)} READ CASE FILE</button>`
+      ? `<button type="button" class="btn btn--case" data-case="${esc(id)}" data-sfx>${icon('terminal', 18)} READ CASE FILE</button>`
       : '';
 
     body.innerHTML = `
@@ -111,23 +140,24 @@ export function initModal() {
       <div class="modal__head">
         <canvas class="modal__sprite" width="132" height="108" aria-hidden="true"></canvas>
         <div>
-          <h3 id="modalTitle" class="modal__title">${p.title}</h3>
-          <p class="modal__tagline">${p.summary}</p>
+          <h3 id="modalTitle" class="modal__title">${esc(p.title)}</h3>
+          <p class="modal__tagline">${esc(p.summary)}</p>
         </div>
       </div>
       <dl class="modal__facts">
-        ${facts.map((f) => `<div><dt>${f.label}</dt><dd>${f.value}</dd></div>`).join('')}
+        ${facts.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`).join('')}
       </dl>
       <p class="panel-label">MISSION OVERVIEW</p>
-      <p class="modal__summary" id="modalSummary"></p>
+      <p class="sr-only">${esc(overview)}</p>
+      <p class="modal__summary" id="modalSummary" aria-hidden="true"></p>
       ${
         p.features?.length
           ? `<p class="panel-label">KEY FEATURES</p>
-             <ul class="modal__features">${p.features.map((ft) => `<li>${ft}</li>`).join('')}</ul>`
+             <ul class="modal__features">${p.features.map((ft) => `<li>${esc(ft)}</li>`).join('')}</ul>`
           : ''
       }
       <p class="panel-label">LOADOUT</p>
-      <ul class="card__tech modal__tech">${p.tech.map((t) => `<li>${t}</li>`).join('')}</ul>
+      <ul class="card__tech modal__tech">${p.tech.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
       <div class="modal__actions">${caseBtn}${actions}</div>
       <nav class="modal__nav" aria-label="Browse missions">
         <button type="button" class="modal__step" data-step="-1" data-sfx>◀ PREV</button>
@@ -145,7 +175,7 @@ export function initModal() {
       const start = performance.now();
       let lastSound = 0;
       const tick = () => {
-        if (currentId !== id || modal.hidden) return;
+        if (currentId !== id || !isOpen) return;
         const i = Math.min(overview.length, Math.floor((performance.now() - start) * 0.35));
         sumEl.textContent = overview.slice(0, i);
         if (i - lastSound >= 16) {
@@ -173,30 +203,25 @@ export function initModal() {
     const [hero, ...rest] = cs.images;
     const links = p.classified
       ? `<a class="btn" href="#contact" data-close data-sfx>${icon('mail', 16)} REQUEST A DEMO</a>`
-      : p.links
-          .map(
-            (l, i) =>
-              `<a class="btn ${i === 0 ? 'btn--primary' : 'btn--ghost'}" href="${l.href}" target="_blank" rel="noopener" data-sfx>${icon(LINK_ICON[l.label] ?? 'arrow', 14)} ${LINK_LABEL[l.label] ?? l.label.toUpperCase()}</a>`,
-          )
-          .join('');
+      : linkButtons(p.links);
     const figure = (im: { src: string; caption: string }, cls = '') =>
-      `<figure class="case__fig ${cls}"><img src="${asset(im.src)}" alt="${im.caption.replace(/"/g, '&quot;')}" loading="lazy" /><figcaption>${im.caption}</figcaption></figure>`;
+      `<figure class="case__fig ${cls}"><img src="${asset(im.src)}" alt="${esc(im.caption)}" loading="lazy" /><figcaption>${esc(im.caption)}</figcaption></figure>`;
 
     body.innerHTML = `
       <button type="button" class="modal__close" data-close aria-label="Close case study">${icon('close', 12)} ESC</button>
       <p class="modal__kicker">CASE FILE · M-${String(idx + 1).padStart(2, '0')} · ${cids.indexOf(id) + 1}/${cids.length}</p>
-      <h3 id="modalTitle" class="case__title">${p.title}</h3>
-      <p class="case__pitch">${cs.pitch}</p>
-      <dl class="modal__facts">${cs.numbers.map((f) => `<div><dt>${f.label}</dt><dd>${f.value}</dd></div>`).join('')}</dl>
+      <h3 id="modalTitle" class="case__title">${esc(p.title)}</h3>
+      <p class="case__pitch">${esc(cs.pitch)}</p>
+      <dl class="modal__facts">${cs.numbers.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`).join('')}</dl>
       <div class="modal__actions case__links">${links}</div>
       ${hero ? figure(hero, 'case__fig--hero') : ''}
       <section class="case__sec">
         <p class="panel-label">THE PROBLEM</p>
-        <p class="case__text">${cs.problem}</p>
+        <p class="case__text">${esc(cs.problem)}</p>
       </section>
       <section class="case__sec">
         <p class="panel-label">HOW IT WORKS</p>
-        <ol class="case__how">${cs.how.map((h) => `<li>${h}</li>`).join('')}</ol>
+        <ol class="case__how">${cs.how.map((h) => `<li>${esc(h)}</li>`).join('')}</ol>
       </section>
       <section class="case__sec">
         <p class="panel-label">KEY CHALLENGES</p>
@@ -204,7 +229,7 @@ export function initModal() {
           ${cs.challenges
             .map(
               (c, i) =>
-                `<article class="case__challenge"><span>${String(i + 1).padStart(2, '0')}</span><h4>${c.title}</h4><p>${c.detail}</p></article>`,
+                `<article class="case__challenge"><span>${String(i + 1).padStart(2, '0')}</span><h4>${esc(c.title)}</h4><p>${esc(c.detail)}</p></article>`,
             )
             .join('')}
         </div>
@@ -212,8 +237,8 @@ export function initModal() {
       ${rest.length ? `<section class="case__sec"><p class="panel-label">GALLERY</p><div class="case__gallery">${rest.map((im) => figure(im)).join('')}</div></section>` : ''}
       <section class="case__sec">
         <p class="panel-label">LOADOUT</p>
-        <ul class="card__tech modal__tech">${p.tech.map((t) => `<li>${t}</li>`).join('')}</ul>
-        ${cs.status ? `<p class="case__status">${icon('pin', 10)} ${cs.status}</p>` : ''}
+        <ul class="card__tech modal__tech">${p.tech.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+        ${cs.status ? `<p class="case__status">${icon('pin', 10)} ${esc(cs.status)}</p>` : ''}
       </section>
       <nav class="modal__nav" aria-label="Browse case studies">
         <button type="button" class="modal__step" data-step="-1" data-sfx>◀ PREV CASE</button>
@@ -225,12 +250,15 @@ export function initModal() {
 
   const open = (id: string, asCase = false) => {
     if (!projectById(id)) return;
-    lastFocus = document.activeElement as HTMLElement;
+    const wasOpen = isOpen;
+    isOpen = true;
+    if (!wasOpen) lastFocus = document.activeElement as HTMLElement;
     modal.hidden = false;
     if (asCase && caseStudies[id]) renderCase(id);
     else render(id);
     requestAnimationFrame(() => modal.classList.add('is-open'));
-    document.dispatchEvent(new CustomEvent('scroll-lock', { detail: true }));
+    setBackgroundInert([modal, toastEl], true);
+    if (!wasOpen) document.dispatchEvent(new CustomEvent('scroll-lock', { detail: true }));
     panel.focus();
   };
 
@@ -239,29 +267,36 @@ export function initModal() {
     const brief = t.closest<HTMLElement>('[data-brief]');
     if (brief) return open(brief.dataset.brief!);
     const caseBtn = t.closest<HTMLElement>('[data-case]');
-    if (caseBtn) return modal.hidden ? open(caseBtn.dataset.case!, true) : renderCase(caseBtn.dataset.case!);
+    if (caseBtn) return !isOpen ? open(caseBtn.dataset.case!, true) : renderCase(caseBtn.dataset.case!);
     if (t.closest('[data-back]')) return render(currentId);
     const stepBtn = t.closest<HTMLElement>('[data-step]');
     if (stepBtn) return step(Number(stepBtn.dataset.step) as 1 | -1);
     // clicking the card body (not a link) also opens the briefing
     const card = t.closest<HTMLElement>('.card');
     if (card && !t.closest('a,button')) return open(card.dataset.id!);
-    if (t.closest('[data-close]')) close();
+    const closer = t.closest('[data-close]');
+    // An in-page link (e.g. "request a demo" → #contact) takes focus to its target instead.
+    if (closer) close(!closer.matches('a[href^="#"]'));
   });
   document.addEventListener('keydown', (e) => {
-    if (modal.hidden) return;
+    if (!isOpen) return;
     if (e.key === 'Escape') close();
     if (e.key === 'ArrowRight') step(1);
     if (e.key === 'ArrowLeft') step(-1);
     if (e.key === 'Tab') {
-      const f = panel.querySelectorAll<HTMLElement>('a,button');
-      if (!f.length) return;
+      const f = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE)).filter((el) => el.getClientRects().length > 0);
+      if (!f.length) {
+        e.preventDefault();
+        return;
+      }
       const first = f[0];
       const last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
+      const active = document.activeElement;
+      const inside = active instanceof HTMLElement && panel.contains(active) && active !== panel;
+      if (e.shiftKey && (active === first || !inside)) {
         e.preventDefault();
         last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
+      } else if (!e.shiftKey && (active === last || !inside)) {
         e.preventDefault();
         first.focus();
       }

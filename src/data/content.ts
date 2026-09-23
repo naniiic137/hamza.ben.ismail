@@ -361,7 +361,7 @@ export const projects: Project[] = [
     summary:
       'Watches Fortnite, Valorant and CS2 for new versions via public APIs and GitHub Actions, then posts formatted update notifications to your Discord server automatically.',
     tech: ['Python', 'Discord API', 'GitHub Actions'],
-    links: [gh('FortniteUpdate')],
+    links: [gh('game-update-bot')],
   },
   {
     id: 'hbi-os',

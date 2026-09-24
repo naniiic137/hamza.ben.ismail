@@ -175,7 +175,7 @@ export const caseStudies: Record<string, CaseStudy> = {
 
   'readme-glow': {
     pitch:
-      "ReadmeGlow turns any README.md into a designed web page, with 15 hand-crafted themes and 5 layouts. You can edit it in a real editor or directly on the page, beautify it, summarise it and export it, and nothing leaves the browser.",
+      "ReadmeGlow turns any README.md into a designed web page, with 15 hand-crafted themes and 5 layouts. You can edit it in a real editor or directly on the page, beautify it, summarise it, export it, and even carry its theme onto GitHub itself. Nothing leaves the browser.",
     problem:
       "On GitHub every README looks the same, even though it is often the first thing people see of a project. Tools that restyle Markdown either upload your files, break on real-world READMEs full of raw HTML, or rewrite the whole file as soon as you edit it.",
     how: [
@@ -201,13 +201,18 @@ export const caseStudies: Record<string, CaseStudy> = {
           "A typed token contract means every theme defines the same set of design values, and automated checks require 4.5:1 contrast for body text, links, alerts and code. Each theme was then reviewed in screenshots on desktop and phone, including Arabic right-to-left text.",
       },
       {
+        title: 'Carrying a theme onto github.com',
+        detail:
+          "GitHub strips all CSS, fonts and scripts from READMEs, but it does show images. The GitHub export draws the title and section headings as SVG in the theme's own fonts (glyphs turned into outlines with opentype.js, so there are no external requests), with light and dark versions through <picture>, and keeps real anchors so the table of contents still works. Every change sits between invisible markers, so exporting twice changes nothing and the original Markdown can always be restored.",
+      },
+      {
         title: 'Fast on long READMEs',
         detail:
           "Rendering runs in a Web Worker so typing stays smooth, and the heavy extras are separate lazy chunks. A typical README renders in about 40 ms; a 3,600-line one in about 0.7 s, off the main thread.",
       },
     ],
     numbers: [
-      { label: 'TESTS', value: '1,251' },
+      { label: 'TESTS', value: '1,379' },
       { label: 'THEMES × LAYOUTS', value: '15 × 5' },
       { label: 'XSS VECTORS BLOCKED', value: '37' },
       { label: 'APP SHELL (GZIP)', value: '114 KB' },
@@ -217,6 +222,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       img('readme-glow', 'customise.webp', "The theme gallery with live thumbnails of the same README in every theme."),
       img('readme-glow', 'editor.webp', "Two-way editing: the code editor next to the designed page, with a paragraph being edited on the page."),
       img('readme-glow', 'beautify.webp', "Beautify: choose the improvements and review a before/after diff before applying."),
+      img('readme-glow', 'github-export.webp', "GitHub export: the theme's header and section titles become SVG images, with a preview of how github.com will show them."),
+      img('readme-glow', 'github-readme.webp', "ReadmeGlow's own README on the real github.com, in light and dark mode."),
       img('readme-glow', 'insights.webp', "Summary and key insights: a one-line description, summary and tech stack, worked out offline."),
       img('readme-glow', 'layout-slides.webp', "The Slides layout turns a README into a presentation."),
       img('readme-glow', 'phones.webp', "On phones: the start page, Pixel Arcade, and an Arabic README in Zen."),

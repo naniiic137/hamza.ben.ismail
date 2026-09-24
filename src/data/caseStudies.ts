@@ -173,6 +173,57 @@ export const caseStudies: Record<string, CaseStudy> = {
       'The offline mode is fully tested; the LLM providers are covered by tests with mocked responses.',
   },
 
+  'readme-glow': {
+    pitch:
+      "ReadmeGlow turns any README.md into a designed web page, with 15 hand-crafted themes and 5 layouts. You can edit it in a real editor or directly on the page, beautify it, summarise it and export it, and nothing leaves the browser.",
+    problem:
+      "On GitHub every README looks the same, even though it is often the first thing people see of a project. Tools that restyle Markdown either upload your files, break on real-world READMEs full of raw HTML, or rewrite the whole file as soon as you edit it.",
+    how: [
+      "Markdown is parsed with unified/remark in a Web Worker, and every rendered block keeps its exact position in the source.",
+      "All raw HTML is sanitised before any enhancement runs (Mermaid output is sanitised again), backed by a strict Content Security Policy.",
+      "Each theme is a typed set of design tokens plus its own stylesheet, and automated tests check WCAG contrast for every one. Fonts, syntax highlighting, KaTeX, Mermaid and the editor only load when a document needs them.",
+      "Every change (code editor, on-page editing, Beautify, health-check fixes) is a splice into the Markdown with one shared undo history.",
+    ],
+    challenges: [
+      {
+        title: 'Editing the designed page without rewriting the file',
+        detail:
+          "Each block carries its source range. When you edit a block on the page, only that block is turned back into Markdown and spliced in, and if it serialises to the original, only the changed characters are replaced. A fuzz test over the sample READMEs proves every other byte stays identical.",
+      },
+      {
+        title: 'Real-world README HTML without XSS',
+        detail:
+          "READMEs contain arbitrary HTML, so the pipeline sanitises first and enhances second, re-sanitises Mermaid SVG output, and ships a build-time CSP with no inline scripts. 37 known attack vectors are tested.",
+      },
+      {
+        title: '15 genuinely different themes that stay readable',
+        detail:
+          "A typed token contract means every theme defines the same set of design values, and automated checks require 4.5:1 contrast for body text, links, alerts and code. Each theme was then reviewed in screenshots on desktop and phone, including Arabic right-to-left text.",
+      },
+      {
+        title: 'Fast on long READMEs',
+        detail:
+          "Rendering runs in a Web Worker so typing stays smooth, and the heavy extras are separate lazy chunks. A typical README renders in about 40 ms; a 3,600-line one in about 0.7 s, off the main thread.",
+      },
+    ],
+    numbers: [
+      { label: 'TESTS', value: '1,251' },
+      { label: 'THEMES × LAYOUTS', value: '15 × 5' },
+      { label: 'XSS VECTORS BLOCKED', value: '37' },
+      { label: 'APP SHELL (GZIP)', value: '114 KB' },
+    ],
+    images: [
+      img('readme-glow', 'hero.webp', "The start page: drop a README, paste one, or load any GitHub repo."),
+      img('readme-glow', 'customise.webp', "The theme gallery with live thumbnails of the same README in every theme."),
+      img('readme-glow', 'editor.webp', "Two-way editing: the code editor next to the designed page, with a paragraph being edited on the page."),
+      img('readme-glow', 'beautify.webp', "Beautify: choose the improvements and review a before/after diff before applying."),
+      img('readme-glow', 'insights.webp', "Summary and key insights: a one-line description, summary and tech stack, worked out offline."),
+      img('readme-glow', 'layout-slides.webp', "The Slides layout turns a README into a presentation."),
+      img('readme-glow', 'phones.webp', "On phones: the start page, Pixel Arcade, and an Arabic README in Zen."),
+    ],
+    status:
+      "Verified in Chrome on desktop and phone, including the live site. Firefox, Safari and the optional AI summary with real providers have not been tested yet.",
+  },
   'cipher-chat': {
     pitch:
       "An end-to-end encrypted real-time chat where the relay server provably sees only ciphertext — yet still controls who may join a room.",

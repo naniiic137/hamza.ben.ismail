@@ -227,6 +227,27 @@ export const projects: Project[] = [
     links: [{ label: 'Live', href: 'https://naniiic137.github.io/jobfit-ai/' }, gh('jobfit-ai')],
   },
   {
+    id: 'readme-glow',
+    overview:
+      "Drop any README.md, pick a GitHub repo, or paste Markdown, and it becomes a designed web page. There are 15 hand-crafted themes and 5 layouts (document, docs, landing page, slides, magazine). You can edit it in a real code editor or directly on the designed page, beautify it, get a summary of it, and export it. Everything runs in the browser, so files never leave your computer.",
+    features: [
+      "15 themes (Aurora, Editorial, Terminal, Pixel Arcade, Synthwave, Blueprint, Notebook, Manuscript…) × 5 layouts, every theme contrast-tested",
+      "Two-way editing: a CodeMirror editor, or click any block on the designed page and type; untouched text stays byte-for-byte identical",
+      "Beautify with a before/after diff, a README health check with one-click fixes, and an offline summary with key facts",
+      "Load from a file, a folder (images included), a paste, or any GitHub repo; deep links and a \"View with ReadmeGlow\" badge",
+      "Exports: standalone HTML, PDF, a 1200×630 social card, .md, a .zip with images, and share links",
+      "Sanitised HTML (37 XSS vectors tested), a strict CSP, rendering in a Web Worker, and lazy-loaded extras (KaTeX, Mermaid, highlighting)",
+    ],
+    facts: [{ label: 'TESTS', value: '1,251' }, { label: 'THEMES', value: '15' }, { label: 'LAYOUTS', value: '5' }],
+    title: 'ReadmeGlow',
+    category: 'web',
+    featured: true,
+    summary:
+      "Turns any README.md into a designed web page: 15 themes, 5 layouts, two-way editing (code or on-page), Beautify, health check and summary. All in the browser.",
+    tech: ['React', 'TypeScript', 'Vite', 'unified/remark', 'CodeMirror', 'Web Workers'],
+    links: [{ label: 'Live', href: 'https://naniiic137.github.io/readme-glow/' }, gh('readme-glow')],
+  },
+  {
     id: 'cipher-chat',
     overview:
       "An end-to-end encrypted real-time chat where the relay server only ever sees ciphertext — and a live “What the server sees” panel lets you check that yourself, frame by frame. Keys are created on your device and shared by link, passphrase, handshake or key file; the server still controls who may join without ever knowing the key.",

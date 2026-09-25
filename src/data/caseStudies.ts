@@ -222,7 +222,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       img('ufo-40', 'fennec.webp', 'FENNEC FOUNTAIN (tribute to Block Koala): fifty number-block rooms, each checked by a solver.'),
       img('ufo-40', 'openhouse.webp', 'OPEN HOUSE (tribute to Party House): a guest-drafting party game with 46 guests of our own.'),
       img('ufo-40', 'dune.webp', 'DUNE EXPRESS (tribute to Rail Heist): real time until a guard wakes, then turns.'),
-      img('ufo-40', 'web-phone.webp', 'The web build on a phone, with an on-screen pad.'),
+      img('ufo-40', 'web-phone.webp', 'The web build on a phone: the main menu and the on-screen pad.'),
     ],
     status:
       'Played on a real PS Vita by the owner. His feedback ("doesn’t feel like UFO 50") led to a full rebuild: every game re-researched rule by rule, fixed, and checked by an independent review. v0.5.0 is built and tested in CI; hand-testing of the rebuilt games on hardware is ongoing.',

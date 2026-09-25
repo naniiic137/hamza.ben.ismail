@@ -227,6 +227,32 @@ export const projects: Project[] = [
     links: [{ label: 'Live', href: 'https://naniiic137.github.io/jobfit-ai/' }, gh('jobfit-ai')],
   },
   {
+    id: 'ufo-40',
+    overview:
+      "A fan-made tribute to UFO 50 for the PlayStation Vita, rebuilt from scratch in C: a pretend 1980s console with a 40-slot game library, where each cartridge plays exactly like its UFO 50 original but has its own name, characters, art, music and levels. Twelve games so far, from a one-hit-death cave explorer and a turn-based bug-control game to a lane-battle strategy game, a number-block puzzler, a party-guest deckbuilder and a train-heist stealth game. One codebase runs on a modded Vita, on Windows and in the browser.",
+    features: [
+      'Twelve complete games in their UFO 50 slots (01, 02, 03, 05, 06, 07, 09, 14, 15, 16, 25, 28): the same rules and structure as the originals, with no UFO 50 code, art, music or levels',
+      'Its own engine in portable C11: a 320×180 indexed-colour framebuffer, a 32-colour palette, sprites, fonts, scenes, CRC-checked saves',
+      'A 4-channel chiptune synth (2 pulse, triangle, noise) with a custom music notation, and 80 original tracks',
+      'One SDL2 layer for PS Vita (GXM renderer, 960×544), Windows and the web (Emscripten, with an on-screen pad for phones)',
+      'A headless runner that plays scripted button presses: 226 test scripts, and every screenshot and GIF in the README',
+      'Solvers and bots in the tests prove every puzzle room and mission can be won: 50 block-pushing rooms, 15 stealth levels and 20 heist missions',
+      'GitHub Actions builds the Vita .vpk (vitasdk), Windows and web, and publishes releases',
+    ],
+    facts: [{ label: 'GAMES', value: '12 / 40' }, { label: 'TEST CHECKS', value: '1,715' }, { label: 'LINES OF C', value: '38k' }],
+    title: 'UFO 40',
+    category: 'desktop',
+    featured: true,
+    summary:
+      'A UFO 50 tribute for the PS Vita, built from scratch in C: a pretend 1980s console with twelve games that play exactly like the originals, on Vita, PC and the web.',
+    tech: ['C11', 'SDL2', 'PS Vita (vitasdk)', 'Emscripten', 'Chiptune synth', 'GitHub Actions'],
+    links: [
+      { label: 'Play', href: 'https://naniiic137.github.io/ufo-40/' },
+      { label: 'Vita .vpk', href: 'https://github.com/naniiic137/ufo-40/releases/latest' },
+      gh('ufo-40'),
+    ],
+  },
+  {
     id: 'readme-glow',
     overview:
       "Drop any README.md, pick a GitHub repo, or paste Markdown, and it becomes a designed web page. There are 15 hand-crafted themes and 5 layouts (document, docs, landing page, slides, magazine). You can edit it in a real code editor or directly on the designed page, beautify it, get a summary of it, and export it. Everything runs in the browser, so files never leave your computer.",
@@ -827,7 +853,7 @@ export const skillTrees: SkillTree[] = [
 
 export const inventory: string[] = [
   'React', 'TypeScript', 'Spring Boot', 'Docker', 'Keycloak', 'PostgreSQL', 'Redis', 'REST APIs',
-  'Node.js', 'Express', 'Socket.io', 'Discord.js', 'Firebase', 'WebRTC', 'Python', 'Pygame',
+  'Node.js', 'Express', 'Socket.io', 'Discord.js', 'Firebase', 'WebRTC', 'Python', 'Pygame', 'SDL2',
   'Java', 'Servlets', 'JavaScript', 'HTML5', 'CSS3', 'MySQL', 'Linux', 'Git', 'Selenium',
   'Web Scraping', 'OpenAI / GPT', 'AI Agents', 'LLMs', 'Delphi', 'Android', 'Arduino', 'ESP32',
   'Raspberry Pi', 'Nginx', 'Blockchain', 'NFTs', 'Problem Solving', 'Debugging',

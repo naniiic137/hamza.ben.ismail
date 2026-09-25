@@ -173,6 +173,61 @@ export const caseStudies: Record<string, CaseStudy> = {
       'The offline mode is fully tested; the LLM providers are covered by tests with mocked responses.',
   },
 
+  'ufo-40': {
+    pitch:
+      'UFO 40 is a joke "port" of UFO 50 to the PlayStation Vita that had to be rebuilt from scratch: a pretend 1980s console whose cartridges play exactly like their UFO 50 originals, with their own names, characters, art, music and levels. Twelve games so far, and one C codebase that runs on a modded Vita, on Windows and in the browser.',
+    problem:
+      'UFO 50 has no Vita version, and its code and assets are not ours to use. Rebuilding its games means recreating their mechanics faithfully from written descriptions alone, while every sprite, song, name and level stays original, all within a small handheld\'s 444 MHz CPU, and without a way to run Vita builds on the development PC.',
+    how: [
+      'A small engine in portable C11 draws everything into a 320×180 indexed-colour framebuffer with its own 32-colour palette. The platform layer only uploads that picture, so the same game code runs everywhere.',
+      'One SDL2 layer serves the Vita (GXM renderer, ×3 scale to 960×540), Windows and the web through Emscripten. A headless layer runs the whole console from scripted button presses and writes PNG, GIF and WAV files.',
+      'Each game has a design document: a mechanics checklist with a text source for every rule, whether its maps are random or hand-made, the original\'s three goals, and a list of what is ours. Where sources are silent, the choice is written down.',
+      'Music and sound come from a 4-channel chiptune synth driven by a compact text notation. All 80 tracks are original.',
+      'GitHub Actions builds the Vita .vpk in the vitasdk container, the Windows zip and the web build, runs the tests on Linux, and publishes releases on tags.',
+    ],
+    challenges: [
+      {
+        title: 'Same game, none of its content',
+        detail:
+          'Mechanics can be recreated but art, music and level design can\'t be copied. So each cartridge matches its original\'s rules, numbers and structure (map size, number of levels, gating order, random generation where the original is random), while every tile layout is designed from scratch. The library credits each original with a small "tribute to" label.',
+      },
+      {
+        title: 'A screen shimmer only the real Vita showed',
+        detail:
+          'On hardware, the auto-scrolling cat game looked blurry while standing still. The camera followed a sub-pixel position that rounded differently from frame to frame. The camera now moves in whole pixels, frame pacing snaps to the 60 Hz display, and a test fails if the picture ever oscillates.',
+      },
+      {
+        title: 'Proving every level can be won',
+        detail:
+          'Hand-made puzzle content breaks easily. A breadth-first solver checks all 50 block-pushing rooms and 15 stealth levels, and scripted routes play all 20 heist missions through with button presses alone. Building those routes found missions that couldn\'t be won as first designed.',
+      },
+      {
+        title: 'Building for a console the PC can\'t emulate',
+        detail:
+          'The development PC has no Linux toolchain, so every Vita build runs in CI. The first builds failed at link time: vitasdk\'s SDL2 needed C++ linking and shader-compiler libraries placed after its own dependencies. The error messages are turned into build annotations so they can be read without logging in.',
+      },
+    ],
+    numbers: [
+      { label: 'CARTRIDGES', value: '12 / 40' },
+      { label: 'TEST SCRIPTS', value: '226' },
+      { label: 'CHECKS', value: '1,715' },
+      { label: 'ORIGINAL TRACKS', value: '80' },
+    ],
+    images: [
+      img('ufo-40', 'mosaic.webp', 'All twelve cartridges, captured by the headless test runner.'),
+      img('ufo-40', 'library.webp', 'The game library: 40 slots numbered like UFO 50, each cartridge with a tribute label and three goals.'),
+      img('ufo-40', 'underdelve.webp', 'UNDERDELVE (tribute to Barbuta): one-hit deaths in a dark mine of 64 hand-made screens.'),
+      img('ufo-40', 'bannerfall.webp', 'BANNERFALL (tribute to Attactics): drag troops between lanes before the drums sound.'),
+      img('ufo-40', 'cutlass.webp', 'CUTLASS CUP (tribute to Bushido Ball): sword volleyball on a galley deck, 1P or 2P.'),
+      img('ufo-40', 'fennec.webp', 'FENNEC FOUNTAIN (tribute to Block Koala): fifty number-block rooms, each checked by a solver.'),
+      img('ufo-40', 'openhouse.webp', 'OPEN HOUSE (tribute to Party House): a guest-drafting party game with 46 guests of our own.'),
+      img('ufo-40', 'dune.webp', 'DUNE EXPRESS (tribute to Rail Heist): real time until a guard wakes, then turns.'),
+      img('ufo-40', 'web-phone.webp', 'The web build on a phone, with an on-screen pad.'),
+    ],
+    status:
+      'Tested on a real PS Vita by the owner (v0.1.0, which led to the shimmer fix). The later releases are built and tested in CI but not yet played through by hand on hardware.',
+  },
+
   'readme-glow': {
     pitch:
       "ReadmeGlow turns any README.md into a designed web page, with 15 hand-crafted themes and 5 layouts. You can edit it in a real editor or directly on the page, beautify it, summarise it, export it, and even carry its theme onto GitHub itself. Nothing leaves the browser.",

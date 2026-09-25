@@ -209,8 +209,8 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
     numbers: [
       { label: 'CARTRIDGES', value: '12 / 40' },
-      { label: 'TEST SCRIPTS', value: '226' },
-      { label: 'CHECKS', value: '1,715' },
+      { label: 'TEST SCRIPTS', value: '320' },
+      { label: 'CHECKS', value: '3,600' },
       { label: 'ORIGINAL TRACKS', value: '80' },
     ],
     images: [
@@ -225,7 +225,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       img('ufo-40', 'web-phone.webp', 'The web build on a phone, with an on-screen pad.'),
     ],
     status:
-      'Tested on a real PS Vita by the owner (v0.1.0, which led to the shimmer fix). The later releases are built and tested in CI but not yet played through by hand on hardware.',
+      'Played on a real PS Vita by the owner. His feedback ("doesn’t feel like UFO 50") led to a full rebuild: every game re-researched rule by rule, fixed, and checked by an independent review. v0.5.0 is built and tested in CI; hand-testing of the rebuilt games on hardware is ongoing.',
   },
 
   'readme-glow': {

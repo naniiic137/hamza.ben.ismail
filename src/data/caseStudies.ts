@@ -209,8 +209,8 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
     numbers: [
       { label: 'CARTRIDGES', value: '12 / 40' },
-      { label: 'TEST SCRIPTS', value: '320' },
-      { label: 'CHECKS', value: '3,600' },
+      { label: 'TEST SCRIPTS', value: '325' },
+      { label: 'CHECKS', value: '3,675' },
       { label: 'ORIGINAL TRACKS', value: '80' },
     ],
     images: [

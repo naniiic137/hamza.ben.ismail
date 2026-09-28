@@ -175,7 +175,7 @@ export const caseStudies: Record<string, CaseStudy> = {
 
   'ufo-40': {
     pitch:
-      'UFO 40 is a joke "port" of UFO 50 to the PlayStation Vita that had to be rebuilt from scratch: a pretend 1980s console whose cartridges play exactly like their UFO 50 originals, with their own names, characters, art, music and levels. Twelve games so far, and one C codebase that runs on a modded Vita, on Windows and in the browser.',
+      'UFO 40 is a joke "port" of UFO 50 to the PlayStation Vita that had to be rebuilt from scratch: a pretend 1980s console whose cartridges play exactly like their UFO 50 originals, with their own names, characters, art, music and levels. Twenty-two games so far in a 50-slot library, and one C codebase that runs on a modded Vita, on Windows and in the browser.',
     problem:
       'UFO 50 has no Vita version, and its code and assets are not ours to use. Rebuilding its games means recreating their mechanics faithfully from written descriptions alone, while every sprite, song, name and level stays original, all within a small handheld\'s 444 MHz CPU, and without a way to run Vita builds on the development PC.',
     how: [
@@ -208,24 +208,30 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
     numbers: [
-      { label: 'CARTRIDGES', value: '12 / 40' },
-      { label: 'TEST SCRIPTS', value: '325' },
-      { label: 'CHECKS', value: '3,675' },
+      { label: 'CARTRIDGES', value: '22 / 50' },
+      { label: 'TEST SCRIPTS', value: '660' },
+      { label: 'CHECKS', value: '9,192' },
       { label: 'ORIGINAL TRACKS', value: '80' },
     ],
     images: [
-      img('ufo-40', 'mosaic.webp', 'All twelve cartridges, captured by the headless test runner.'),
-      img('ufo-40', 'library.webp', 'The game library: 40 slots numbered like UFO 50, each cartridge with a tribute label and three goals.'),
+      img('ufo-40', 'mosaic.webp', 'All twenty-two cartridges, the library and the menu, captured by the headless test runner.'),
+      img('ufo-40', 'library.webp', 'The game library: 50 slots numbered like UFO 50, each cartridge with a tribute label and three goals.'),
       img('ufo-40', 'underdelve.webp', 'UNDERDELVE (tribute to Barbuta): one-hit deaths in a dark mine of 64 hand-made screens.'),
       img('ufo-40', 'bannerfall.webp', 'BANNERFALL (tribute to Attactics): drag troops between lanes before the drums sound.'),
       img('ufo-40', 'cutlass.webp', 'CUTLASS CUP (tribute to Bushido Ball): sword volleyball on a galley deck, 1P or 2P.'),
       img('ufo-40', 'fennec.webp', 'FENNEC FOUNTAIN (tribute to Block Koala): fifty number-block rooms, each checked by a solver.'),
       img('ufo-40', 'openhouse.webp', 'OPEN HOUSE (tribute to Party House): a guest-drafting party game with 46 guests of our own.'),
       img('ufo-40', 'dune.webp', 'DUNE EXPRESS (tribute to Rail Heist): real time until a guard wakes, then turns.'),
+      img('ufo-40', 'wetpaint.webp', 'WET PAINT (tribute to Paint Chase): 26 courses of racing to paint the floor.'),
+      img('ufo-40', 'flinthold.webp', 'FLINTHOLD (tribute to Rock On! Island): cave defence against the Four Lords.'),
+      img('ufo-40', 'rimshire.webp', 'RIMSHIRE (tribute to Lords of Diskonia): flick-disk battles on a drawn campaign map.'),
+      img('ufo-40', 'duskling.webp', 'DUSKLING (tribute to Mooncat): two-button platforming through 42 rooms.'),
+      img('ufo-40', 'homespun.webp', 'HOMESPUN (tribute to Pilot Quest): a camp that keeps producing in real time.'),
+      img('ufo-40', 'mandibles.webp', 'MANDIBLES (tribute to Combatants): one ant shouting orders to an army.'),
       img('ufo-40', 'web-phone.webp', 'The web build on a phone: the main menu and the on-screen pad.'),
     ],
     status:
-      'Played on a real PS Vita by the owner. His feedback ("doesn’t feel like UFO 50") led to a full rebuild: every game re-researched rule by rule, fixed, and checked by an independent review. v0.5.0 is built and tested in CI; hand-testing of the rebuilt games on hardware is ongoing.',
+      'Played on a real PS Vita by the owner. His feedback ("doesn’t feel like UFO 50") led to a full rebuild: every game re-researched rule by rule, fixed, and checked by an independent review. v0.6.0 has 22 cartridges, each reviewed independently against its original and tested in CI; the owner keeps play-testing and adds his own twists, like OPEN HOUSE’s endless and custom modes.',
   },
 
   'readme-glow': {

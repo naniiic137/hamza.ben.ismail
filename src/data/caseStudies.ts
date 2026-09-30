@@ -490,7 +490,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     ],
     images: [
       img('tunisia-air-pipeline', 'timeline.webp', 'Daily PM10 in all 10 cities, with Saharan dust episodes shaded: Tozeur peaked at 125 µg/m³ on 27 July, almost 3× the WHO limit.'),
-      img('tunisia-air-pipeline', 'heatmap.webp', 'Every city, every day: the two big dust episodes in late July and late August hit the whole country at once.'),
+      img('tunisia-air-pipeline', 'heatmap.webp', 'Every city, every day: the late-July dust episode put 8 of the 10 cities over the WHO limit on one day, the late-August one all 10.'),
       img('tunisia-air-pipeline', 'no2.webp', 'Nitrogen dioxide is higher on weekdays than at weekends in every city, a traffic signal; Tunis has by far the most.'),
     ],
     status:

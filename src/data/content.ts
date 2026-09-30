@@ -151,6 +151,7 @@ export const projects: Project[] = [
     facts: [{ label: 'SITES', value: '14' }, { label: 'FRAMEWORKS', value: 'NONE' }, { label: 'OFFLINE', value: 'YES' }],
     title: 'Websites for Businesses',
     category: 'web',
+    featured: true,
     summary:
       '14 complete client-style websites — restaurant, QR menu, shop, real estate, hotel, clinic, car rental, gym, salon, travel, delivery, inventory app and more — responsive and offline-ready.',
     tech: ['HTML', 'CSS', 'JavaScript', 'Responsive', 'Accessibility'],
@@ -381,6 +382,7 @@ export const projects: Project[] = [
     facts: [{ label: 'BOARD', value: 'RASPBERRY PI PICO' }, { label: 'TESTS', value: '102' }, { label: 'RUNTIME DEPS', value: '0' }],
     title: 'PicoPulse',
     category: 'web',
+    featured: true,
     summary:
       'Raspberry Pi Pico → browser telemetry over USB with MicroPython and the Web Serial API: live charts, alerts and device control. No drivers, no server.',
     tech: ['MicroPython', 'Raspberry Pi Pico', 'TypeScript', 'Web Serial', 'Canvas'],
@@ -401,6 +403,7 @@ export const projects: Project[] = [
     facts: [{ label: 'PLAYERS', value: '2 OR 4' }, { label: 'DECK', value: '40 CARDS' }, { label: 'BACKEND', value: 'FIREBASE RTDB' }],
     title: 'Chkoba (شكوبة)',
     category: 'web',
+    featured: true,
     summary:
       'Multiplayer browser version of the classic Tunisian card game. Firebase Realtime Database powers play across any network, with 2-player and 4-player team modes and full Shkobba scoring.',
     tech: ['JavaScript', 'Firebase', 'Real-Time'],

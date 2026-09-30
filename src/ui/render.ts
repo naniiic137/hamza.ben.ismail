@@ -95,7 +95,7 @@ function about() {
   </section>`;
 }
 
-export function projectCard(p: Project, index: number) {
+export function projectCard(p: Project, index: number, hidden = false) {
   const n = String(index + 1).padStart(2, '0');
   const links = p.classified
     ? `<span class="tag tag--lock">${icon('lock', 10)} CLASSIFIED</span>`
@@ -106,7 +106,7 @@ export function projectCard(p: Project, index: number) {
         )
         .join('');
   return `
-    <article class="card ${p.featured ? 'card--featured' : ''}" data-cat="${p.category}" data-id="${p.id}" data-reveal>
+    <article class="card ${p.featured ? 'card--featured' : ''}" data-cat="${p.category}" data-top="${p.featured ? '1' : '0'}" data-id="${p.id}" data-reveal${hidden ? ' hidden' : ''}>
       <div class="card__inner px-box">
         <div class="card__top">
           <span class="card__num">M-${n}</span>
@@ -131,24 +131,29 @@ export function projectCard(p: Project, index: number) {
 
 function projectsSection() {
   const counts = {
+    top: projects.filter((p) => p.featured).length,
     all: projects.length,
     web: projects.filter((p) => p.category === 'web').length,
     python: projects.filter((p) => p.category === 'python').length,
     desktop: projects.filter((p) => p.category === 'desktop').length,
   };
+  // The page opens on the TOP view (featured projects); the rest are one click away.
   return `
   <section class="section projects" id="projects" data-section="projects" tabindex="-1">
     ${sectionHead('02', 'MISSION LOG', 'MISSIONS', `${projects.length} missions found. Select one for a briefing.`)}
     <div class="filters" role="group" aria-label="Filter projects by category" data-reveal>
-      ${(['all', 'web', 'python', 'desktop'] as const)
+      ${(['top', 'all', 'web', 'python', 'desktop'] as const)
         .map(
           (f, i) =>
-            `<button type="button" class="filter ${i === 0 ? 'is-active' : ''}" data-filter="${f}" aria-pressed="${i === 0}" data-sfx>${f.toUpperCase()} <span>${counts[f]}</span></button>`,
+            `<button type="button" class="filter ${i === 0 ? 'is-active' : ''}" data-filter="${f}" aria-pressed="${i === 0}" data-sfx>${f === 'top' ? '★ TOP' : f.toUpperCase()} <span>${counts[f]}</span></button>`,
         )
         .join('')}
     </div>
     <div class="cards" id="cards">
-      ${projects.map(projectCard).join('')}
+      ${projects.map((p, i) => projectCard(p, i, !p.featured)).join('')}
+    </div>
+    <div class="cards__more">
+      <button type="button" class="filter filter--more" data-show-all data-sfx>SHOW ALL ${projects.length} MISSIONS ▸</button>
     </div>
   </section>`;
 }

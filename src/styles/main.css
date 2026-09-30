@@ -1119,6 +1119,14 @@ main {
 .filter.is-active span {
   color: rgba(5, 4, 12, 0.6);
 }
+.cards__more {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+.filter--more {
+  color: var(--ink);
+}
 
 .cards {
   display: grid;

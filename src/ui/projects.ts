@@ -9,8 +9,12 @@ import { track } from './analytics';
 import { esc } from './render';
 
 export function initFilters() {
-  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter[data-filter]');
   const cards = document.querySelectorAll<HTMLElement>('.card');
+  const more = document.querySelector<HTMLButtonElement>('[data-show-all]');
+  more?.addEventListener('click', () => {
+    document.querySelector<HTMLButtonElement>('.filter[data-filter="all"]')?.click();
+  });
   buttons.forEach((btn) =>
     btn.addEventListener('click', () => {
       const f = btn.dataset.filter!;
@@ -19,9 +23,10 @@ export function initFilters() {
         b.classList.toggle('is-active', on);
         b.setAttribute('aria-pressed', String(on));
       });
+      if (more) more.hidden = f !== 'top';
       const show: HTMLElement[] = [];
       cards.forEach((c) => {
-        const visible = f === 'all' || c.dataset.cat === f;
+        const visible = f === 'all' || (f === 'top' ? c.dataset.top === '1' : c.dataset.cat === f);
         c.hidden = !visible;
         if (visible) show.push(c);
       });
@@ -115,7 +120,9 @@ export function initModal() {
       sfx.click();
       return renderCase(cids[(ci + dir + cids.length) % cids.length]);
     }
-    const ids = visibleIds();
+    let ids = visibleIds();
+    // A briefing opened from a link or the terminal can be for a card the filter hides.
+    if (!ids.includes(currentId)) ids = projects.map((p) => p.id);
     const i = ids.indexOf(currentId);
     if (i === -1 || ids.length < 2) return;
     sfx.click();

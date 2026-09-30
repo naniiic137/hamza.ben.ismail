@@ -444,6 +444,105 @@ export const caseStudies: Record<string, CaseStudy> = {
     status:
       'Hardware testing on a real Pico is still pending; the online demo runs in simulator mode.',
   },
+  'tunisia-air-pipeline': {
+    pitch:
+      'A daily data pipeline for air pollution and Saharan dust in 10 Tunisian cities: extract, load, transform in SQL, check the data, and only then publish a live dashboard.',
+    problem:
+      'Air-quality numbers for Tunisian cities are scattered and rarely shown over time. I wanted a small but complete data-engineering project: fresh data every day, a warehouse with tested SQL models, and a guarantee that a bad API response never reaches the public page.',
+    how: [
+      'Extract: two requests to the Open-Meteo API (air quality and weather) cover all 10 cities at once, with retries and backoff. The raw JSON is saved before parsing, so any run can be replayed with --offline.',
+      'Load: the per-city hourly arrays are flattened into long (city, time, variable, value) tables in DuckDB, after checking the number of locations and the length of every array.',
+      'Transform: four SQL files run in order: a pivoted hourly staging table joined with the weather, daily means with WHO-limit flags, a per-city summary and ranking, and insight tables for weekday/weekend NO₂ and Saharan dust episodes.',
+      'Quality and publish: eight SQL checks run on the models; if any error-level check fails, the run stops and nothing is published. Otherwise a static Plotly dashboard is built and GitHub Actions deploys it to GitHub Pages every morning.',
+    ],
+    challenges: [
+      {
+        title: 'Loading took minutes',
+        detail:
+          'Inserting about 200,000 rows from Python with executemany took minutes in DuckDB. Writing the rows to a temporary CSV and loading it with COPY takes under a second, so a full run, download included, takes a few seconds.',
+      },
+      {
+        title: 'Bad data must not go live',
+        detail:
+          'The checks cover every city present, no duplicate hours, physically plausible values, at least 90% of hourly values, fresh data and full days. The deploy job only runs when the pipeline exits cleanly, and tests prove the checks catch negative values, stale data and missing cities.',
+      },
+      {
+        title: 'No state to get wrong',
+        detail:
+          'The API keeps 92 days of history, so each run rebuilds the whole window from scratch. There are no incremental loads to corrupt and no backfills, and running the job twice gives the same result.',
+      },
+      {
+        title: 'Defining a dust episode',
+        detail:
+          'A day counts as a Saharan dust episode when at least 3 cities are over the WHO PM10 limit and dust makes up more than 30% of the PM10. That separates dust from ordinary pollution, and a test checks both cases.',
+      },
+      {
+        title: 'Being honest about the data',
+        detail:
+          'The values come from the CAMS atmospheric model on a grid of about 40 km, not from ground stations. It captures regional dust well but can miss local sources, which is why an industrial town like Gabès doesn’t stand out. The README says so.',
+      },
+    ],
+    numbers: [
+      { label: 'CITIES', value: '10' },
+      { label: 'QUALITY CHECKS', value: '8' },
+      { label: 'DAYS REBUILT DAILY', value: '92' },
+      { label: 'TESTS', value: '12' },
+    ],
+    images: [
+      img('tunisia-air-pipeline', 'timeline.webp', 'Daily PM10 in all 10 cities, with Saharan dust episodes shaded: Tozeur peaked at 125 µg/m³ on 27 July, almost 3× the WHO limit.'),
+      img('tunisia-air-pipeline', 'heatmap.webp', 'Every city, every day: the two big dust episodes in late July and late August hit the whole country at once.'),
+      img('tunisia-air-pipeline', 'no2.webp', 'Nitrogen dioxide is higher on weekdays than at weekends in every city, a traffic signal; Tunis has by far the most.'),
+    ],
+    status:
+      'Runs every morning on GitHub Actions. The figures above are from the first run (30 June – 29 September 2026); the live dashboard always shows the latest 92 days.',
+  },
+  'dev-survey-insights': {
+    pitch:
+      'What developers earn, where they work and how they use AI, from 49,191 responses to the Stack Overflow Developer Survey 2025, with a focus on North Africa.',
+    problem:
+      'Survey headlines are about the US and Europe. I wanted the same questions answered for developers where I live, without hiding how small the North African sample really is.',
+    how: [
+      'The survey CSV is downloaded at run time (it is ODbL-licensed and about 140 MB), loaded with pandas and cleaned: regions, experience bands and work-style groups are derived, and multi-answer columns are split for the language analysis.',
+      'Salaries are limited to employed professional developers; values outside $1,000–$1,000,000 are dropped as entry errors, then outliers outside Tukey’s fences (1.5 × IQR) per country. 15,685 salaries remain, and medians are used because pay is heavily skewed.',
+      'Each analysis is one function returning a small tidy table: salary by country and by experience, work style by region, AI use by experience, and languages used vs admired.',
+      'The tables feed an interactive Plotly dashboard on GitHub Pages and static charts in the README; the same code runs on other survey years with --year.',
+    ],
+    challenges: [
+      {
+        title: 'Small samples',
+        detail:
+          'Tunisia alone has too few salaries for a reliable median. North Africa (Tunisia, Morocco, Algeria, Egypt, Libya) is pooled into 68 salaries, countries need at least 50 to be charted, and experience groups with fewer than 15 are hidden instead of shown as shaky numbers.',
+      },
+      {
+        title: 'Messy salary data',
+        detail:
+          'Salary answers include impossible values. Fixed bounds ($1k–$1M) remove those, and the outlier fences are computed per country, so a single worldwide cutoff doesn’t throw away whole low-salary countries.',
+      },
+      {
+        title: 'Not overstating a finding',
+        detail:
+          'North Africa’s 74.7% daily AI use is the highest of the regions compared, but some single countries are higher. The write-up compares it with the 50.6% worldwide figure instead of calling it the highest anywhere.',
+      },
+      {
+        title: 'Reproducible and tested',
+        detail:
+          '22 unit tests on small synthetic data cover the region and experience mapping, the salary filters, the pooled North Africa row, hiding small groups and the admired rate, so they run in CI without downloading the survey.',
+      },
+    ],
+    numbers: [
+      { label: 'RESPONSES', value: '49,191' },
+      { label: 'COUNTRIES', value: '177' },
+      { label: 'SALARIES AFTER CLEANING', value: '15,685' },
+      { label: 'TESTS', value: '22' },
+    ],
+    images: [
+      img('dev-survey-insights', 'salary_by_country.webp', 'Median salary by country for employed professional developers; North Africa pooled: $12,246 against $77,730 worldwide.'),
+      img('dev-survey-insights', 'ai_by_experience.webp', 'Daily AI use falls from 57% for juniors to 43% for developers with 21+ years, while favorable opinions stay around 60%.'),
+      img('dev-survey-insights', 'languages.webp', 'Used vs loved: JavaScript is used by 66% but only 47% want to keep using it; Rust is the most admired (72.5%).'),
+    ],
+    status:
+      'Survey data © Stack Overflow, licensed under the ODbL. This is an independent analysis, not affiliated with Stack Overflow.',
+  },
 
   kalak: {
     pitch:

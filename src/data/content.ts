@@ -229,7 +229,7 @@ export const projects: Project[] = [
   {
     id: 'ufo-40',
     overview:
-      "A fan-made tribute to UFO 50 for the PlayStation Vita, rebuilt from scratch in C: a pretend 1980s console with a 50-slot game library, where each cartridge plays exactly like its UFO 50 original but has its own name, characters, art, music and levels. Twelve games so far, from a one-hit-death cave explorer and a turn-based bug-control game to a lane-battle strategy game, a number-block puzzler, a party-guest deckbuilder and a train-heist stealth game. One codebase runs on a modded Vita, on Windows and in the browser.",
+      "A fan-made tribute to UFO 50 for the PlayStation Vita, rebuilt from scratch in C: a pretend 1980s console with a 50-slot game library, where each cartridge plays exactly like its UFO 50 original but has its own name, characters, art, music and levels. Twenty-two games so far, from a one-hit-death cave explorer and a turn-based bug-control game to a lane-battle strategy game, a number-block puzzler, a party-guest deckbuilder and a train-heist stealth game. One codebase runs on a modded Vita, on Windows and in the browser.",
     features: [
       'Twenty-two complete games in their UFO 50 slots, from 01 to 47: the same rules, structure and full content as the originals, with no UFO 50 code, art, music or levels',
       'Its own engine in portable C11: a 320×180 indexed-colour framebuffer, a 32-colour palette, sprites, fonts, scenes, CRC-checked saves',
@@ -317,6 +317,52 @@ export const projects: Project[] = [
       "URL shortener with real-time analytics: cache-first redirects, a Redis Streams → PostgreSQL click pipeline, HyperLogLog unique visitors and atomic rate limits. Fastify + React.",
     tech: ['TypeScript', 'Fastify', 'Redis', 'PostgreSQL', 'React', 'Docker'],
     links: [gh('linkpulse')],
+  },
+  {
+    id: 'tunisia-air-pipeline',
+    overview:
+      "An automated data pipeline that tracks air pollution and Saharan dust across 10 Tunisian cities. Every morning GitHub Actions pulls fresh data from the Open-Meteo API, rebuilds a DuckDB warehouse with SQL models, runs data-quality checks, and only republishes the dashboard if every check passes.",
+    features: [
+      'Extract: one request per source covers all 10 cities (PM2.5, PM10, NO₂, ozone, dust, AQI, temperature, wind, rain), with retries; raw responses are saved so any run can be replayed offline',
+      'Load: the per-city arrays are flattened into long (city, time, variable, value) tables, so a new pollutant needs no schema change',
+      'Transform: four SQL models in DuckDB (pivoted hourly staging, daily figures with WHO-limit flags, a city ranking, and insight tables for weekday/weekend NO₂ and dust episodes)',
+      'Eight data-quality checks (every city present, no duplicate hours, plausible values, 90% completeness, freshness); a failed check stops the run before anything is published',
+      'Stateless full refresh of the last 92 days on every run: no state to corrupt, no backfills, the daily job is idempotent',
+      'Bulk loading through a temporary CSV and COPY: a full run takes a few seconds instead of minutes',
+      'A static Plotly dashboard with a dust timeline, a city × day heatmap, a ranking, weekday vs weekend NO₂, a map and a pipeline-health panel',
+      '12 tests on synthetic API responses; lint, tests, the pipeline and the GitHub Pages deploy run on a daily schedule',
+    ],
+    facts: [{ label: 'CITIES', value: '10' }, { label: 'QUALITY CHECKS', value: '8' }, { label: 'REFRESH', value: 'DAILY' }],
+    title: 'Tunisia Air Quality Pipeline',
+    category: 'python',
+    featured: true,
+    summary:
+      'A daily ETL pipeline for air pollution and Saharan dust in 10 Tunisian cities: API → DuckDB → SQL models → quality checks → a live dashboard, scheduled on GitHub Actions.',
+    tech: ['Python', 'DuckDB', 'SQL', 'Plotly', 'GitHub Actions', 'pytest'],
+    links: [{ label: 'Live', href: 'https://naniiic137.github.io/tunisia-air-pipeline/' }, gh('tunisia-air-pipeline')],
+  },
+  {
+    id: 'dev-survey-insights',
+    overview:
+      "What developers earn, where they work and how they use AI, from 49,191 responses to the Stack Overflow Developer Survey 2025, with a focus on North Africa. A reproducible pandas analysis with honest handling of small samples, published as an interactive Plotly dashboard.",
+    features: [
+      'Cleaning: salaries outside $1k–$1M dropped, then per-country outliers outside Tukey’s fences (1.5 × IQR); 15,685 salaries remain, and medians are used because pay is skewed',
+      'Small samples handled honestly: countries need 50+ salaries to be charted, North Africa is pooled, and groups under 15 salaries are hidden',
+      'Salary by country and by years of experience, remote/hybrid/in-person work by region, AI use by experience, and languages used vs admired',
+      'Finding: 74.7% of North African developers use AI tools every day, against 50.6% worldwide',
+      'Finding: JavaScript is used by 66% of respondents but only 47% want to keep using it; Rust is the most admired language (72.5%)',
+      'One function per analysis, each returning a small tidy table; the same code runs on other survey years (--year 2024)',
+      'An interactive dashboard on GitHub Pages plus static charts in the README',
+      '22 unit tests on synthetic data, ruff and CI; the raw data is downloaded at run time, not committed (ODbL)',
+    ],
+    facts: [{ label: 'RESPONSES', value: '49,191' }, { label: 'COUNTRIES', value: '177' }, { label: 'TESTS', value: '22' }],
+    title: 'Developer Survey Insights',
+    category: 'python',
+    featured: true,
+    summary:
+      'Salaries, remote work and AI use from 49,191 Stack Overflow survey responses, with a North Africa focus: a pandas analysis and an interactive Plotly dashboard.',
+    tech: ['Python', 'pandas', 'Plotly', 'matplotlib', 'pytest', 'GitHub Actions'],
+    links: [{ label: 'Live', href: 'https://naniiic137.github.io/dev-survey-insights/' }, gh('dev-survey-insights')],
   },
   {
     id: 'picopulse',
@@ -857,7 +903,8 @@ export const inventory: string[] = [
   'Node.js', 'Express', 'Socket.io', 'Discord.js', 'Firebase', 'WebRTC', 'Python', 'Pygame', 'SDL2',
   'Java', 'Servlets', 'JavaScript', 'HTML5', 'CSS3', 'MySQL', 'Linux', 'Git', 'Selenium',
   'Web Scraping', 'OpenAI / GPT', 'AI Agents', 'LLMs', 'Delphi', 'Android', 'Arduino', 'ESP32',
-  'Raspberry Pi', 'Nginx', 'Blockchain', 'NFTs', 'Problem Solving', 'Debugging',
+  'Raspberry Pi', 'Nginx', 'Blockchain', 'NFTs', 'pandas', 'DuckDB', 'SQL', 'Plotly', 'ETL Pipelines',
+  'Problem Solving', 'Debugging',
 ];
 
 export const quests: Quest[] = [

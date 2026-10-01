@@ -175,14 +175,14 @@ export const caseStudies: Record<string, CaseStudy> = {
 
   'ufo-40': {
     pitch:
-      'UFO 40 is a joke "port" of UFO 50 to the PlayStation Vita that had to be rebuilt from scratch: a pretend 1980s console whose cartridges play exactly like their UFO 50 originals, with their own names, characters, art, music and levels. Twenty-two games so far in a 50-slot library, and one C codebase that runs on a modded Vita, on Windows and in the browser.',
+      'UFO 40 is a joke "port" of UFO 50 to the PlayStation Vita that had to be rebuilt from scratch: a pretend 1980s console whose cartridges play exactly like their UFO 50 originals, with their own names, characters, art, music and levels. Twenty-six games so far in a 50-slot library, and one C codebase that runs on a modded Vita, on Windows and in the browser.',
     problem:
       'UFO 50 has no Vita version, and its code and assets are not ours to use. Rebuilding its games means recreating their mechanics faithfully from written descriptions alone, while every sprite, song, name and level stays original, all within a small handheld\'s 444 MHz CPU, and without a way to run Vita builds on the development PC.',
     how: [
       'A small engine in portable C11 draws everything into a 320×180 indexed-colour framebuffer with its own 32-colour palette. The platform layer only uploads that picture, so the same game code runs everywhere.',
       'One SDL2 layer serves the Vita (GXM renderer, ×3 scale to 960×540), Windows and the web through Emscripten. A headless layer runs the whole console from scripted button presses and writes PNG, GIF and WAV files.',
       'Each game has a design document: a mechanics checklist with a text source for every rule, whether its maps are random or hand-made, the original\'s three goals, and a list of what is ours. Where sources are silent, the choice is written down.',
-      'Music and sound come from a 4-channel chiptune synth driven by a compact text notation. All 80 tracks are original.',
+      'Music and sound come from a 4-channel chiptune synth driven by a compact text notation. All 227 tracks are original.',
       'GitHub Actions builds the Vita .vpk in the vitasdk container, the Windows zip and the web build, runs the tests on Linux, and publishes releases on tags.',
     ],
     challenges: [
@@ -208,13 +208,13 @@ export const caseStudies: Record<string, CaseStudy> = {
       },
     ],
     numbers: [
-      { label: 'CARTRIDGES', value: '22 / 50' },
-      { label: 'TEST SCRIPTS', value: '660' },
-      { label: 'CHECKS', value: '9,192' },
-      { label: 'ORIGINAL TRACKS', value: '80' },
+      { label: 'CARTRIDGES', value: '26 / 50' },
+      { label: 'TEST SCRIPTS', value: '808' },
+      { label: 'CHECKS', value: '12,134' },
+      { label: 'ORIGINAL TRACKS', value: '227' },
     ],
     images: [
-      img('ufo-40', 'mosaic.webp', 'All twenty-two cartridges, the library and the menu, captured by the headless test runner.'),
+      img('ufo-40', 'mosaic.webp', 'The first twenty-two cartridges, the library and the menu, captured by the headless test runner.'),
       img('ufo-40', 'library.webp', 'The game library: 50 slots numbered like UFO 50, each cartridge with a tribute label and three goals.'),
       img('ufo-40', 'underdelve.webp', 'UNDERDELVE (tribute to Barbuta): one-hit deaths in a dark mine of 64 hand-made screens.'),
       img('ufo-40', 'bannerfall.webp', 'BANNERFALL (tribute to Attactics): drag troops between lanes before the drums sound.'),
@@ -228,10 +228,14 @@ export const caseStudies: Record<string, CaseStudy> = {
       img('ufo-40', 'duskling.webp', 'DUSKLING (tribute to Mooncat): two-button platforming through 42 rooms.'),
       img('ufo-40', 'homespun.webp', 'HOMESPUN (tribute to Pilot Quest): a camp that keeps producing in real time.'),
       img('ufo-40', 'mandibles.webp', 'MANDIBLES (tribute to Combatants): one ant shouting orders to an army.'),
+      img('ufo-40', 'skidkids.webp', 'SKID KIDS (tribute to Hot Foot): two-on-two beanbag ball in a school gym, twelve kids with their own specials.'),
+      img('ufo-40', 'tiltshot.webp', 'TILTSHOT (tribute to Pingolf): side-on pinball golf; a slam sends the ball down mid-flight.'),
+      img('ufo-40', 'chime.webp', 'CHIME CIRCUIT (tribute to The Big Bell Race): six ships jostling at the start of an eight-lap race.'),
+      img('ufo-40', 'buzzbolt.webp', 'BUZZBOLT (tribute to Star Waspir): every kill drops a letter; three letters spell a word.'),
       img('ufo-40', 'web-phone.webp', 'The web build on a phone: the main menu and the on-screen pad.'),
     ],
     status:
-      'Played on a real PS Vita by the owner. His feedback ("doesn’t feel like UFO 50") led to a full rebuild: every game re-researched rule by rule, fixed, and checked by an independent review. v0.6.0 has 22 cartridges, each reviewed independently against its original and tested in CI; the owner keeps play-testing and adds his own twists, like OPEN HOUSE’s endless and custom modes.',
+      'Played on a real PS Vita by the owner. His feedback ("doesn’t feel like UFO 50") led to a full rebuild: every game re-researched rule by rule, fixed, and checked by an independent review. v0.7.0 has 26 cartridges, each reviewed independently against its original and tested in CI; the owner keeps play-testing and adds his own twists, like OPEN HOUSE’s endless and custom modes.',
   },
 
   'readme-glow': {

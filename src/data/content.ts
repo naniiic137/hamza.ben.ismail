@@ -496,19 +496,19 @@ export const projects: Project[] = [
   {
     id: 'game-update',
     overview:
-      "A Discord bot with no server: a GitHub Actions schedule checks Fortnite, VALORANT and CS2 for new versions through public APIs and posts a rich message to your server when one drops.",
+      "A Discord bot with no server: a GitHub Actions schedule checks Fortnite, VALORANT, CS2 and Deadlock for new versions through public APIs and posts a rich message to your server when one drops.",
     features: [
-      "Runs every 6 hours on GitHub Actions — no always-on server, free",
-      "Fortnite, VALORANT and CS2 via public version and news APIs",
+      "Runs every 30 minutes on GitHub Actions — no always-on server, free",
+      "Fortnite (Epic's live version endpoint, with hotfix detection), VALORANT, CS2 and Deadlock (Valve's official announcements)",
       "Last-seen versions kept on a separate state branch, keeping the main history clean",
       "Easy to extend to any game with a public version endpoint",
       "Offline unit tests",
     ],
-    facts: [{ label: "GAMES", value: "3" }, { label: "INTERVAL", value: "6 HOURS" }, { label: "HOSTING", value: "FREE" }],
+    facts: [{ label: "GAMES", value: "4" }, { label: "INTERVAL", value: "30 MIN" }, { label: "HOSTING", value: "FREE" }],
     title: "Game Update Bot",
     category: 'python',
     summary:
-      "Serverless Discord notifier: GitHub Actions checks Fortnite, VALORANT and CS2 for new versions and posts rich update messages. Free to run.",
+      "Serverless Discord notifier: GitHub Actions checks Fortnite, VALORANT, CS2 and Deadlock for new versions and posts rich update messages. Free to run.",
     tech: ["Python", "Discord API", "GitHub Actions"],
     links: [gh('game-update-bot')],
   },

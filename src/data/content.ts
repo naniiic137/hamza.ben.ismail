@@ -230,23 +230,23 @@ export const projects: Project[] = [
   {
     id: 'ufo-40',
     overview:
-      "A fan-made tribute to UFO 50 for the PlayStation Vita, rebuilt from scratch in C: a pretend 1980s console with a 50-slot game library, where each cartridge plays exactly like its UFO 50 original but has its own name, characters, art, music and levels. Twenty-six games so far, from a one-hit-death cave explorer and a lane-battle strategy game to a number-block puzzler, a party-guest deckbuilder, pinball golf and a wide-screen shooter. One codebase runs on a modded Vita, on Windows and in the browser.",
+      "A fan-made tribute to UFO 50 for the PlayStation Vita, rebuilt from scratch in C: a pretend 1980s console with a 50-slot game library, where each cartridge plays exactly like its UFO 50 original but has its own name, characters, art, music and levels. Twenty-seven games so far, from a one-hit-death cave explorer and a lane-battle strategy game to a number-block puzzler, a party-guest deckbuilder, pinball golf and a wide-screen shooter. One codebase runs on a modded Vita, on Windows and in the browser.",
     features: [
-      'Twenty-six complete games in their UFO 50 slots, from 01 to 47: the same rules, structure and full content as the originals, with no UFO 50 code, art, music or levels',
+      'Twenty-seven complete games in their UFO 50 slots, from 01 to 47: the same rules, structure and full content as the originals, with no UFO 50 code, art, music or levels',
       'Its own engine in portable C11: a 320×180 indexed-colour framebuffer, a 32-colour palette, sprites, fonts, scenes, CRC-checked saves',
-      'A 4-channel chiptune synth (2 pulse, triangle, noise) with a custom music notation, and 227 original tracks',
+      'A 4-channel chiptune synth (2 pulse, triangle, noise) with a custom music notation, and 234 original tracks',
       'One SDL2 layer for PS Vita (GXM renderer, 960×544), Windows and the web (Emscripten, with an on-screen pad for phones)',
-      'A headless runner that plays scripted button presses: 808 test scripts (12,134 checks), and every screenshot and GIF in the README',
+      'A headless runner that plays scripted button presses: 843 test scripts (13,613 checks), and every screenshot and GIF in the README',
       'Every game rebuilt to its original’s rules from sourced research, then checked by an independent review before release; a console menu with a jukebox and save management',
       'Solvers and bots in the tests prove every puzzle room and mission can be won: 50 block-pushing rooms, 15 stealth levels and 20 heist missions',
       'GitHub Actions builds the Vita .vpk (vitasdk), Windows and web, and publishes releases',
     ],
-    facts: [{ label: 'GAMES', value: '26 / 50' }, { label: 'TEST CHECKS', value: '12,134' }, { label: 'LINES OF C', value: '115k' }],
+    facts: [{ label: 'GAMES', value: '27 / 50' }, { label: 'TEST CHECKS', value: '13,613' }, { label: 'LINES OF C', value: '121k' }],
     title: 'UFO 40',
     category: 'desktop',
     featured: true,
     summary:
-      'A UFO 50 tribute for the PS Vita, built from scratch in C: a pretend 1980s console with twenty-six games that play exactly like the originals, on Vita, PC and the web.',
+      'A UFO 50 tribute for the PS Vita, built from scratch in C: a pretend 1980s console with twenty-seven games that play exactly like the originals, on Vita, PC and the web.',
     tech: ['C11', 'SDL2', 'PS Vita (vitasdk)', 'Emscripten', 'Chiptune synth', 'GitHub Actions'],
     links: [
       { label: 'Play', href: 'https://naniiic137.github.io/ufo-40/' },
